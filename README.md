@@ -1,5 +1,5 @@
 # HealthMonitoring
-
+---
 ## Requirements
 
 ### Anaconda
@@ -7,20 +7,34 @@
 Download latest version from https://www.anaconda.com/products/distribution#Downloads
 
 1. After installation create an environment using the following command 
-    ```$ conda create --name myenv```
+    ```bash
+    $ conda create --name myenv
+    ```
 2. proceed with 
-    ```$ proceed ([y]/n)?``` Y
+    ```bash
+    $ proceed ([y]/n)?
+    ```
 3. To Specify the python version use
-   ```$ conda create -n myenv python=3.9```
+   ```bash
+   $ conda create -n myenv python=3.9
+   ```
 4. To activate the newly create environment use
-    ```$ conda activate myenv```
+    ```bash
+    $ conda activate myenv
+    ```
 5. The acivated environment is indicated by
     ```(testenv)``` in beginning of the active terminal line
 
 #### PIP Package Manager
 1. Activate the created Conda environment
-2. Install PIP by running ```$ conda install pip```
+2. Install PIP by running
+   ```bash
+   $ conda install pip
+   ```
 
 ### Django
 1. Activate the created Conda environment
-2. Install Django by running ```$ python -m pip install Django```
+2. Install Django by running
+   ```bash
+   $ python -m pip install Django
+   ```
