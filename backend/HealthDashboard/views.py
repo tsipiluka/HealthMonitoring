@@ -7,6 +7,8 @@ from django.http.response import JsonResponse
 from HealthDashboard.models import Person, Patient, Arzt, Befund, PatientenZugriff, ArztZugriff
 from HealthDashboard.serializers import PersonSerializer, PatientSerializer, ArztSerializer, BefundSerializer, PatientenZugriffSerializer, ArztZugriffSerializer 
 
+from HealthDashboard.api import befundAPI
+
 # Create your views here.
 
 # APIS
@@ -56,14 +58,14 @@ def patientAPI(request, id=0):
 
     elif request.method=='PUT':
         patient_data = JSONParser().parse(request)
-        patient=Patient.objects.get(peID=patient_data['peID'])
+        patient=Patient.objects.get(paID=patient_data['paID'])
         patient_serializer=PatientSerializer(patient,data=patient_data)
         if patient_serializer.is_valid():
             return JsonResponse("Changed patient", safe=False)
         return JsonResponse("Failed to change patient", safe=False)
         
     elif request.method=='DELETE':
-        patient = Patient.objects.get(peID=id)
+        patient = Patient.objects.get(paID=id)
         patient.delete()
         return JsonResponse("Deleted patient", safe=False)
 
@@ -84,14 +86,14 @@ def arztAPI(request, id=0):
 
     elif request.method=='PUT':
         arzt_data = JSONParser().parse(request)
-        arzt=Arzt.objects.get(peID=arzt_data['peID'])
+        arzt=Arzt.objects.get(aID=arzt_data['aID'])
         arzt_serializer=ArztSerializer(arzt,data=arzt_data)
         if arzt_serializer.is_valid():
             return JsonResponse("Changed arzt", safe=False)
         return JsonResponse("Failed to change arzt", safe=False)
         
     elif request.method=='DELETE':
-        arzt = Arzt.objects.get(peID=id)
+        arzt = Arzt.objects.get(aID=id)
         arzt.delete()
         return JsonResponse("Deleted arzt", safe=False)
 
@@ -112,14 +114,14 @@ def befundAPI(request, id=0):
 
     elif request.method=='PUT':
         befund_data = JSONParser().parse(request)
-        befund=Befund.objects.get(peID=befund_data['peID'])
+        befund=Befund.objects.get(bID=befund_data['bID'])
         befund_serializer=BefundSerializer(befund,data=befund_data)
         if befund_serializer.is_valid():
             return JsonResponse("Changed befund", safe=False)
         return JsonResponse("Failed to change befund", safe=False)
         
     elif request.method=='DELETE':
-        befund = Befund.objects.get(peID=id)
+        befund = Befund.objects.get(bID=id)
         befund.delete()
         return JsonResponse("Deleted befund", safe=False)
 
