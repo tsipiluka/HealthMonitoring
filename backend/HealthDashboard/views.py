@@ -7,8 +7,6 @@ from django.http.response import JsonResponse
 from HealthDashboard.models import Person, Patient, Arzt, Befund, PatientenZugriff, ArztZugriff
 from HealthDashboard.serializers import PersonSerializer, PatientSerializer, ArztSerializer, BefundSerializer, PatientenZugriffSerializer, ArztZugriffSerializer 
 
-from HealthDashboard.api import befundAPI
-
 # Create your views here.
 
 # APIS
