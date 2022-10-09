@@ -351,3 +351,6 @@ MigrationBackup/
 
 #NEW gitIgnorefiles
 .env
+
+#Frontend Credentials
+frontend/HealthMonitoring/src/config.json
