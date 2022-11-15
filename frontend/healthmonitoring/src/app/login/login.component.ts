@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
       this.loginService.loginUser(requestData).subscribe((res: any) => {
         localStorage.setItem('access_token', res.access) 
         localStorage.setItem('refresh_token', res.refresh) 
+        
       })
     }
   }
