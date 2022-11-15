@@ -52,8 +52,41 @@ class MedicalFindingView(APIView):
                 'data': {}
             })
 
-
     def patch(self, request):
+        try:
+            data = request.data
+            if not data.get('uid'):
+                return Response ({
+                    'status': False,
+                    'message': 'uid is required',
+                    'data': {}
+                })
+                
+            obj = MedicalFinding.objects.filter(uid = data.get('uid'))
+            serializer = MedicalFindingSerializer(obj[0], data = data, partial = True)
+            if not serializer.is_valid():
+                return Response({
+                    'status': False, 
+                    'message': 'invalid fields',
+                    'data': serializer.errors
+                })
+            
+            serializer.save()
+            return Response({
+                'status': True,
+                'message': 'Medical Finding was updated',
+                'data': serializer.data
+            })
+            
+        except Exception as e:
+            print(e)
+            return Response({
+                'status': False,
+                'message': 'something went wrong',
+                'data': {}
+            })
+    
+    def delete(self, request):
         try:
             data = request.data
             if not data.get('uid'):
@@ -68,42 +101,6 @@ class MedicalFindingView(APIView):
             return Response({
                 'status': True,
                 'message': 'Medical Finding was successfully deleted',
-            })
-            
-        except Exception as e:
-            print(e)
-            return Response({
-                'status': False,
-                'message': 'something went wrong',
-                'data': {}
-            })
-
-    def delete(self, request):
-        try:
-            data = request.data
-            if not data.get('uid'):
-                return Response ({
-                    'status': False,
-                    'message': 'uid is required',
-                    'data': {}
-                })
-                
-            obj = MedicalFinding.objects.filter(uid = data.get('uid'))
-
-            serializer = MedicalFindingSerializer(obj[0], data = data, partial = True)
-            print(serializer)
-            if not serializer.is_valid():
-                return Response({
-                    'status': False, 
-                    'message': 'invalid fields',
-                    'data': serializer.errors
-                })
-            
-            serializer.save()
-            return Response({
-                'status': True,
-                'message': 'Medical Finding was updated',
-                'data': serializer.data
             })
             
         except Exception as e:
