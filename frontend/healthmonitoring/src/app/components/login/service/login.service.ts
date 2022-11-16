@@ -14,4 +14,8 @@ export class LoginService {
   loginUser(authenticationData: any): Observable<any>{
     return this.http.post(this.APIUrl + '/api/token/', authenticationData)
   }
+
+  verifyToken(refresh_token: any): Observable<any>{
+    return this.http.post(this.APIUrl + '/api/token/verify/', refresh_token)
+  }
 }
