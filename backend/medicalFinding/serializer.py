@@ -5,5 +5,5 @@ class MedicalFindingSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = MedicalFinding
-        exclude = ['created_at', 'updated_at']
+        exclude = ['created_at']
     

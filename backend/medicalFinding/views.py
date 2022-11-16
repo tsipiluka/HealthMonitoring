@@ -6,7 +6,7 @@ from .models import MedicalFinding
 from .serializer import MedicalFindingSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework import status
 
 class MedicalFindingView(APIView):
     
@@ -17,11 +17,7 @@ class MedicalFindingView(APIView):
         user = request.user
         medicalFindings = MedicalFinding.objects.filter(user = user)
         serializer = MedicalFindingSerializer(medicalFindings, many = True)
-        return Response ({
-            'status': True,
-            'data': serializer.data,
-            'message': 'medicalFinding fetched successfully'
-        })
+        return Response (serializer.data,status=status.HTTP_200_OK)
     
     def post(self, request):
         print(request.data)
