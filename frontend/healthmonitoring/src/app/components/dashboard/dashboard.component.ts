@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { LoginService } from '../login/service/login.service';
 import { DashboardService } from './service/dashboard.service';
+import { jsPDF } from "jspdf";
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +37,7 @@ export class DashboardComponent implements OnInit {
 
   loadMedicalFindings() {
     this.dashboardService.loadMedicalFindings().subscribe((res: any) => {
-      for(let finding of <MedicalFinding[]>res.data!){
+      for(let finding of <MedicalFinding[]>res){
         this.MedicalFindingList.push(<MedicalFinding>finding)
       }
     })
@@ -48,5 +49,17 @@ export class DashboardComponent implements OnInit {
       this.MedicalFindingList = []
       this.loadMedicalFindings()
     })
+  }
+
+  createPdf(finding: MedicalFinding,) {
+      let doc = new jsPDF('p', 'pt', 'a4')
+      doc.text(finding.uid, 290, 20)
+      doc.text("This document contains confidential medical information about Person XY", 40, 60)
+      doc.text("Disease: "+finding.disease , 40, 90)
+      doc.text("Required Medicine: "+finding.medicine , 40, 110)
+      doc.text("Zu Risiken und Nebenwirkungen lesen Sie die Packungsbeilage und fragen", 40, 200)
+      doc.text("Sie Ihren Arzt oder Apotheker. ", 40, 220)
+
+      window.open(doc.output('bloburl'))
   }
 }
