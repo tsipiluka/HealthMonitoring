@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'rest_framework',
-    'medicalFinding',
+    'medical_finding',
     'rest_framework_simplejwt',
     'corsheaders',
 ]
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-ROOT_URLCONF = "healthmonitoring.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "healthmonitoring.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 
 # Database

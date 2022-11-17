@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from medicalFinding.models import MedicalFinding
+from medical_finding.models import MedicalFinding
 
 class MedicalFindingSerializer(serializers.ModelSerializer):
     
