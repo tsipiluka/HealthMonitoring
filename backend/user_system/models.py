@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -32,12 +32,12 @@ class User(AbstractUser):
 
 
 class Patient(User):
-    base_role = User.Role.PATIENT
-
-    patient = PatientManager()  # used to filter patients only
 
     class Meta:
         proxy = True
+    base_role = User.Role.PATIENT
+
+    patient = PatientManager()  # used to filter patients only
 
     def welcome(self):
         return "Welcome Patient"

@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-*tp8^*b3(1^byq8h-vv^ah=z#fr8kbqp_4m19gilm@-f+nj)h)
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = ['https://moritzrfs-ubiquitous-space-journey-556954jwxxj3wrj-8000.preview.app.github.dev']
 
 
 # Application definition
