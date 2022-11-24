@@ -56,8 +56,6 @@ class ChangePasswordView(UpdateAPIView):
                     'message': 'Password updated successfully',
                     'data': []
                 }
-                send_mail('Using SparkPost with Django', 'This is a message from Django using SparkPost!', 'django-sparkpost@wh0cares.live',
-                user.email, fail_silently=False)
                 return Response(response)
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

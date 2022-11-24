@@ -153,5 +153,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.eu.sparkpostmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'SMTP_Injection'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = '856026c436fc4864bcb34a64414c5a73d565f09c'
 EMAIL_USE_TLS = True
