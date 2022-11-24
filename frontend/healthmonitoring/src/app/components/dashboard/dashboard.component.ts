@@ -24,13 +24,12 @@ export class DashboardComponent implements OnInit {
       "refresh": localStorage.getItem('refresh_token')
     } 
     console.log(refresh_token)
-    console.log(this.MedicalFindingList)
     this.loginService.verifyToken(refresh_token).subscribe((res: any) => {
       localStorage.setItem('access_token', res.access)
-      this.test = false
       this.loadMedicalFindings()
     },
     err => {
+      // ERRORHANDLER
       this.router.navigate(['login'])
     })
   }
@@ -40,6 +39,9 @@ export class DashboardComponent implements OnInit {
       for(let finding of <MedicalFinding[]>res){
         this.MedicalFindingList.push(<MedicalFinding>finding)
       }
+    }, err => {
+      // ERRORHANDLER
+      console.log(err)
     })
   }
 
