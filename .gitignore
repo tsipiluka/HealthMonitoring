@@ -353,3 +353,6 @@ MigrationBackup/
 # ignore sqlite database files
 *.sqlite3
 *.sqlite
+
+# ignore secrets.json
+secrets.json
