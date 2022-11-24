@@ -1,1 +1,107 @@
-<app-nav></app-nav>
+<body>
+  <app-nav></app-nav>
+  <div class="container">
+    <p-card class="header-card">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="headline">Profil</h1>
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-6 card-item">
+              <b>Vorname</b><p>Hendrik</p>
+            </div>  
+            <div class="col-6 card-item">
+              <b>Nachname</b><p>Spieß</p>
+            </div> 
+            <div class="col-12 card-item">
+              <b>Geburststag</b>
+              <div>
+                <p-calendar [(ngModel)]="birthday" [style]="{'width': '180px'}" [showIcon]="true" dateFormat="yy-mm-dd" inputId="icon"></p-calendar>
+              </div>
+            </div> 
+            <div class="col-12 card-item">
+              <b>Username</b><p>henno</p>
+            </div> 
+            <div class="col-12 card-item">
+              <b>E-Mail</b><p>test@test.de</p>
+            </div> 
+          </div>
+        </div>
+        <div class="col-6 right-card">
+          <!-- <div>
+            <button pButton pRipple type="button" label="Profil bearbeiten" class="p-button-secondary setting-btn"></button>
+          </div> -->
+          <div>
+            <button pButton pRipple type="button" label="Password Zurücksetzen" (click)="opPasswordReset.toggle($event)" class="p-button-secondary setting-btn"></button>
+          </div>
+          <div>
+            <button pButton pRipple type="button" label="Account Löschen" class="p-button-danger setting-btn delete"></button>
+          </div>
+         
+        </div>
+      </div>
+    </p-card>
+  </div>
+</body>
+
+
+<p-overlayPanel #opPasswordReset class="row">
+  <div class="password-reset-box">
+    <div class="col-12">
+      <b class="items">Old Password</b>
+    </div>
+    <div class="col-12">
+      <p-password [(ngModel)]="old_password" [feedback]="false"></p-password>
+    </div>
+  </div>
+  <div class="password-reset-box">
+    <div class="col-12">
+      <b class="items">New Password</b>
+    </div>
+    <div class="col-12">
+      <p-password [(ngModel)]="new_password1" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
+        <ng-template pTemplate="header">
+            <h6>Pick a password</h6>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <p-divider></p-divider>
+            <p class="mt-2">Anforderungen</p>
+            <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                <li>At least one lowercase</li>
+                <li>At least one uppercase</li>
+                <li>At least one numeric</li>
+                <li>At least one special character</li>
+                <li>Minimum 8 characters</li>
+            </ul>
+        </ng-template>
+      </p-password>
+    </div>
+  </div>
+  <div class="password-reset-box">
+    <div class="col-12"> 
+      <b>Repeat New Password</b>
+    </div>
+    <div class="col-12">
+      <p-password [(ngModel)]="new_password2" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
+        <ng-template pTemplate="header">
+            <h6>Pick a password</h6>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <p-divider></p-divider>
+            <p class="mt-2">Anforderungen</p>
+            <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                <li>At least one lowercase</li>
+                <li>At least one uppercase</li>
+                <li>At least one numeric</li>
+                <li>At least one special character</li>
+                <li>Minimum 8 characters</li>
+            </ul>
+        </ng-template>
+      </p-password>
+    </div>
+  </div>
+  <div class="col-12 submit-password-reset-btn">
+    <p-button icon="pi pi-check" (click)="resetPassword()" label="Bestätigen" styleClass="p-button-text"></p-button>
+  </div>
+</p-overlayPanel>
