@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['http://localhost']
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_rest_passwordreset",
     "medical_finding",
     "rest_framework_simplejwt",
     "corsheaders",
@@ -147,3 +149,9 @@ CORS_ALLOWED_ORIGINS = [
 
 # CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_HTTPONLY = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.eu.sparkpostmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'SMTP_Injection'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True

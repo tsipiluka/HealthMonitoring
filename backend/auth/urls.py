@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from auth.views import RegisterView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -16,4 +16,5 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='auth_register'),
     path('delete/', DeleteUserView.as_view(), name='auth_delete'),
     path('change-password/', ChangePasswordView.as_view(), name='auth_change_password'),
+    path('password-reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
