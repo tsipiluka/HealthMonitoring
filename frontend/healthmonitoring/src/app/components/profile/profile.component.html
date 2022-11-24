@@ -36,9 +36,8 @@
             <button pButton pRipple type="button" label="Password Zurücksetzen" (click)="opPasswordReset.toggle($event)" class="p-button-secondary setting-btn"></button>
           </div>
           <div>
-            <button pButton pRipple type="button" label="Account Löschen" class="p-button-danger setting-btn delete"></button>
+            <button pButton pRipple type="button" label="Account Löschen" (click)="deleteAccount()" class="p-button-danger setting-btn delete"></button>
           </div>
-         
         </div>
       </div>
     </p-card>
@@ -105,3 +104,5 @@
     <p-button icon="pi pi-check" (click)="resetPassword()" label="Bestätigen" styleClass="p-button-text"></p-button>
   </div>
 </p-overlayPanel>
+
+<p-confirmDialog header="Account Löschen" icon="pi pi-exclamation-triangle" acceptIcon="pi pi-times" [rejectVisible]="false"  acceptLabel="Löschen"></p-confirmDialog>

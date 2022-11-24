@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfileService } from './service/profile.service';
+import {ConfirmationService} from 'primeng/api';
+
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  providers: [ConfirmationService]
 })
 export class ProfileComponent implements OnInit {
 
@@ -19,7 +22,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -46,5 +50,19 @@ export class ProfileComponent implements OnInit {
 
   checkPassword(password: string): boolean{
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})/.test(password)
+  }
+
+  deleteAccount(){
+    this.confirmationService.confirm({
+      message: 'Sind Sie sich sicher, dass sie ihren Account löschen wollen?',
+      header: 'Account Löschen',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.profileService.deleteAccount().subscribe(()=>{
+          localStorage.clear()
+          this.router.navigate(['login'])
+        })
+      }
+  });
   }
 }
