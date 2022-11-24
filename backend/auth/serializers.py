@@ -44,8 +44,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         # send_mail('Using SparkPost with Django', 'This is a message from Django using SparkPost!', 'django-sparkpost@wh0cares.live',
         #         [user.email], fail_silently=False)
 
-        send_mail('Welcome to HealthMonitoring', ' Hello ' +user.first_name+ '\n This is a message sent to you because you registered at Health Monitoring Portal.', 'notify@wh0cares.live',
-            [user.email], fail_silently=False)
+        # try:
+        #     send_mail('Welcome to HealthMonitoring', ' Hello ' +user.first_name+ '\n This is a message sent to you because you registered at Health Monitoring Portal.', 'notify@wh0cares.live',
+        #     [user.email], fail_silently=False)
+        # except:
+        #     print("Error sending email")
         return user
 
 class ChangePasswordSerializer(serializers.Serializer):
