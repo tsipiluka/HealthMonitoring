@@ -25,8 +25,10 @@ SECRET_KEY = "django-insecure-*tp8^*b3(1^byq8h-vv^ah=z#fr8kbqp_4m19gilm@-f+nj)h)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://localhost']
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -37,10 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rest_framework',
-    'medical_finding',
-    'rest_framework_simplejwt',
-    'corsheaders',
+    "rest_framework",
+    "django_rest_passwordreset",
+    "medical_finding",
+    "rest_framework_simplejwt",
+    "corsheaders",
+    "user_system",
 ]
 
 MIDDLEWARE = [
@@ -51,7 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -85,6 +89,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = "user_system.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -93,9 +98,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
@@ -123,14 +134,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': {
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
-    }
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200", # angular dev server
-    "http://127.0.0.1:4200", # angular dev server
+    "http://localhost:4200",  # angular dev server
+    "http://127.0.0.1:4200",  # angular dev server
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
+
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.eu.sparkpostmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'SMTP_Injection'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
