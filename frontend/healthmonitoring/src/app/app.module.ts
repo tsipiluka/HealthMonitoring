@@ -14,6 +14,16 @@ import { CommonModule } from '@angular/common';
 import { NavComponent } from './components/nav/nav.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
+
+// Primeng Modules
+import {CardModule} from 'primeng/card';
+import {CalendarModule} from 'primeng/calendar';
+import {DialogModule} from 'primeng/dialog';
+import {PasswordModule} from 'primeng/password';
+import {DividerModule} from 'primeng/divider';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +42,16 @@ import { ProfileComponent } from './components/profile/profile.component';
     NgbModule,
     CommonModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+
+    // PrimeNG Modules
+    CardModule,
+    CalendarModule,
+    DialogModule,
+    PasswordModule,
+    DividerModule,
+    OverlayPanelModule
+  
   ],
   providers: [],
   bootstrap: [AppComponent]
