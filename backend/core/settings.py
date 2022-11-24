@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+from .read_secrets import ReadSecrets as rs
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -153,5 +155,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.eu.sparkpostmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'SMTP_Injection'
-EMAIL_HOST_PASSWORD = '856026c436fc4864bcb34a64414c5a73d565f09c'
+EMAIL_HOST_PASSWORD = rs.read_secrets('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
