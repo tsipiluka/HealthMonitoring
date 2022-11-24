@@ -12,10 +12,11 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    birth_date = serializers.DateField(required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name')
+        fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name', 'birth_date')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True}
@@ -32,7 +33,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            last_name=validated_data['last_name'],
+            birth_date=validated_data['birth_date']
         )
 
         
@@ -42,8 +44,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         # send_mail('Using SparkPost with Django', 'This is a message from Django using SparkPost!', 'django-sparkpost@wh0cares.live',
         #         [user.email], fail_silently=False)
 
-        send_mail('Using SparkPost with Django', 'This is a message from Django using SparkPost!', 'django-sparkpost@wh0cares.live',
-            [user.email], fail_silently=False)
+        # try:
+        #     send_mail('Welcome to HealthMonitoring', ' Hello ' +user.first_name+ '\n This is a message sent to you because you registered at Health Monitoring Portal.', 'notify@wh0cares.live',
+        #     [user.email], fail_silently=False)
+        # except:
+        #     print("Error sending email")
         return user
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -54,3 +59,10 @@ class ChangePasswordSerializer(serializers.Serializer):
     """
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+    new_password2 = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['new_password2']:
+            raise serializers.ValidationError({"new_password": "New password fields didn't match."})
+
+        return attrs

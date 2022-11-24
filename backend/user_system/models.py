@@ -24,6 +24,7 @@ class User(AbstractUser):
     base_role = Role.ADMIN
 
     role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
+    birth_date = models.DateField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:
