@@ -16,10 +16,4 @@ export class ProfileService {
     .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
     return this.http.put(this.APIUrl + '/auth/change-password/' , passwords, {'headers': headers})
   }
-
-  deleteMedicalFinding(uid: any): Observable<any>{
-    const headers= new HttpHeaders()
-    .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
-    return this.http.delete(this.APIUrl + '/api/medicalFinding/',{'body': uid, 'headers': headers})
-  }
 }
