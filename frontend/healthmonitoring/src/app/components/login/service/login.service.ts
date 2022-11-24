@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http'
+import { HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,10 +12,10 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   loginUser(authenticationData: any): Observable<any>{
-    return this.http.post(this.APIUrl + '/api/token/', authenticationData)
+    return this.http.post(this.APIUrl + '/auth/login/', authenticationData )
   }
 
-  verifyToken(refresh_token: any): Observable<any>{
-    return this.http.post(this.APIUrl + '/api/token/verify/', refresh_token)
+  refreshToken(refresh_token: any): Observable<any>{
+    return this.http.post(this.APIUrl + '/auth/login/refresh/', refresh_token)
   }
-}
+} 

@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     const refresh_token = {
       "refresh": localStorage.getItem('refresh_token')
     } 
-    this.loginService.verifyToken(refresh_token).subscribe((res: any)=>{
+    this.loginService.refreshToken(refresh_token).subscribe((res: any)=>{
       localStorage.setItem('access_token', res.access)
       this.router.navigate(['dashboard'])
     })

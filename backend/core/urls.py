@@ -13,7 +13,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("auth.urls")),
     #path("api-auth/", include("rest_framework.urls")),
-    # path("api/medicalFinding/", MedicalFindingView.as_view()),
+    path("api/medicalFinding/", MedicalFindingView.as_view()),
     #path("user/",  include('django.contrib.auth.urls')),
     #path("api2/", include('user_system.urls')),
 ]

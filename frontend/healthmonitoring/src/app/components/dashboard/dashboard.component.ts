@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
     const refresh_token = {
       "refresh": localStorage.getItem('refresh_token')
     } 
-    console.log(refresh_token)
-    this.loginService.verifyToken(refresh_token).subscribe((res: any) => {
+    this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
+      console.log(res)
       localStorage.setItem('access_token', res.access)
       this.loadMedicalFindings()
     },
