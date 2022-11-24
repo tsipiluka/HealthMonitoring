@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
@@ -14,3 +15,10 @@ class PatientProfile(APIView):
         patient_profile = Patient.objects.get(user=user)
         serializer = PatientProfileSerializer(patient_profile)
         return Response(serializer.data)
+
+class TestHello2(APIView):
+    
+    def get(self, request):
+        # return a simple response
+        
+        return Response("Hello World")

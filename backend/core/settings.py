@@ -25,8 +25,8 @@ SECRET_KEY = "django-insecure-*tp8^*b3(1^byq8h-vv^ah=z#fr8kbqp_4m19gilm@-f+nj)h)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = ['https://moritzrfs-ubiquitous-space-journey-556954jwxxj3wrj-8000.preview.app.github.dev']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://localhost']
 
 
 # Application definition
@@ -49,7 +49,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -137,9 +137,13 @@ REST_FRAMEWORK = {
     }
 }
 
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # angular dev server
     "http://127.0.0.1:4200",  # angular dev server
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
+
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
