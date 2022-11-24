@@ -1,14 +1,17 @@
 <app-nav></app-nav>
 <div class="container">
+    <div class="addEntryBtn">
+        <button pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
+    </div>
     <div class="row">
         <table class="table table-dark">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Disease</th>
-                <th scope="col">Medicine</th>
-                <th scope="col">Last update at</th>
-                <th scope="col">Options</th>
+                <th scope="col">Krankheit</th>
+                <th scope="col">Medizin</th>
+                <th scope="col">Letztes Update am</th>
+                <th scope="col">Optionen</th>
               </tr>
             </thead>
             <tbody>
@@ -31,7 +34,30 @@
                 </tr>
             </tbody>
         </table>
-        
     </div>
 </div>
 
+<p-dialog header="Füge einen neuen Eintrag hinzu" [(visible)]="addEntryModel" [modal]="true"
+    [draggable]="false" [resizable]="false">
+        <div class="row">
+            <div class="new-entry-item">
+                <div class="col-12">
+                    <b>Krankheit</b>
+                </div>
+                <div class="col-12">
+                    <input type="text" pInputText [(ngModel)]="new_disease">
+                </div>
+            </div>
+            <div class="new-entry-item">
+                <div class="col-12">
+                    <b>Medizin</b>
+                </div>
+                <div class="col-12">
+                    <input type="text" pInputText [(ngModel)]="new_medicine"> 
+                </div>
+            </div>
+        </div>
+        <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="createNewMedicalFinding()" label="Ok" styleClass="p-button-text"></p-button>
+        </ng-template>
+</p-dialog>

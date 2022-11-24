@@ -23,6 +23,8 @@ import {PasswordModule} from 'primeng/password';
 import {DividerModule} from 'primeng/divider';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     PasswordModule,
     DividerModule,
     OverlayPanelModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ButtonModule,
+    InputTextModule
   
   ],
   providers: [],

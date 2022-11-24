@@ -13,7 +13,11 @@ import { jsPDF } from "jspdf";
 export class DashboardComponent implements OnInit {
 
   MedicalFindingList: MedicalFinding[] = []
-  test: boolean = true
+
+  addEntryModel: boolean = false
+
+  new_disease: string = ''
+  new_medicine: string = ''
 
   constructor(private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) { 
     console.log(this.MedicalFindingList.length)
@@ -35,6 +39,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadMedicalFindings() {
+    this.MedicalFindingList = []
     this.dashboardService.loadMedicalFindings().subscribe((res: any) => {
       for(let finding of <MedicalFinding[]>res){
         this.MedicalFindingList.push(<MedicalFinding>finding)
@@ -48,7 +53,6 @@ export class DashboardComponent implements OnInit {
   deleteMedicalFinding(uid: string) {
     const response_uid = {'uid': uid}
     this.dashboardService.deleteMedicalFinding(response_uid).subscribe((res: any) => {
-      this.MedicalFindingList = []
       this.loadMedicalFindings()
     })
   }
@@ -63,5 +67,24 @@ export class DashboardComponent implements OnInit {
       doc.text("Sie Ihren Arzt oder Apotheker. ", 40, 220)
 
       window.open(doc.output('bloburl'))
+  }
+
+  displayAddEntryModel(){
+    this.addEntryModel = true
+  }
+
+  createNewMedicalFinding(){
+    if(this.new_disease !== '' && this.new_medicine !== ''){
+      const medicalFinding_info = { 
+        'disease': this.new_disease, 
+        'medicine': this.new_medicine
+      }
+      this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((res: any)=>{
+        this.addEntryModel = false
+        this.new_disease = ''
+        this.new_medicine = ''
+        this.loadMedicalFindings()
+      })
+    }
   }
 }
