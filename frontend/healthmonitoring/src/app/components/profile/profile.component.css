@@ -1,0 +1,43 @@
+body {
+    background-color: rgb(210, 217, 247);
+    
+    /* Full height */
+    height: 100%;
+    background-size: cover;
+}
+
+h1.headline {
+    text-align: center;
+}
+
+.card-item {
+    margin-bottom: 30px;
+}
+
+.header-card{
+    margin-bottom: 30px;
+}
+
+.right-card {
+    text-align: right;
+}
+
+.setting-btn {
+    margin-bottom: 5px;
+}
+
+.setting-btn.delete {
+    margin-top: 240px;
+}
+
+b.items {
+    margin-right: 10px;
+}
+
+.password-reset-box{
+    margin-bottom: 20px;
+}
+
+.submit-password-reset-btn {
+    text-align: right;
+}
