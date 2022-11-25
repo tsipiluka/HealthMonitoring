@@ -21,7 +21,7 @@ class User(AbstractUser):
         PATIENT = "PATIENT", "Patient"
         DOCTOR = "DOCTOR", "Doctor"
 
-    base_role = Role.ADMIN
+    base_role = Role.PATIENT
 
     role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
     birth_date = models.DateField(null=True, blank=True)
