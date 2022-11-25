@@ -13,6 +13,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { NavComponent } from './components/nav/nav.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { NgxCaptchaModule} from 'ngx-captcha'
+
 
 
 // Primeng Modules
@@ -45,6 +47,8 @@ import {InputTextModule} from 'primeng/inputtext';
     CommonModule,
     HttpClientModule,
     NgbModule,
+    ReactiveFormsModule,
+    NgxCaptchaModule,
 
     // PrimeNG Modules
     CardModule,

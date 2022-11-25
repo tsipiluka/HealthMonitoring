@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import pkg from '../../../../secrets.json';
 
 @Component({
   selector: 'app-registration',
@@ -7,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
+  captchaSiteKey: string = pkg.CAPTCHA_SITEKEY
+  captchaStatus: boolean = false
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  captchaSuccess(event: any){
+    this.captchaStatus = true
   }
 }

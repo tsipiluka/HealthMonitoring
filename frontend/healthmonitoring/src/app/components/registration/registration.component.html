@@ -55,7 +55,10 @@
               </svg>
           </div>
         </div>
-            <button class="signup" type="submit" onClick="return false;">Sign up</button>
+        <div class="captcha">
+          <ngx-recaptcha2 #captchaElem [siteKey]="captchaSiteKey" formControlName="recaptcha" (success)="captchaSuccess($event)"></ngx-recaptcha2>
+        </div>
+        <button class="signup" type="submit" onClick="return false;">Sign up</button>
         <a href="http://localhost:4200/login" class="discrete" >or Login</a>
       </form>
     </div>
