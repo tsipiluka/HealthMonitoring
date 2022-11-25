@@ -3,6 +3,69 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
+#ANGULAR
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+/frontend/healthmonitoring/dist
+/frontend/healthmonitoring/tmp
+/frontend/healthmonitoring/out-tsc
+/frontend/healthmonitoring/bazel-out
+
+# Node
+/frontend/healthmonitoring/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/frontend/healthmonitoring/.angular/cache
+.sass-cache/
+/frontend/healthmonitoring/connect.lock
+/frontend/healthmonitoring/coverage
+/frontend/healthmonitoring/libpeerconnection.log
+testem.log
+/frontend/healthmonitoring/typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # User-specific files
 *.rsuser
 *.suo
