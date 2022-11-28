@@ -10,15 +10,16 @@ from user_system.models import User
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
+    print("password_reset_token_created")
     email_plaintext_message = "{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
 
     send_mail(
         # title:
-        "Password Reset for {title}".format(title="Some website title"),
+        "Password Reset for {title}".format(title="HealthMonitoring"),
         # message:
         email_plaintext_message,
         # from:
-        "noreply@somehost.local",
+        "notify@wh0cares.live",
         # to:
         [reset_password_token.user.email]
     )

@@ -3,6 +3,8 @@ from user_system.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.core.mail import send_mail
+# import from utils folder
+from .utils.activation_mail import send_activation_mail
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -40,6 +42,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         
         user.set_password(validated_data['password'])
         user.save()
+
+        print("user created")
+        # send an account verification email
+        send_activation_mail(user)
+
         # print(EMAIL_HOST_PASSWORD)
         # send_mail('Using SparkPost with Django', 'This is a message from Django using SparkPost!', 'django-sparkpost@wh0cares.live',
         #         [user.email], fail_silently=False)
@@ -49,7 +56,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         #     [user.email], fail_silently=False)
         # except:
         #     print("Error sending email")
+
+
         return user
+
 
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
