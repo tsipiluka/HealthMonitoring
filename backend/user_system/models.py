@@ -25,12 +25,19 @@ class User(AbstractUser):
 
     role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
     birth_date = models.DateField(null=True, blank=True)
+    is_email_verified = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.pk:
             self.role = self.base_role
         return super().save(*args, **kwargs)
 
+    def is_doctor(self):
+        return self.role == self.Role.DOCTOR
+    
+    def is_patient(self):
+        return self.role == self.Role.PATIENT
+    
 
 class Patient(User):
 
@@ -44,17 +51,20 @@ class Patient(User):
         return "Welcome Patient"
 
 
-@receiver(post_save, sender=Patient)
+@receiver(post_save, sender=User)
 def create_patient_profile(sender, instance, created, **kwargs):
     if created and instance.role == User.Role.PATIENT:
-        PatientProfile.objects.create(user=instance)
+        # set a patient_id consisting of the first 3 letters of the first name and the first 3 letters of the last name + the id
+        patient_id = instance.first_name[:3] + instance.last_name[:3] + str(instance.id)
+        PatientProfile.objects.create(user=instance, patient_id=patient_id)
+
 
 
 class PatientProfile(models.Model):
     user = models.OneToOneField(
         Patient, on_delete=models.CASCADE, related_name="patient_profile"
     )
-    patient_id = models.CharField(max_length=100)
+    patient_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
 
 
 class Doctor(User):
