@@ -10,6 +10,10 @@ Download latest version from https://www.anaconda.com/products/distribution#Down
     ```bash
     $ conda create --name myenv
     ```
+    In case of an existing evnironment you can it with the following command
+    ```bashconda info --envs
+    $ conda info --envs
+    ```
 2. proceed with 
     ```bash
     $ proceed ([y]/n)?
@@ -36,5 +40,5 @@ Download latest version from https://www.anaconda.com/products/distribution#Down
 1. Activate the created Conda environment
 2. Install Django by running
    ```bash
-   $ python -m pip install Django
+   $ pip install Django
    ```

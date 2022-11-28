@@ -349,5 +349,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-#NEW gitIgnorefiles
-.env
+# ignore sqlite database files
+*.sqlite3
+*.sqlite
+
+# ignore secrets.json
+secrets.json
