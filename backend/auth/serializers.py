@@ -27,6 +27,12 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
+        
+        # check that last name is not empty and first name is not empty
+        if attrs['first_name'] == "":
+            raise serializers.ValidationError({"first_name": "First name cannot be empty."})
+        if attrs['last_name'] == "":
+            raise serializers.ValidationError({"last_name": "Last name cannot be empty."})
         return attrs
 
     def create(self, validated_data):
