@@ -29,7 +29,7 @@ export class RegistrationComponent implements OnInit {
     if(this.password1 === this.password2){
       if (this.validateStringInput(this.firstname!) && this.validateStringInput(this.lastname!) &&
       this.validateDate(this.birthday!) && this.validateEmail(this.email!) && this.validatePassword(this.password1!) && this.captchaStatus){
-        const registrationData = {first_name: this.firstname, last_name: this.lastname, birthday: this.birthday, password: this.password1, password2: this.password2}
+        const registrationData = {first_name: this.firstname, last_name: this.lastname, birth_day: this.birthday, password: this.password1, password2: this.password2}
         this.registrationService.registerUser(registrationData).subscribe((res: any) => {
           this.router.navigate(['login'])
         })
