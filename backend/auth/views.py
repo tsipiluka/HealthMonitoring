@@ -1,19 +1,21 @@
+from base64 import urlsafe_b64encode, urlsafe_b64decode
 from django.shortcuts import render
-from user_system.models import User
 from .serializers import ChangePasswordSerializer, RegisterSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
-from django.core.mail import send_mail
-
+from django.utils.encoding import force_str
+from base64 import urlsafe_b64encode
+from .utils.tokens import email_verification_token
+from user_system.models import User
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = () # AllowAny
     serializer_class = RegisterSerializer
-    
+
 
 class DeleteUserView(APIView):
     def delete(self, request, format=None):
@@ -59,3 +61,26 @@ class ChangePasswordView(UpdateAPIView):
                 return Response(response)
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ActivateAccountView(APIView):
+
+    def post(self, request, token, uidb64):
+        print(token)
+        print(uidb64)
+
+        try:
+            uid = force_str(urlsafe_b64decode(uidb64))
+            # get user from the uid
+            user = User.objects.get(pk=uid)
+            print(token)
+            print(user)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+            return Response({"No user found for the given ID."} ,status=status.HTTP_404_NOT_FOUND)
+
+        if user is not None and email_verification_token.check_token(user, token):
+            user.is_email_verified = True
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response({"The activation token is invalid!"}, status=status.HTTP_400_BAD_REQUEST)

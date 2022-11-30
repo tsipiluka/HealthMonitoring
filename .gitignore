@@ -412,10 +412,12 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-
 # ignore sqlite database files
 *.sqlite3
 *.sqlite
 
 # ignore secrets.json
 secrets.json
+
+# .vscode folder
+.vscode/
