@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import pkg from '../../../../secrets.json';
 import { RegistrationService } from './service/registration.service';
 
@@ -19,7 +20,7 @@ export class RegistrationComponent implements OnInit {
   password1: string | undefined
   password2: string | undefined
   
-  constructor(private registrationService: RegistrationService) { }
+  constructor(private registrationService: RegistrationService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -30,7 +31,7 @@ export class RegistrationComponent implements OnInit {
       this.validateDate(this.birthday!) && this.validateEmail(this.email!) && this.validatePassword(this.password1!) && this.captchaStatus){
         const registrationData = {first_name: this.firstname, last_name: this.lastname, birthday: this.birthday, password: this.password1, password2: this.password2}
         this.registrationService.registerUser(registrationData).subscribe((res: any) => {
-          console.log("registration successfull")
+          this.router.navigate(['login'])
         })
       }
     }
