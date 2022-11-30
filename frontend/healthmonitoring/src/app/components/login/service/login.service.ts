@@ -18,4 +18,8 @@ export class LoginService {
   refreshToken(refresh_token: any): Observable<any>{
     return this.http.post(this.APIUrl + '/auth/login/refresh/', refresh_token)
   }
+
+  resetPassword(val: any): Observable<any>{
+    return this.http.post(this.APIUrl + '/auth/password-reset/', val)
+  }
 } 

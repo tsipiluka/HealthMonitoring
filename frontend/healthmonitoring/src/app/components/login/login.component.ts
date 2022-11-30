@@ -11,8 +11,9 @@ import pgk from '../../../../secrets.json'
 })
 export class LoginComponent implements OnInit {
 
-  email: string =''
-  password: string =''
+  email: string | undefined
+  password: string | undefined
+  resetEmail: string | undefined
 
   captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
   captchaStatus: boolean = false
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if(this.validateEmail(this.email) && this.validatePassword(this.password) && this.captchaStatus){
+    if(this.validateEmail(this.email!) && this.validatePassword(this.password!) && this.captchaStatus){
       const creds = {email: this.email, password: this.password}
       this.loginService.loginUser(creds).subscribe((res:any)=>{
         localStorage.setItem('access_token', res.access)
@@ -53,5 +54,15 @@ export class LoginComponent implements OnInit {
 
   captchaSuccess(event: any){
     this.captchaStatus = true
+  }
+
+  resetPassword(){
+    if(this.validateEmail(this.resetEmail!)){
+      const resetEmail = {email: this.resetEmail}
+      this.loginService.resetPassword(resetEmail).subscribe(() => {
+        this.resetEmail = ''
+        // TODO: Notification that the email was send
+      })
+    }
   }
 }
