@@ -1,3 +1,4 @@
+import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
@@ -5,7 +6,13 @@ from django.dispatch import receiver
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
+class AbstractUser(AbstractUser):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)
 
+    class Meta:
+        abstract = True
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -117,14 +124,19 @@ class Doctor(User):
         return "Welcome Doctor"
 
 
-@receiver(post_save, sender=Doctor)
+@receiver(post_save, sender=User)
 def create_doctor_profile(sender, instance, created, **kwargs):
     if created and instance.role == User.Role.DOCTOR:
         DoctorProfile.objects.create(user=instance)
 
 
 class DoctorProfile(models.Model):
+    # set the object name to the first name and last name of the user
+
     user = models.OneToOneField(
         Doctor, on_delete=models.CASCADE, related_name="doctor_profile"
     )
     doctor_id = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "Dr. " + self.user.first_name + " " + self.user.last_name

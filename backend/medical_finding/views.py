@@ -3,12 +3,12 @@ from rest_framework.views import APIView
 
 # Create your views here.
 from rest_framework.response import Response
-from .models import MedicalFinding
-from .serializer import MedicalFindingSerializer
+from .models import MedicalFinding, FindingAccessRight
+from .serializer import MedicalFindingSerializer, FindingAccessRightSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
+from user_system.models import Patient, Doctor, User
 
 class MedicalFindingView(APIView):
 
@@ -108,3 +108,43 @@ class MedicalFindingView(APIView):
             return Response(
                 {"status": False, "message": "something went wrong", "data": {}}
             )
+
+
+class FindingAccesRightView(APIView):
+    
+        authentication_classes = [JWTAuthentication]
+        permission_classes = [IsAuthenticated]
+    
+        def get(self, request):
+            user = request.user
+            # findingAccessRights where user is initiator or receiver
+            findingAccessRights = FindingAccessRight.objects.filter(initiator=user) | FindingAccessRight.objects.filter(receiver=user)
+            serializer = FindingAccessRightSerializer(findingAccessRights, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+class EditAccessRightView(APIView):
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        
+        user = request.user
+        # check if user is doctor
+        if not user.is_doctor:
+            return Response({"Only doctors can edit access rights"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # check serializer validity
+            serializer = FindingAccessRightSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response(
+                    {
+                        "status": False,
+                        "message": "invalid fields",
+                        "data": serializer.errors,
+                    }
+                )
+            request.data["initiator"] = user.id
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
