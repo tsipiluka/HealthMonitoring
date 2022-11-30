@@ -59,7 +59,7 @@
       <b class="items">New Password</b>
     </div>
     <div class="col-12">
-      <p-password [(ngModel)]="new_password1" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
+      <p-password [(ngModel)]="new_password1" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
         <ng-template pTemplate="header">
             <h6>Pick a password</h6>
         </ng-template>
@@ -82,7 +82,7 @@
       <b>Repeat New Password</b>
     </div>
     <div class="col-12">
-      <p-password [(ngModel)]="new_password2" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
+      <p-password [(ngModel)]="new_password2" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
         <ng-template pTemplate="header">
             <h6>Pick a password</h6>
         </ng-template>
