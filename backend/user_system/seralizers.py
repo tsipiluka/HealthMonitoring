@@ -5,17 +5,17 @@ from user_system.models import Doctor, Patient, User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'birth_date', 'is_doctor', 'is_patient', 'is_email_verified')
+        fields = ('id', 'email', 'first_name', 'last_name', 'birth_date', 'is_doctor', 'is_patient', 'is_email_verified')
 
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'birth_date', 'is_doctor', 'is_patient')
+        fields = ('id', 'email', 'first_name', 'last_name', 'birth_date', 'is_doctor', 'is_patient')
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'birth_date')
+        fields = ('id', 'email', 'first_name', 'last_name', 'birth_date')
 
 class PatientProfileSerializer(serializers.ModelSerializer):
     class Meta:
