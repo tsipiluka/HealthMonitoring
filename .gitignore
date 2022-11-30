@@ -355,3 +355,6 @@ MigrationBackup/
 
 # ignore secrets.json
 secrets.json
+
+# .vscode folder
+.vscode/
