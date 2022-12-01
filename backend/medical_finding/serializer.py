@@ -15,12 +15,13 @@ class MedicalFindingSerializer(serializers.ModelSerializer):
 
 class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
 
+    patient = serializers.PrimaryKeyRelatedField(read_only=True)
     # do not allow to change the diagnosed_by field and the patient field
     class Meta:
         model = MedicalFinding
         disease = serializers.CharField(required=False)
         medicine = serializers.CharField(required=False)
-        exclude = ["created_at", "updated_at", "diagnosed_by", "patient"]
+        exclude = ["created_at", "updated_at", "treator"]
 
         extra_kwargs = {
             "disease": {"required": False},
