@@ -28,6 +28,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import { UserActivationComponent } from './components/user-activation/user-activation.component';
+import { UserPasswordResetComponent } from './components/user-password-reset/user-password-reset.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { UserActivationComponent } from './components/user-activation/user-activ
     NavComponent,
     ProfileComponent,
     UserActivationComponent,
+    UserPasswordResetComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { UserActivationComponent } from './components/user-activation/user-activation.component';
+import { UserPasswordResetComponent } from './components/user-password-reset/user-password-reset.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'activate/:token/:uidb64',
     component: UserActivationComponent
+  },
+  {
+    path: 'password-reset/:token',
+    component: UserPasswordResetComponent
   },
   {
     path: 'dashboard',
