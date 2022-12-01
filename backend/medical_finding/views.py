@@ -99,9 +99,11 @@ class CreateMedicalFinding(APIView):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-class MedicalFindingDetail(APIView):
+class UpdateMedicalFinding(APIView):
+
     """
-    Get, update or delete a medical finding.
+    Update a medical finding. Only the assigned treator 
+    and the patient can update the medical finding.
     """
 
     authentication_classes = [JWTAuthentication]
@@ -109,64 +111,32 @@ class MedicalFindingDetail(APIView):
 
     def get_object(self, finding_id):
         try:
-            return MedicalFinding.objects.get(pk=finding_id)
+            return MedicalFinding.objects.get(uid=finding_id)
         except MedicalFinding.DoesNotExist:
             raise Http404
-
-    def get(self, request, finding_id, format=None):
-        """
-        Get a medical finding. Only the patient or the
-        doctor who diagnozed the finding can access it.
-        """
-
+    
+    def put(self, request, finding_id):
         user = request.user
         medical_finding = self.get_object(finding_id)
-        serializer = MedicalFindingSerializer(medical_finding)
-        # check if the user is allowed to access the medical finding
-        if user.is_patient():
-            if medical_finding.patient == user:
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
-        elif user.is_doctor():
-            if medical_finding.diagnosed_by == user:
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
-        return Response(serializer.data)
-
-    def put(self, request, finding_id, format=None):
-        """
-        Update a medical finding. Only the doctor who diagnozed the
-        finding can update it. Neither the patient nor the doctor
-        can be changed. Either medicine or disease must be provided.
-        """
-
-        user = request.user
-        medical_finding = self.get_object(finding_id)
-
         if user.is_doctor():
-            if medical_finding.diagnosed_by == user:
-                serializer = UpdateMedicalFindingSerializer(
-                    medical_finding, data=request.data
-                )
-                # make
+            doctor = Doctor.objects.get(id=user.pk)
+            if doctor == medical_finding.treator:
+                serializer = UpdateMedicalFindingSerializer(medical_finding, data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-    def delete(self, request, finding_id, format=None):
-        medical_finding = self.get_object(finding_id)
-
-        # only the doctor who diagnozed the finding or the patient can delete it
-        if (
-            request.user == medical_finding.diagnosed_by
-            or request.user == medical_finding.patient
-        ):
-            medical_finding.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        elif user.is_patient():
+            patient = Patient.objects.get(id=user.pk)
+            if patient == medical_finding.patient:
+                serializer = UpdateMedicalFindingSerializer(medical_finding, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
