@@ -1,3 +1,4 @@
+import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
@@ -6,12 +7,20 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
 
+class AbstractUser(AbstractUser):
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
+
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
         if not email:
-            raise ValueError('Users require an email field')
+            raise ValueError("Users require an email field")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -19,20 +28,21 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
+
 
 class PatientManager(BaseUserManager):
     def get_queryset(self, *args, **kwargs):
@@ -53,34 +63,33 @@ class User(AbstractUser):
     base_role = Role.PATIENT
 
     username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_("email address"), unique=True)
 
     objects = UserManager()
-    
-    USERNAME_FIELD = 'email'
+
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-
-    role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
+    role = models.CharField(max_length=50, choices=Role.choices)
     birth_date = models.DateField(null=True, blank=True)
     is_email_verified = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.role = self.base_role
+        # if not self.pk:
+        #     self.role = self.base_role
         return super().save(*args, **kwargs)
 
     def is_doctor(self):
-        return self.role == self.Role.DOCTOR
-    
+        return self.role == "DOCTOR"
+
     def is_patient(self):
-        return self.role == self.Role.PATIENT
-    
+        return self.role == "PATIENT"
+
 
 class Patient(User):
-
     class Meta:
         proxy = True
+
     base_role = User.Role.PATIENT
 
     patient = PatientManager()  # used to filter patients only
@@ -97,12 +106,14 @@ def create_patient_profile(sender, instance, created, **kwargs):
         PatientProfile.objects.create(user=instance, patient_id=patient_id)
 
 
-
 class PatientProfile(models.Model):
     user = models.OneToOneField(
         Patient, on_delete=models.CASCADE, related_name="patient_profile"
     )
     patient_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.first_name + " " + self.user.last_name + (" (Patient)")
 
 
 class Doctor(User):
@@ -117,14 +128,19 @@ class Doctor(User):
         return "Welcome Doctor"
 
 
-@receiver(post_save, sender=Doctor)
+@receiver(post_save, sender=User)
 def create_doctor_profile(sender, instance, created, **kwargs):
     if created and instance.role == User.Role.DOCTOR:
         DoctorProfile.objects.create(user=instance)
 
 
 class DoctorProfile(models.Model):
+    # set the object name to the first name and last name of the user
+
     user = models.OneToOneField(
-        Doctor, on_delete=models.CASCADE, related_name="doctor_profile"
+        User, on_delete=models.CASCADE, related_name="doctor_profile"
     )
     doctor_id = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.user.first_name + " " + self.user.last_name + (" (Doctor)")
