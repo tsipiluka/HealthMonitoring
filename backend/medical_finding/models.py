@@ -18,10 +18,11 @@ class MedicalFinding(BaseModel):
     disease = models.CharField(max_length=100)
     medicine = models.CharField(max_length=100)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    treator = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name="treator", null=True, blank=True)
+    treator = models.ForeignKey(
+        Doctor, on_delete=models.CASCADE, related_name="treator", null=True, blank=True
+    )
 
 
 class FindingReadingRight(BaseModel):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="patient")
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name="doctor")
     medical_finding = models.ForeignKey(MedicalFinding, on_delete=models.CASCADE)
+    reader = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reader")
