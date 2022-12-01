@@ -27,6 +27,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
+import { UserActivationComponent } from './components/user-activation/user-activation.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {InputTextModule} from 'primeng/inputtext';
     DashboardComponent,
     NavComponent,
     ProfileComponent,
+    UserActivationComponent,
   ],
   imports: [
     BrowserModule,
