@@ -10,8 +10,13 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class UserProfileView(APIView):
     authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    def get(self, request):
+        """
+        Get the user profile consisting of the user object and the profile object.
+        """
     def get(self, request):
         """
         Get the user profile consisting of the user object and the profile object.

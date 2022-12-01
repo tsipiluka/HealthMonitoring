@@ -9,4 +9,3 @@ admin.site.register(Doctor)
 admin.site.register(Patient)
 admin.site.register(PatientProfile)
 admin.site.register(DoctorProfile)
-
