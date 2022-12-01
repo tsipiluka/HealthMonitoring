@@ -3,10 +3,14 @@ from medical_finding.models import MedicalFinding, FindingReadingRight
 
 
 class MedicalFindingSerializer(serializers.ModelSerializer):
+    
+    patient = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = MedicalFinding
         exclude = ["created_at", "updated_at"]
-        # return the user obj instead of the id
+
+        # field patient optional
+        # extra_kwargs = {"patient": {"required": False}}
 
 
 class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
