@@ -7,7 +7,23 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <span class="fill-remaining-space"></span>
-    <div class="collapse navbar-collapse" id="navbarsExample04">
+    <div class="collapse navbar-collapse">
+        <div *ngIf="this.role">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active"> 
+                    <a class="nav-link" type="submit" href="http://localhost:4200/myPatientFinder">
+                        Search my Patients
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"> 
+                <a class="nav-link" type="submit" href="http://localhost:4200/patientFinder">
+                    Search Patients
+                </a>
+            </li>
+        </ul>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active"> 
                   <a class="nav-link" type="submit" href="http://localhost:4200/profile">
