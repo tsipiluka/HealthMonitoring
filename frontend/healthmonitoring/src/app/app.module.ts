@@ -30,6 +30,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import { UserActivationComponent } from './components/user-activation/user-activation.component';
 import { UserPasswordResetComponent } from './components/user-password-reset/user-password-reset.component';
 import { MyPatientFinderComponent } from './components/my-patient-finder/my-patient-finder.component';
+import { MedicalFindingFinderComponent } from './components/medical-finding-finder/medical-finding-finder.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MyPatientFinderComponent } from './components/my-patient-finder/my-pati
     UserActivationComponent,
     UserPasswordResetComponent,
     MyPatientFinderComponent,
+    MedicalFindingFinderComponent,
   ],
   imports: [
     BrowserModule,
