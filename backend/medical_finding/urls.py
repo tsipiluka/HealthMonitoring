@@ -4,6 +4,7 @@ from .views import (
     ListMedicalFindingsPatient,
     ListMedicalFindingsDoctor,
     ListMedicalFindingsReader,
+    CreateMedicalFinding
 )
 
 app_name = "medical_finding"
@@ -23,4 +24,6 @@ urlpatterns = [
         ListMedicalFindingsReader.as_view(),
         name="medical_findings_reader",
     ),
+
+    path("create_medical_finding/", CreateMedicalFinding.as_view(), name="create_medical_finding"),
 ]
