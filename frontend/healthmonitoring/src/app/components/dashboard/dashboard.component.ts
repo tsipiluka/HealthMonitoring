@@ -16,8 +16,10 @@ export class DashboardComponent implements OnInit {
 
   addEntryModel: boolean = false
 
-  new_disease: string = ''
-  new_medicine: string = ''
+  new_disease: string | undefined
+  new_medicine: string | undefined
+  selectedDoctorEmail: string | undefined
+  selectedUsers: string[] | undefined
 
   constructor(private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) { 
     console.log(this.MedicalFindingList.length)
@@ -77,12 +79,16 @@ export class DashboardComponent implements OnInit {
     if(this.new_disease !== '' && this.new_medicine !== ''){
       const medicalFinding_info = { 
         'disease': this.new_disease, 
-        'medicine': this.new_medicine
+        'medicine': this.new_medicine,
+        'diagnosed_by': this.selectedDoctorEmail,
+        'read_users': this.selectedUsers
       }
       this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((res: any)=>{
         this.addEntryModel = false
         this.new_disease = ''
         this.new_medicine = ''
+        this.selectedDoctorEmail = ''
+        this.selectedUsers = []
         this.loadMedicalFindings()
       })
     }

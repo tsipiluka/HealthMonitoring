@@ -40,7 +40,7 @@
 <p-dialog header="Füge einen neuen Eintrag hinzu" [(visible)]="addEntryModel" [modal]="true"
     [draggable]="false" [resizable]="false">
         <div class="row">
-            <div class="new-entry-item">
+            <div class="new-entry-item col-3">
                 <div class="col-12">
                     <b>Krankheit</b>
                 </div>
@@ -48,7 +48,7 @@
                     <input type="text" pInputText [(ngModel)]="new_disease">
                 </div>
             </div>
-            <div class="new-entry-item">
+            <div class="new-entry-item col-3">
                 <div class="col-12">
                     <b>Medizin</b>
                 </div>
@@ -56,8 +56,24 @@
                     <input type="text" pInputText [(ngModel)]="new_medicine"> 
                 </div>
             </div>
+            <div class="new-entry-item col-3">
+                <div class="col-12">
+                    <b>Doktor</b>
+                </div>
+                <div class="col-12">
+                    <input type="text" pInputText [(ngModel)]="selectedDoctorEmail"> 
+                </div>
+            </div>
+            <div class="new-entry-item col-12">
+                <div class="col-12">
+                    <b>Welche Personen sollen den Befund einsehen können?</b>
+                </div>
+                <div class="col-12">
+                    <p-chips [(ngModel)]="selectedUsers"></p-chips>
+                </div>
+            </div>
         </div>
         <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="createNewMedicalFinding()" label="Ok" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
         </ng-template>
 </p-dialog>
