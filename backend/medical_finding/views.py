@@ -80,9 +80,8 @@ class ListMedicalFindingsReader(APIView):
 class CreateMedicalFinding(APIView):
 
     """
-    Create a medical finding. Only doctors can create medical findings.
-    Medical findings can only be created for patients.
-
+    Create a medical finding. Only the patient can 
+    create a medical finding for himself.
     """
 
     authentication_classes = [JWTAuthentication]
@@ -91,16 +90,14 @@ class CreateMedicalFinding(APIView):
     def post(self, request):
         user = request.user
         if user.is_patient():
-            # forbid to create medical findings
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        elif user.is_doctor():
+            patient = Patient.objects.get(id=user.pk)
             serializer = MedicalFindingSerializer(data=request.data)
-            # set diagnosed_by to the current user
             if serializer.is_valid():
-                serializer.save(diagnosed_by=user)
+                serializer.save(patient=patient)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 class MedicalFindingDetail(APIView):
     """
