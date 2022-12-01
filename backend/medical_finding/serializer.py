@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from medical_finding.models import MedicalFinding, FindingAccessRight
+from medical_finding.models import MedicalFinding, FindingReadingRight
 
 
 class MedicalFindingSerializer(serializers.ModelSerializer):
@@ -30,12 +30,3 @@ class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
                 "Either medicine or disease must be provided"
             )
         return data
-
-
-class FindingAccessRightSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FindingAccessRight
-        exclude = ["created_at"]
-
-    def validate(self, attrs):
-        return super().validate(attrs)
