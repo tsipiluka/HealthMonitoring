@@ -9,12 +9,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UserActivationComponent } from './components/user-activation/user-activation.component';
+import { UserPasswordResetComponent } from './components/user-password-reset/user-password-reset.component';
+import { MyPatientFinderComponent } from './components/my-patient-finder/my-patient-finder.component';
+import { MedicalFindingFinderComponent } from './components/medical-finding-finder/medical-finding-finder.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { NavComponent } from './components/nav/nav.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NgxCaptchaModule} from 'ngx-captcha'
-
 
 
 // Primeng Modules
@@ -27,10 +30,8 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import { UserActivationComponent } from './components/user-activation/user-activation.component';
-import { UserPasswordResetComponent } from './components/user-password-reset/user-password-reset.component';
-import { MyPatientFinderComponent } from './components/my-patient-finder/my-patient-finder.component';
-import { MedicalFindingFinderComponent } from './components/medical-finding-finder/medical-finding-finder.component';
+import {ChipsModule} from 'primeng/chips';
+
 
 @NgModule({
   declarations: [
@@ -67,8 +68,8 @@ import { MedicalFindingFinderComponent } from './components/medical-finding-find
     OverlayPanelModule,
     ConfirmDialogModule,
     ButtonModule,
-    InputTextModule
-  
+    InputTextModule,
+    ChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
