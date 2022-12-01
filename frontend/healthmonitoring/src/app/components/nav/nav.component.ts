@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavService } from './service/nav.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,12 +10,14 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
 
-  constructor( private router: Router) {
+  role: boolean = false
 
-  }
+  constructor(private navService: NavService,private router: Router) {}
 
-  ngOnInit() {
-    
+  ngOnInit(){
+    this.navService.getUserInformation().subscribe((res: any)=>{
+      this.role = res.role === "DOCTOR" ? true : false
+    })
   } 
 
   logout(){

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
+import { MyPatientFinderComponent } from './components/my-patient-finder/my-patient-finder.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { UserActivationComponent } from './components/user-activation/user-activation.component';
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent
+  },
+  {
+    path: 'myPatientFinder',
+    component: MyPatientFinderComponent
   },
   {
     path: 'profile',
