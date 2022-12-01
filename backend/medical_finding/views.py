@@ -12,10 +12,10 @@ from .serializer import (
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from user_system.models import Patient, Doctor, User
+from user_system.models import Patient, Doctor
 
 
-class ListMedicalFindings(APIView):
+class ListMedicalFindingsPatient(APIView):
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -24,11 +24,11 @@ class ListMedicalFindings(APIView):
         user = request.user
 
         if user.is_patient():
-            medical_findings = MedicalFinding.objects.filter(user=user)
-            print("is patient")
+            patient = Patient.objects.get(id=user.pk)
+            medical_findings = MedicalFinding.objects.filter(patient=patient)
         elif user.is_doctor():
-            medical_findings = MedicalFinding.objects.filter(diagnosed_by=user)
-            print("is doctor")
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer = MedicalFindingSerializer(medical_findings, many=True)
@@ -36,7 +36,49 @@ class ListMedicalFindings(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ListMedicalFindingsDoctor(APIView):
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        if user.is_doctor():
+            doctor = Doctor.objects.get(id=user.pk)
+            medical_findings = MedicalFinding.objects.filter(treator=doctor)
+        elif user.is_patient():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        serializer = MedicalFindingSerializer(medical_findings, many=True)
+        # return the user obj instead of the id
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ListMedicalFindingsReader(APIView):
+    """
+    Returns the medical findings that the user has the right to read.
+    The user can either be a doctor or a patient.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        # get all the reading rights of the user
+        reading_rights = FindingReadingRight.objects.filter(reader=user)
+        medical_findings = []
+        for reading_right in reading_rights:
+            medical_findings.append(reading_right.medical_finding)
+        serializer = MedicalFindingSerializer(medical_findings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class CreateMedicalFinding(APIView):
+
     """
     Create a medical finding. Only doctors can create medical findings.
     Medical findings can only be created for patients.

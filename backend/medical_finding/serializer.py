@@ -5,7 +5,7 @@ from medical_finding.models import MedicalFinding, FindingReadingRight
 class MedicalFindingSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalFinding
-        exclude = ["created_at", "updated_at", "diagnosed_by"]
+        exclude = ["created_at", "updated_at"]
         # return the user obj instead of the id
 
 
