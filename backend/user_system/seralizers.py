@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
             "birth_date",
             "is_doctor",
             "is_patient",
-            "is_email_verified",
+            "is_active",
         )
         # make first_name and last_name required
         extra_kwargs = {

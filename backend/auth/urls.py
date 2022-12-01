@@ -11,6 +11,8 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+from .utils.CustomTokenObtainPairSerializer import CustomTokenObtainPairView
+
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
