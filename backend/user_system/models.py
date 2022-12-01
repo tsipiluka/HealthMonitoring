@@ -72,8 +72,7 @@ class User(AbstractUser):
 
     role = models.CharField(max_length=50, choices=Role.choices)
     birth_date = models.DateField(null=True, blank=True)
-    is_email_verified = models.BooleanField(default=False)
-
+    is_active = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
         # if not self.pk:
         #     self.role = self.base_role

@@ -86,7 +86,7 @@ class ActivateAccountView(APIView):
             )
 
         if user is not None and email_verification_token.check_token(user, token):
-            user.is_email_verified = True
+            user.is_active = True
             user.save()
             return Response(status=status.HTTP_200_OK)
         else:
