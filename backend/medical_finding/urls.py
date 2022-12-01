@@ -1,10 +1,19 @@
 from django.urls import include, path
 
-from . import views
+from .views import ListMedicalFindings, CreateMedicalFinding, MedicalFindingDetail
 
 
-app_name = 'medical_finding'
+app_name = "medical_finding"
 urlpatterns = [
-    path('finding_access_rights/', views.FindingAccesRightView.as_view(), name='finding_access_rights'),
-    path('edit_access_right/', views.EditAccessRightView.as_view(), name='edit_access_right'),
+    path("medical_findings/", ListMedicalFindings.as_view(), name="medical_findings"),
+    path(
+        "medical_finding/",
+        CreateMedicalFinding.as_view(),
+        name="create_medical_finding",
+    ),
+    path(
+        "medical_finding/<str:finding_id>/",
+        MedicalFindingDetail.as_view(),
+        name="medical_finding_detail",
+    ),
 ]
