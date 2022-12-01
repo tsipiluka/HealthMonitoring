@@ -11,9 +11,10 @@ from base64 import urlsafe_b64encode
 from .utils.tokens import email_verification_token
 from user_system.models import User
 
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = () # AllowAny
+    permission_classes = ()  # AllowAny
     serializer_class = RegisterSerializer
 
 
@@ -28,42 +29,46 @@ class DeleteUserView(APIView):
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 class ChangePasswordView(UpdateAPIView):
-        """
-        An endpoint for changing password.
-        """
-        
-        serializer_class = ChangePasswordSerializer
-        model = User
-        permission_classes = (IsAuthenticated,)
+    """
+    An endpoint for changing password.
+    """
 
-        def get_object(self, queryset=None):
-            obj = self.request.user
-            return obj
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (IsAuthenticated,)
 
-        def update(self, request, *args, **kwargs):
-            self.object = self.get_object()
-            serializer = self.get_serializer(data=request.data)
-            user = User.objects.get(id=request.user.id)
-            if serializer.is_valid():
-                # Check old password
-                if not self.object.check_password(serializer.data.get("old_password")):
-                    return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-                # set_password also hashes the password that the user will get
-                self.object.set_password(serializer.data.get("new_password"))
-                self.object.save()
-                response = {
-                    'status': 'success',
-                    'code': status.HTTP_200_OK,
-                    'message': 'Password updated successfully',
-                    'data': []
-                }
-                return Response(response)
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
 
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        user = User.objects.get(id=request.user.id)
+        if serializer.is_valid():
+            # Check old password
+            if not self.object.check_password(serializer.data.get("old_password")):
+                return Response(
+                    {"old_password": ["Wrong password."]},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            response = {
+                "status": "success",
+                "code": status.HTTP_200_OK,
+                "message": "Password updated successfully",
+                "data": [],
+            }
+            return Response(response)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ActivateAccountView(APIView):
-
     def post(self, request, token, uidb64):
         print(token)
         print(uidb64)
@@ -74,13 +79,17 @@ class ActivateAccountView(APIView):
             user = User.objects.get(pk=uid)
             print(token)
             print(user)
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
-            return Response({"No user found for the given ID."} ,status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"No user found for the given ID."}, status=status.HTTP_404_NOT_FOUND
+            )
 
         if user is not None and email_verification_token.check_token(user, token):
             user.is_email_verified = True
             user.save()
             return Response(status=status.HTTP_200_OK)
         else:
-            return Response({"The activation token is invalid!"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"The activation token is invalid!"}, status=status.HTTP_400_BAD_REQUEST
+            )
