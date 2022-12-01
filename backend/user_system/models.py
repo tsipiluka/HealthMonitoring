@@ -7,7 +7,6 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
 class AbstractUser(AbstractUser):
-    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
