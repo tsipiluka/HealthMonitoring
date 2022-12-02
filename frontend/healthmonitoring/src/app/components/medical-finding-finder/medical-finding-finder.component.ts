@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
+import { Patient } from 'src/app/entities/patient.modal';
+import { User } from 'src/app/entities/user.modal';
 import { MedicalFindingFinderService } from './service/medical-finding-finder.service';
 
 @Component({
@@ -13,20 +15,39 @@ export class MedicalFindingFinderComponent {
 
   selectedPatientEmail: string | undefined
   medicalFindings: MedicalFinding[] = []
+  medicalFindingsLight: MedicalFinding[] = []
+  patientenListLight: Patient[] = []
+  selectedPatient: Patient | undefined
 
   constructor(private medicalFindingFinderService: MedicalFindingFinderService, private router: Router){}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadMedicalFindings()
+  }
 
-  searchMedicalFindings(){
-    if(this.validateEmail(this.selectedPatientEmail!)){
-      const resEmail = {email: this.selectedPatientEmail}
-      this.medicalFindingFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[])=> {
-        this.medicalFindings = medicalFindings
-      })
+  loadMedicalFindings(){
+    this.medicalFindingFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[])=> {
+      this.medicalFindings = medicalFindings
+      this.medicalFindingsLight = this.medicalFindings
+    })
+  }
+
+  filterPatients(event: any){
+    let filtered : Patient[] = []
+    let query = event.query;
+    for(let i = 0; i < this.medicalFindings.length; i++) {
+        let patient = this.medicalFindings[i].patient;
+        if (patient.patient_profile.patient_id.includes(query)) {
+          filtered.push(this.medicalFindings[i].patient);
+        }
     }
+    this.patientenListLight = filtered;
   }
   
+  loadFilteredMedicalFindings(){
+    this.medicalFindingsLight = this.medicalFindings.filter(entry => entry.patient.patient_profile.patient_id === this.selectedPatient?.patient_profile.patient_id)
+  }
+
   createPdf(finding: MedicalFinding,) {
     let doc = new jsPDF('p', 'pt', 'a4')
     doc.text(finding.uid, 290, 20)
