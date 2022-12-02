@@ -14,6 +14,16 @@ class MedicalFindingSerializer(serializers.ModelSerializer):
         model = MedicalFinding
         exclude = ["created_at"]
 
+class CreateMedicalFindingSerializer(serializers.ModelSerializer):
+
+    patient = LightUserSerializerWithProfile(read_only=True)
+
+    class Meta:
+        model = MedicalFinding
+        exclude = ["created_at", "updated_at"]
+
+        # make treator optional
+        extra_kwargs = {"treator": {"required": False}}
 
 
 class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
