@@ -13,7 +13,6 @@ import { MedicalFindingFinderService } from './service/medical-finding-finder.se
 })
 export class MedicalFindingFinderComponent {
 
-  selectedPatientEmail: string | undefined
   medicalFindings: MedicalFinding[] = []
   medicalFindingsLight: MedicalFinding[] = []
   patientenListLight: Patient[] = []
@@ -38,7 +37,16 @@ export class MedicalFindingFinderComponent {
     for(let i = 0; i < this.medicalFindings.length; i++) {
         let patient = this.medicalFindings[i].patient;
         if (patient.patient_profile.patient_id.includes(query)) {
-          filtered.push(this.medicalFindings[i].patient);
+          let checker = true
+          for(let j = 0; j < filtered.length; j++){
+            if(filtered[j].id===this.medicalFindings[i].patient.id){
+              checker = false
+              break;
+            }
+          }
+          if(checker){
+            filtered.push(this.medicalFindings[i].patient);
+          }
         }
     }
     this.patientenListLight = filtered;

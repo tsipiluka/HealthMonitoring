@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
+import { Patient } from 'src/app/entities/patient.modal';
 import { MyPatientFinderService } from './service/my-patient-finder.service';
 
 @Component({
@@ -11,25 +12,47 @@ import { MyPatientFinderService } from './service/my-patient-finder.service';
 })
 export class MyPatientFinderComponent implements OnInit {
 
-  selectedPatientEmail: string | undefined
   medicalFindings: MedicalFinding[] = []
+  medicalFindingsLight: MedicalFinding[] = []
+  patientenListLight: Patient[] = []
+  selectedPatient: Patient | undefined
 
   constructor(private myPatientFinderService: MyPatientFinderService, private router: Router){}
 
   ngOnInit(): void {
-    this.myPatientFinderService.getUserInformation().subscribe((res: any)=>{
-      if(res.role === "PATIENT"){
-        this.router.navigate(['dashboard'])
-      }
+    this.loadMedicalFindings()
+  }
+
+  loadMedicalFindings(){
+    this.myPatientFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[])=> {
+      this.medicalFindings = medicalFindings
+      this.medicalFindingsLight = this.medicalFindings
     })
   }
 
-  searchMedicalFindings(){
-    if(this.validateEmail(this.selectedPatientEmail!)){
-      this.myPatientFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[])=> {
-        this.medicalFindings = medicalFindings
-      })
+  filterPatients(event: any){
+    let filtered : Patient[] = []
+    let query = event.query;
+    for(let i = 0; i < this.medicalFindings.length; i++) {
+        let patient = this.medicalFindings[i].patient;
+        if (patient.patient_profile.patient_id.includes(query)) {
+          let checker = true
+          for(let j = 0; j < filtered.length; j++){
+            if(filtered[j].id===this.medicalFindings[i].patient.id){
+              checker = false
+              break;
+            }
+          }
+          if(checker){
+            filtered.push(this.medicalFindings[i].patient);
+          }
+        }
     }
+    this.patientenListLight = filtered;
+  }
+  
+  loadFilteredMedicalFindings(){
+    this.medicalFindingsLight = this.medicalFindings.filter(entry => entry.patient.patient_profile.patient_id === this.selectedPatient?.patient_profile.patient_id)
   }
   
   createPdf(finding: MedicalFinding,) {
