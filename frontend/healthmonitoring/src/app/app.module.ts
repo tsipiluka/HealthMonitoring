@@ -31,6 +31,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {ChipsModule} from 'primeng/chips';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+
 
 
 @NgModule({
@@ -69,7 +71,8 @@ import {ChipsModule} from 'primeng/chips';
     ConfirmDialogModule,
     ButtonModule,
     InputTextModule,
-    ChipsModule
+    ChipsModule,
+    AutoCompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,13 +1,17 @@
-import { User } from "./user.modal";
-
 export interface IDoctor {
-    doctor_id: number,
-    user: User
+    id: number,
+    first_name: string,
+    last_name: string,
+    role: string,
+    doctor_profile: {doctor_id : string}
 }
 
 export class Doctor implements IDoctor {
     constructor(
-        public doctor_id: number,
-        public user: User
+        public id: number,
+        public first_name: string,
+        public last_name: string,
+        public role: string,
+        public doctor_profile: {doctor_id : string}
     ) {}
 }
