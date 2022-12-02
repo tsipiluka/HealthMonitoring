@@ -10,15 +10,19 @@ import { NavService } from './service/nav.service';
 })
 export class NavComponent implements OnInit {
 
-  role: boolean = false
+  user: any
 
   constructor(private navService: NavService,private router: Router) {}
 
   ngOnInit(){
-    this.navService.getUserInformation().subscribe((res: any)=>{
-      this.role = res.role === "DOCTOR" ? true : false
+    this.navService.getUserInformation().subscribe((userInfo: any)=>{
+      this.user = userInfo
     })
   } 
+
+  checkIfDoctor(){
+    return this.user!.role === "DOCTOR"
+  }
 
   logout(){
     localStorage.clear()
