@@ -11,6 +11,7 @@ from .serializer import (
     UpdateMedicalFindingSerializer,
     ReadingRightSerializer,
     AddReadingRightSerializer,
+    CreateMedicalFindingSerializer
 )
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -104,7 +105,7 @@ class CreateMedicalFinding(APIView):
         user = request.user
         if user.is_patient():
             patient = Patient.objects.get(id=user.pk)
-            serializer = MedicalFindingSerializer(data=request.data)
+            serializer = CreateMedicalFindingSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save(patient=patient)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -292,6 +293,7 @@ class GetReadingRights(APIView):
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
 
 class AddReadingRight(APIView):
