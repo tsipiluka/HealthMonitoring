@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfileService } from './service/profile.service';
 import {ConfirmationService} from 'primeng/api';
-import { User } from 'src/app/entities/user.modal';
 import { UserService } from 'src/app/services/user-service/user.service';
 
 
