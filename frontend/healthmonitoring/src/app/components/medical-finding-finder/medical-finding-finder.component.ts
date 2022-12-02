@@ -13,7 +13,6 @@ import { MedicalFindingFinderService } from './service/medical-finding-finder.se
 })
 export class MedicalFindingFinderComponent {
 
-  selectedPatientEmail: string | undefined
   medicalFindings: MedicalFinding[] = []
   medicalFindingsLight: MedicalFinding[] = []
   patientenListLight: Patient[] = []
