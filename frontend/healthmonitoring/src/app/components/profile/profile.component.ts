@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfileService } from './service/profile.service';
 import {ConfirmationService} from 'primeng/api';
+import { User } from 'src/app/entities/user.modal';
 
 
 @Component({
@@ -12,7 +13,8 @@ import {ConfirmationService} from 'primeng/api';
 })
 export class ProfileComponent implements OnInit {
 
-  birthday: Date | undefined
+  user: any | undefined
+  birth_date: Date | undefined
 
   passwordChangeModel: boolean = false
 
@@ -27,6 +29,10 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.profileService.getUserInformation().subscribe((userinfo: any)=>{
+      this.user = userinfo
+      this.birth_date = new Date(this.user.birth_date)
+    })
   }
 
   displayPasswordChangeModel(){

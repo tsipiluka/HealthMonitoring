@@ -9,29 +9,27 @@
         <div class="col-6">
           <div class="row">
             <div class="col-6 card-item">
-              <b>Vorname</b><p>Hendrik</p>
+              <b>Vorname</b><p>{{this.user!.first_name}}</p>
             </div>  
             <div class="col-6 card-item">
-              <b>Nachname</b><p>Spieß</p>
+              <b>Nachname</b><p>{{this.user!.last_name}}</p>
             </div> 
             <div class="col-12 card-item">
               <b>Geburststag</b>
               <div>
-                <p-calendar [(ngModel)]="birthday" [style]="{'width': '180px'}" [showIcon]="true" dateFormat="yy-mm-dd" inputId="icon"></p-calendar>
+                <p-calendar [(ngModel)]="birth_date" [style]="{'width': '180px'}" [disabled]="true" [showIcon]="true" dateFormat="yy-mm-dd" inputId="icon"></p-calendar>
               </div>
             </div> 
             <div class="col-12 card-item">
-              <b>Username</b><p>henno</p>
+              <b *ngIf="this.user!.role === 'PATIENT'">Patienten ID</b><p>{{this.user!.patient_id}}</p>
+              <b *ngIf="this.user!.role === 'DOCTOR'">Doktor ID</b><p>{{this.user!.doctor_id}}</p>
             </div> 
             <div class="col-12 card-item">
-              <b>E-Mail</b><p>test@test.de</p>
+              <b>E-Mail</b><p>{{this.user!.email}}</p>
             </div> 
           </div>
         </div>
         <div class="col-6 right-card">
-          <!-- <div>
-            <button pButton pRipple type="button" label="Profil bearbeiten" class="p-button-secondary setting-btn"></button>
-          </div> -->
           <div>
             <button pButton pRipple type="button" label="Password Zurücksetzen" (click)="opPasswordReset.toggle($event)" class="p-button-secondary setting-btn"></button>
           </div>
