@@ -1,3 +1,4 @@
+import uuid
 from django.http import Http404
 from django.shortcuts import render
 from rest_framework.views import APIView
@@ -13,6 +14,16 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from user_system.models import Patient, Doctor
+from uuid import UUID
+
+
+def is_valid_uuid(uuid_to_test, version=4):
+
+    try:
+        uuid_obj = UUID(uuid_to_test, version=version)
+    except ValueError:
+        return False
+    return str(uuid_obj) == uuid_to_test
 
 
 class ListMedicalFindingsPatient(APIView):
@@ -80,7 +91,7 @@ class ListMedicalFindingsReader(APIView):
 class CreateMedicalFinding(APIView):
 
     """
-    Create a medical finding. Only the patient can 
+    Create a medical finding. Only the patient can
     create a medical finding for himself.
     """
 
@@ -99,10 +110,11 @@ class CreateMedicalFinding(APIView):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+
 class UpdateMedicalFinding(APIView):
 
     """
-    Update a medical finding. Only the assigned treator 
+    Update a medical finding. Only the assigned treator
     and the patient can update the medical finding.
     """
 
@@ -114,14 +126,20 @@ class UpdateMedicalFinding(APIView):
             return MedicalFinding.objects.get(uid=finding_id)
         except MedicalFinding.DoesNotExist:
             raise Http404
-    
+
     def put(self, request, finding_id):
+
+        if not is_valid_uuid(finding_id):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
         user = request.user
         medical_finding = self.get_object(finding_id)
         if user.is_doctor():
             doctor = Doctor.objects.get(id=user.pk)
             if doctor == medical_finding.treator:
-                serializer = UpdateMedicalFindingSerializer(medical_finding, data=request.data)
+                serializer = UpdateMedicalFindingSerializer(
+                    medical_finding, data=request.data
+                )
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -131,7 +149,9 @@ class UpdateMedicalFinding(APIView):
         elif user.is_patient():
             patient = Patient.objects.get(id=user.pk)
             if patient == medical_finding.patient:
-                serializer = UpdateMedicalFindingSerializer(medical_finding, data=request.data)
+                serializer = UpdateMedicalFindingSerializer(
+                    medical_finding, data=request.data
+                )
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -139,4 +159,50 @@ class UpdateMedicalFinding(APIView):
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
         else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class GetMedicalFinding(APIView):
+
+    """
+    Get a medical finding. Only the assigned treator
+    and the patient can get the medical finding.
+    Also, the user can get the medical finding if he has
+    the right to read it.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, finding_id):
+
+        try:
+            return MedicalFinding.objects.get(uid=finding_id)
+        except MedicalFinding.DoesNotExist:
+            raise Http404
+
+    def get(self, request, finding_id):
+
+        # check if the finding id is valid uuid
+        if not is_valid_uuid(finding_id):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        medical_finding = self.get_object(finding_id)
+        if user.is_doctor():
+            doctor = Doctor.objects.get(id=user.pk)
+            if doctor == medical_finding.treator:
+                serializer = MedicalFindingSerializer(medical_finding)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        elif user.is_patient():
+            patient = Patient.objects.get(id=user.pk)
+            if patient == medical_finding.patient:
+                serializer = MedicalFindingSerializer(medical_finding)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        if user.is_patient() or user.is_doctor():
+            reading_rights = FindingReadingRight.objects.filter(reader=user)
+            for reading_right in reading_rights:
+                if reading_right.medical_finding == medical_finding:
+                    serializer = MedicalFindingSerializer(medical_finding)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(status=status.HTTP_401_UNAUTHORIZED)

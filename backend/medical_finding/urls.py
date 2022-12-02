@@ -6,6 +6,7 @@ from .views import (
     ListMedicalFindingsReader,
     CreateMedicalFinding,
     UpdateMedicalFinding,
+    GetMedicalFinding,
 )
 
 app_name = "medical_finding"
@@ -25,7 +26,19 @@ urlpatterns = [
         ListMedicalFindingsReader.as_view(),
         name="medical_findings_reader",
     ),
-
-    path("create_medical_finding/", CreateMedicalFinding.as_view(), name="create_medical_finding"),
-    path("update_medical_finding/<str:finding_id>/", UpdateMedicalFinding.as_view(), name="update_medical_finding"),
+    path(
+        "create_medical_finding/",
+        CreateMedicalFinding.as_view(),
+        name="create_medical_finding",
+    ),
+    path(
+        "update_medical_finding/<str:finding_id>/",
+        UpdateMedicalFinding.as_view(),
+        name="update_medical_finding",
+    ),
+    path(
+        "get_medical_finding/<str:finding_id>/",
+        GetMedicalFinding.as_view(),
+        name="get_medical_finding",
+    ),
 ]
