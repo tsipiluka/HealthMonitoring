@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from user_system.models import User
 from medical_finding.models import MedicalFinding, FindingReadingRight
 
 
@@ -35,3 +36,32 @@ class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
                 "Either medicine or disease must be provided"
             )
         return data
+
+
+class ReadingRightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FindingReadingRight
+        fields = "__all__"
+
+class AddReadingRightSerializer(serializers.ModelSerializer):
+
+    medical_finding = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = FindingReadingRight
+        exclude = ["created_at", "updated_at"]
+    
+    def validate(self, data):
+        # check if this reader already has reading rights for this medical finding
+        if FindingReadingRight.objects.filter(
+            medical_finding=data.get("medical_finding"),
+            reader=data.get("reader"),
+        ).exists():
+            raise serializers.ValidationError("This reader already has reading rights")
+        return data
+    
+    # run the validation before creating the instance
+    def create(self, validated_data):
+        self.validate(validated_data)
+        return FindingReadingRight.objects.create(**validated_data)
+
