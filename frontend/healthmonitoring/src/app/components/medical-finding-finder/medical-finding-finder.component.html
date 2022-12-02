@@ -15,7 +15,8 @@
             <thead>
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">Patient</th>
+                <th scope="col">Doktor (Doktor ID)</th>
+                <th scope="col">Patient (Patient ID)</th>
                 <th scope="col">Krankheit</th>
                 <th scope="col">Medizin</th>
                 <th scope="col">Letztes Update am</th>
@@ -25,6 +26,7 @@
             <tbody>
                 <tr *ngFor="let finding of medicalFindingsLight; let i = index">
                     <th scope="row">{{i}}</th>
+                    <td>{{finding.treator.first_name}} {{finding.treator.last_name}} ({{finding.treator.doctor_profile.doctor_id}})</td>
                     <td>{{finding.patient.first_name}} {{finding.patient.last_name}} ({{finding.patient.patient_profile.patient_id}})</td>
                     <td>{{finding.disease}}</td>
                     <td>{{finding.medicine}}</td>

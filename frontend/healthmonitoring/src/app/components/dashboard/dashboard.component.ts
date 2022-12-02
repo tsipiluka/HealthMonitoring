@@ -12,7 +12,7 @@ import { jsPDF } from "jspdf";
 })
 export class DashboardComponent implements OnInit {
 
-  MedicalFindingList: MedicalFinding[] = []
+  medicalFindingList: MedicalFinding[] = []
 
   addEntryModel: boolean = false
 
@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   selectedUsers: string[] | undefined
 
   constructor(private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) { 
-    console.log(this.MedicalFindingList.length)
+    console.log(this.medicalFindingList.length)
   }
 
   ngOnInit(): void {
@@ -41,10 +41,10 @@ export class DashboardComponent implements OnInit {
   }
 
   loadMedicalFindings() {
-    this.MedicalFindingList = []
+    this.medicalFindingList = []
     this.dashboardService.loadMedicalFindings().subscribe((res: any) => {
       for(let finding of <MedicalFinding[]>res){
-        this.MedicalFindingList.push(<MedicalFinding>finding)
+        this.medicalFindingList.push(<MedicalFinding>finding)
       }
     }, err => {
       // ERRORHANDLER
