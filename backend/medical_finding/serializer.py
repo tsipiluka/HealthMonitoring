@@ -2,16 +2,17 @@ from rest_framework import serializers
 from user_system.models import User
 from medical_finding.models import MedicalFinding, FindingReadingRight
 
+from user_system.seralizers import UserSerializer, LightUserSerializerWithProfile
+
 
 class MedicalFindingSerializer(serializers.ModelSerializer):
-    
-    patient = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    patient = LightUserSerializerWithProfile(read_only=True)
+    treator = LightUserSerializerWithProfile(read_only=True)
+
     class Meta:
         model = MedicalFinding
-        exclude = ["created_at"]
-
-        # field patient optional
-        # extra_kwargs = {"patient": {"required": False}}
+        exclude = ["created_at", "updated_at"]
 
 
 class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
@@ -39,18 +40,24 @@ class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
 
 
 class ReadingRightSerializer(serializers.ModelSerializer):
+
+    reader = LightUserSerializerWithProfile(read_only=True)
+
     class Meta:
         model = FindingReadingRight
         fields = "__all__"
 
+
 class AddReadingRightSerializer(serializers.ModelSerializer):
 
     medical_finding = serializers.PrimaryKeyRelatedField(read_only=True)
+    # use LightUserSerializerWithProfile for reader in medical finding
+    reader = LightUserSerializerWithProfile(read_only=True)
 
     class Meta:
         model = FindingReadingRight
         exclude = ["created_at", "updated_at"]
-    
+
     def validate(self, data):
         # check if this reader already has reading rights for this medical finding
         if FindingReadingRight.objects.filter(
@@ -59,9 +66,8 @@ class AddReadingRightSerializer(serializers.ModelSerializer):
         ).exists():
             raise serializers.ValidationError("This reader already has reading rights")
         return data
-    
+
     # run the validation before creating the instance
     def create(self, validated_data):
         self.validate(validated_data)
         return FindingReadingRight.objects.create(**validated_data)
-
