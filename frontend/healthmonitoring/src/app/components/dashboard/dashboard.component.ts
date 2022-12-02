@@ -4,6 +4,7 @@ import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { LoginService } from '../login/service/login.service';
 import { DashboardService } from './service/dashboard.service';
 import { jsPDF } from "jspdf";
+import { UserService } from 'src/app/services/user-service/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +14,7 @@ import { jsPDF } from "jspdf";
 export class DashboardComponent implements OnInit {
 
   medicalFindingList: MedicalFinding[] = []
+  user: any 
 
   addEntryModel: boolean = false
 
@@ -21,7 +23,7 @@ export class DashboardComponent implements OnInit {
   selectedDoctorID: string | undefined
   selectedUsers: string[] = []
 
-  constructor(private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) {}
+  constructor(private userService: UserService,private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -30,7 +32,10 @@ export class DashboardComponent implements OnInit {
     this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
       console.log(res)
       localStorage.setItem('access_token', res.access)
-      this.loadMedicalFindings()
+      this.userService.getUserInformation().subscribe((userInfo: any)=>{
+        this.user = userInfo
+        this.loadMedicalFindings()
+      })
     },
     err => {
       // ERRORHANDLER
@@ -83,7 +88,7 @@ export class DashboardComponent implements OnInit {
         this.createNewMedicalFindingHelper(medicalFinding_info)
       }else{
         const doctorID = {profile_id: this.selectedDoctorID!}
-        this.dashboardService.getUserId(doctorID).subscribe((user: any) => {
+        this.userService.getUserId(doctorID).subscribe((user: any) => {
           const medicalFinding_info = { 
             'disease': this.new_disease, 
             'medicine': this.new_medicine,
@@ -99,7 +104,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
       for(let i = 0; i<this.selectedUsers!.length; i++){
         const profil_id = {profile_id: this.selectedUsers[i]}  
-        this.dashboardService.getUserId(profil_id).subscribe((user2: any) => {
+        this.userService.getUserId(profil_id).subscribe((user2: any) => {
           const readUser = {reader: user2.id}
           this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.uid, readUser).subscribe((res: any)=> {
             console.log(res)
@@ -114,5 +119,9 @@ export class DashboardComponent implements OnInit {
       this.selectedUsers = []
       this.loadMedicalFindings()
     })
+  }
+
+  checkIfDoctor(){
+    return this.user!.role === "DOCTOR"
   }
 }
