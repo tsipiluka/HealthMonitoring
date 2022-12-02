@@ -53,8 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteMedicalFinding(uid: string) {
-    const response_uid = {'uid': uid}
-    this.dashboardService.deleteMedicalFinding(response_uid).subscribe((res: any) => {
+    this.dashboardService.deleteMedicalFinding(uid).subscribe((res: any) => {
       this.loadMedicalFindings()
     })
   }

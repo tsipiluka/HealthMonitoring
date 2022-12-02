@@ -21,7 +21,7 @@ export class MedicalFindingFinderComponent {
   searchMedicalFindings(){
     if(this.validateEmail(this.selectedPatientEmail!)){
       const resEmail = {email: this.selectedPatientEmail}
-      this.medicalFindingFinderService.getMedicalFindings(resEmail).subscribe((medicalFindings: MedicalFinding[])=> {
+      this.medicalFindingFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[])=> {
         this.medicalFindings = medicalFindings
       })
     }

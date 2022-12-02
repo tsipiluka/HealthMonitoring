@@ -7,7 +7,7 @@ export interface IMedicalFinding {
     medicine: string,
     updated_at: Date,
     patient: Patient,
-    diagnosed_by: Doctor,
+    treator: Doctor,
 }
 
 export class MedicalFinding implements IMedicalFinding {
@@ -16,8 +16,7 @@ export class MedicalFinding implements IMedicalFinding {
         public disease: string,
         public medicine: string,
         public updated_at: Date,
-        public user: number,
         public patient: Patient,
-        public diagnosed_by: Doctor,
+        public treator: Doctor,
     ) {}
 }

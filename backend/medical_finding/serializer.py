@@ -7,7 +7,7 @@ class MedicalFindingSerializer(serializers.ModelSerializer):
     patient = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = MedicalFinding
-        exclude = ["created_at", "updated_at"]
+        exclude = ["created_at"]
 
         # field patient optional
         # extra_kwargs = {"patient": {"required": False}}
