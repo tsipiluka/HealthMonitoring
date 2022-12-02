@@ -18,12 +18,10 @@ export class DashboardComponent implements OnInit {
 
   new_disease: string | undefined
   new_medicine: string | undefined
-  selectedDoctorEmail: string | undefined
+  selectedDoctorID: string | undefined
   selectedUsers: string[] | undefined
 
-  constructor(private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) { 
-    console.log(this.medicalFindingList.length)
-  }
+  constructor(private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -76,20 +74,40 @@ export class DashboardComponent implements OnInit {
 
   createNewMedicalFinding(){
     if(this.new_disease !== '' && this.new_medicine !== ''){
-      const medicalFinding_info = { 
-        'disease': this.new_disease, 
-        'medicine': this.new_medicine,
-        'diagnosed_by': this.selectedDoctorEmail,
-        'read_users': this.selectedUsers
+      if(this.selectedDoctorID === undefined){
+        const medicalFinding_info = { 
+          'disease': this.new_disease, 
+          'medicine': this.new_medicine,
+        }
+        this.createNewMedicalFindingHelper(medicalFinding_info)
+      }else{
+        const doctorID = {profile_id: this.selectedDoctorID!}
+        this.dashboardService.getUserId(doctorID).subscribe((user: any) => {
+          const medicalFinding_info = { 
+            'disease': this.new_disease, 
+            'medicine': this.new_medicine,
+            'treator': user.id
+          }
+          this.createNewMedicalFindingHelper(medicalFinding_info)
+        })
       }
-      this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((res: any)=>{
-        this.addEntryModel = false
-        this.new_disease = ''
-        this.new_medicine = ''
-        this.selectedDoctorEmail = ''
-        this.selectedUsers = []
-        this.loadMedicalFindings()
-      })
     }
+  }
+
+  createNewMedicalFindingHelper(medicalFinding_info: any){
+    this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
+      for(let i = 0; i<this.selectedUsers!.length; i++){
+        this.dashboardService.getUserId(this.selectedUsers![i]).subscribe((user2: any) => {
+          const readUser = {reader: user2.id}
+          this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.id, readUser)
+        })
+      }
+      this.addEntryModel = false
+      this.new_disease = ''
+      this.new_medicine = ''
+      this.selectedDoctorID = ''
+      this.selectedUsers = []
+      this.loadMedicalFindings()
+    })
   }
 }
