@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   new_disease: string | undefined
   new_medicine: string | undefined
   selectedDoctorID: string | undefined
-  selectedUsers: string[] | undefined
+  selectedUsers: string[] = []
 
   constructor(private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) {}
 
@@ -74,6 +74,7 @@ export class DashboardComponent implements OnInit {
 
   createNewMedicalFinding(){
     if(this.new_disease !== '' && this.new_medicine !== ''){
+      console.log(this.selectedDoctorID)
       if(this.selectedDoctorID === undefined){
         const medicalFinding_info = { 
           'disease': this.new_disease, 
@@ -97,14 +98,15 @@ export class DashboardComponent implements OnInit {
   createNewMedicalFindingHelper(medicalFinding_info: any){
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
       for(let i = 0; i<this.selectedUsers!.length; i++){
-        const profil_id = {profile_id: this.selectedDoctorID!}  
+        const profil_id = {profile_id: this.selectedUsers[i]}  
         this.dashboardService.getUserId(profil_id).subscribe((user2: any) => {
           const readUser = {reader: user2.id}
-          this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.id, readUser).subscribe((res: any)=> {
+          this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.uid, readUser).subscribe((res: any)=> {
             console.log(res)
           })
         })
       }
+      console.log("hi")
       this.addEntryModel = false
       this.new_disease = ''
       this.new_medicine = ''
