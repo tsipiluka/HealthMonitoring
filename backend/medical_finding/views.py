@@ -9,6 +9,8 @@ from .models import MedicalFinding, FindingReadingRight
 from .serializer import (
     MedicalFindingSerializer,
     UpdateMedicalFindingSerializer,
+    ReadingRightSerializer,
+    AddReadingRightSerializer,
 )
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -236,6 +238,147 @@ class DeleteMedicalFinding(APIView):
             patient = Patient.objects.get(id=user.pk)
             if patient == medical_finding.patient:
                 medical_finding.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class GetReadingRights(APIView):
+
+    """
+    Get all the reading rights of a medical finding.
+    Only the patient and the assigned treator can
+    get the reading rights.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, finding_id):
+        try:
+            return MedicalFinding.objects.get(uid=finding_id)
+        except MedicalFinding.DoesNotExist:
+            raise Http404
+
+    def get(self, request, finding_id):
+
+        # check if the finding id is valid uuid
+        if not is_valid_uuid(finding_id):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        medical_finding = self.get_object(finding_id)
+        if user.is_doctor():
+            doctor = Doctor.objects.get(id=user.pk)
+            if doctor == medical_finding.treator:
+                reading_rights = FindingReadingRight.objects.filter(
+                    medical_finding=medical_finding
+                )
+                serializer = ReadingRightSerializer(reading_rights, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        elif user.is_patient():
+            patient = Patient.objects.get(id=user.pk)
+            if patient == medical_finding.patient:
+                reading_rights = FindingReadingRight.objects.filter(
+                    medical_finding=medical_finding
+                )
+                serializer = ReadingRightSerializer(reading_rights, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class AddReadingRight(APIView):
+
+    """
+    Add a reading right to a medical finding.
+    Only the patient and the assigned treator can
+    add a reading right.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, finding_id):
+        try:
+            return MedicalFinding.objects.get(uid=finding_id)
+        except MedicalFinding.DoesNotExist:
+            raise Http404
+
+    def post(self, request, finding_id):
+
+        # check if the finding id is valid uuid
+        if not is_valid_uuid(finding_id):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        medical_finding = self.get_object(finding_id)
+
+        # check if the user is the same as reader
+        if user.pk == request.data["reader"]:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        if user.is_doctor():
+            doctor = Doctor.objects.get(id=user.pk)
+            if doctor == medical_finding.treator:
+                serializer = AddReadingRightSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save(medical_finding=medical_finding)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        elif user.is_patient():
+            patient = Patient.objects.get(id=user.pk)
+            if patient == medical_finding.patient:
+                serializer = AddReadingRightSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save(medical_finding=medical_finding)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class DeleteReadingRight(APIView):
+
+    """
+    Delete a reading right of a medical finding.
+    Only the patient can delete a reading right.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, finding_id):
+        try:
+            return MedicalFinding.objects.get(uid=finding_id)
+        except MedicalFinding.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, finding_id):
+
+        # check if the finding id is valid uuid
+        if not is_valid_uuid(finding_id):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        medical_finding = self.get_object(finding_id)
+        if user.is_patient():
+            patient = Patient.objects.get(id=user.pk)
+            if patient == medical_finding.patient:
+                reading_right = FindingReadingRight.objects.get(
+                    medical_finding=medical_finding, reader=request.data["reader"]
+                )
+                reading_right.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED)

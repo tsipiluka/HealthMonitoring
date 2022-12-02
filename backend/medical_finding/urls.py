@@ -8,6 +8,9 @@ from .views import (
     UpdateMedicalFinding,
     GetMedicalFinding,
     DeleteMedicalFinding,
+    GetReadingRights,
+    AddReadingRight,
+    DeleteReadingRight,
 )
 
 app_name = "medical_finding"
@@ -46,5 +49,20 @@ urlpatterns = [
         "delete_medical_finding/<str:finding_id>/",
         DeleteMedicalFinding.as_view(),
         name="delete_medical_finding",
+    ),
+    path(
+        "get_reading_rights/<str:finding_id>/",
+        GetReadingRights.as_view(),
+        name="get_reading_rights",
+    ),
+    path(
+        "add_reading_right/<str:finding_id>/",
+        AddReadingRight.as_view(),
+        name="add_reading_right",
+    ),
+    path(
+        "delete_reading_right/<str:finding_id>/<str:reader_id>/",
+        DeleteReadingRight.as_view(),
+        name="delete_reading_right",
     ),
 ]
