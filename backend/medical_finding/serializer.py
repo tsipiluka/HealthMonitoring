@@ -15,6 +15,7 @@ class MedicalFindingSerializer(serializers.ModelSerializer):
         exclude = ["created_at"]
 
 
+
 class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
 
     patient = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -51,9 +52,6 @@ class ReadingRightSerializer(serializers.ModelSerializer):
 class AddReadingRightSerializer(serializers.ModelSerializer):
 
     medical_finding = serializers.PrimaryKeyRelatedField(read_only=True)
-    # use LightUserSerializerWithProfile for reader in medical finding
-    reader = LightUserSerializerWithProfile(read_only=True)
-
     class Meta:
         model = FindingReadingRight
         exclude = ["created_at", "updated_at"]
