@@ -1,82 +1,89 @@
 <app-nav></app-nav>
-<div class="container">
-    <div class="addEntryBtn">
-        <button pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
+<div *ngIf="this.checkIfDoctor()">
+    <app-my-patient-finder></app-my-patient-finder>
+</div>
+<div *ngIf="!this.checkIfDoctor()">
+    <div class="container">
+        <div class="addEntryBtn">
+            <button pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
+        </div>
+        <div class="row">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Doktor</th>
+                    <th scope="col">Krankheit</th>
+                    <th scope="col">Medizin</th>
+                    <th scope="col">Letztes Update am</th>
+                    <th scope="col">Optionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let finding of medicalFindingList; let i = index">
+                        <th scope="row">{{i}}</th>
+                        <td *ngIf="finding.treator !==null">{{finding.treator.first_name}} {{finding.treator.last_name}} ({{finding.treator.doctor_profile.doctor_id}})</td>
+                        <td *ngIf="finding.treator ===null">-</td>
+                        <td>{{finding.disease}}</td>
+                        <td>{{finding.medicine}}</td>
+                        <td>{{finding.updated_at}}</td>
+                        <td>    
+                            <button type="button" class="btn btn-primary" (click)="createPdf(finding)">
+                                PDF
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                Change
+                            </button>
+                            <button type="button" class="btn btn-primary" (click)="deleteMedicalFinding(finding.uid)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="row">
-        <table class="table table-dark">
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">Doktor</th>
-                <th scope="col">Krankheit</th>
-                <th scope="col">Medizin</th>
-                <th scope="col">Letztes Update am</th>
-                <th scope="col">Optionen</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let finding of medicalFindingList; let i = index">
-                    <th scope="row">{{i}}</th>
-                    <td *ngIf="finding.treator !==null">{{finding.treator.first_name}} {{finding.treator.last_name}} ({{finding.treator.doctor_profile.doctor_id}})</td>
-                    <td *ngIf="finding.treator ===null">-</td>
-                    <td>{{finding.disease}}</td>
-                    <td>{{finding.medicine}}</td>
-                    <td>{{finding.updated_at}}</td>
-                    <td>    
-                        <button type="button" class="btn btn-primary" (click)="createPdf(finding)">
-                            PDF
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            Change
-                        </button>
-                        <button type="button" class="btn btn-primary" (click)="deleteMedicalFinding(finding.uid)">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    
+    <p-dialog header="Füge einen neuen Eintrag hinzu" [(visible)]="addEntryModel" [modal]="true"
+        [draggable]="false" [resizable]="false">
+            <div class="row">
+                <div class="new-entry-item col-3">
+                    <div class="col-12">
+                        <b>Krankheit</b>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" pInputText [(ngModel)]="new_disease">
+                    </div>
+                </div>
+                <div class="new-entry-item col-3">
+                    <div class="col-12">
+                        <b>Medizin</b>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" pInputText [(ngModel)]="new_medicine"> 
+                    </div>
+                </div>
+                <div class="new-entry-item col-3">
+                    <div class="col-12">
+                        <b>Doktor</b>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" pInputText [(ngModel)]="selectedDoctorID"> 
+                    </div>
+                </div>
+                <div class="new-entry-item col-12">
+                    <div class="col-12">
+                        <b>Welche Personen sollen den Befund einsehen können?</b>
+                    </div>
+                    <div class="col-12">
+                        <p-chips [(ngModel)]="selectedUsers"></p-chips>
+                    </div>
+                </div>
+            </div>
+            <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
+            </ng-template>
+    </p-dialog>
 </div>
 
-<p-dialog header="Füge einen neuen Eintrag hinzu" [(visible)]="addEntryModel" [modal]="true"
-    [draggable]="false" [resizable]="false">
-        <div class="row">
-            <div class="new-entry-item col-3">
-                <div class="col-12">
-                    <b>Krankheit</b>
-                </div>
-                <div class="col-12">
-                    <input type="text" pInputText [(ngModel)]="new_disease">
-                </div>
-            </div>
-            <div class="new-entry-item col-3">
-                <div class="col-12">
-                    <b>Medizin</b>
-                </div>
-                <div class="col-12">
-                    <input type="text" pInputText [(ngModel)]="new_medicine"> 
-                </div>
-            </div>
-            <div class="new-entry-item col-3">
-                <div class="col-12">
-                    <b>Doktor</b>
-                </div>
-                <div class="col-12">
-                    <input type="text" pInputText [(ngModel)]="selectedDoctorID"> 
-                </div>
-            </div>
-            <div class="new-entry-item col-12">
-                <div class="col-12">
-                    <b>Welche Personen sollen den Befund einsehen können?</b>
-                </div>
-                <div class="col-12">
-                    <p-chips [(ngModel)]="selectedUsers"></p-chips>
-                </div>
-            </div>
-        </div>
-        <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
-        </ng-template>
-</p-dialog>
+

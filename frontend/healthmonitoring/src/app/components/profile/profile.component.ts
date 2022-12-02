@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ProfileService } from './service/profile.service';
 import {ConfirmationService} from 'primeng/api';
 import { User } from 'src/app/entities/user.modal';
+import { UserService } from 'src/app/services/user-service/user.service';
 
 
 @Component({
@@ -25,11 +26,12 @@ export class ProfileComponent implements OnInit {
   constructor(
     private router: Router,
     private profileService: ProfileService,
+    private userService: UserService,
     private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
-    this.profileService.getUserInformation().subscribe((userinfo: any)=>{
+    this.userService.getUserInformation().subscribe((userinfo: any)=>{
       this.user = userinfo
       this.birth_date = new Date(this.user.birth_date)
     })

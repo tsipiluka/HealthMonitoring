@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavService } from './service/nav.service';
+import { UserService } from 'src/app/services/user-service/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -12,10 +12,10 @@ export class NavComponent implements OnInit {
 
   user: any
 
-  constructor(private navService: NavService,private router: Router) {}
+  constructor(private userService: UserService,private router: Router) {}
 
   ngOnInit(){
-    this.navService.getUserInformation().subscribe((userInfo: any)=>{
+    this.userService.getUserInformation().subscribe((userInfo: any)=>{
       this.user = userInfo
     })
   } 
