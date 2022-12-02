@@ -102,8 +102,14 @@ class Patient(User):
 @receiver(post_save, sender=User)
 def create_patient_profile(sender, instance, created, **kwargs):
     if created and instance.role == User.Role.PATIENT:
-        # set a patient_id consisting of the first 3 letters of the first name and the first 3 letters of the last name + the id
-        patient_id = instance.first_name[:3] + instance.last_name[:3] + str(instance.id)
+        # set the patient_id to first letter of first name + last name + # + random 4 digit number which is unique
+        patient_id = (
+            instance.first_name[0]
+            + instance.last_name[0]
+            + "#"
+            + str(uuid.uuid4().int)[:4]
+        )
+        #patient_id = instance.first_name[:3] + instance.last_name[:3] + str(instance.id)
         PatientProfile.objects.create(user=instance, patient_id=patient_id)
 
 
@@ -132,7 +138,14 @@ class Doctor(User):
 @receiver(post_save, sender=User)
 def create_doctor_profile(sender, instance, created, **kwargs):
     if created and instance.role == User.Role.DOCTOR:
-        DoctorProfile.objects.create(user=instance)
+        # set the doctor_id to first letter of first name + last name + # + random 4 digit number which is unique
+        doctor_id = (
+            instance.first_name[0]
+            + instance.last_name[0]
+            + "#"
+            + str(uuid.uuid4().int)[:4]
+        )
+        DoctorProfile.objects.create(user=instance, doctor_id=doctor_id)
 
 
 class DoctorProfile(models.Model):
