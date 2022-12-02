@@ -60,3 +60,40 @@ class LightUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "first_name", "last_name", "email", "role")
+
+
+class LightUserSerializerWithProfile(serializers.ModelSerializer):
+
+    patient_profile = PatientProfileSerializer()
+    doctor_profile = DoctorProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ("id", "first_name", "last_name", "role")
+    
+    def to_representation(self, instance):
+        if instance.is_patient():
+            return {
+                "id": instance.id,
+                "first_name": instance.first_name,
+                "last_name": instance.last_name,
+                "role": instance.role,
+                "patient_profile": PatientProfileSerializer(instance.patient_profile).data,
+            }
+        elif instance.is_doctor():
+            return {
+                "id": instance.id,
+                "first_name": instance.first_name,
+                "last_name": instance.last_name,
+                "role": instance.role,
+                "doctor_profile": DoctorProfileSerializer(instance.doctor_profile).data,
+            }
+        else:
+            return {
+                "id": instance.id,
+                "first_name": instance.first_name,
+                "last_name": instance.last_name,
+                "role": instance.role,
+            }
+			
+			
