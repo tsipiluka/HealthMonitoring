@@ -97,9 +97,12 @@ export class DashboardComponent implements OnInit {
   createNewMedicalFindingHelper(medicalFinding_info: any){
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
       for(let i = 0; i<this.selectedUsers!.length; i++){
-        this.dashboardService.getUserId(this.selectedUsers![i]).subscribe((user2: any) => {
+        const profil_id = {profile_id: this.selectedDoctorID!}  
+        this.dashboardService.getUserId(profil_id).subscribe((user2: any) => {
           const readUser = {reader: user2.id}
-          this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.id, readUser)
+          this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.id, readUser).subscribe((res: any)=> {
+            console.log(res)
+          })
         })
       }
       this.addEntryModel = false
