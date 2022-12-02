@@ -96,4 +96,7 @@ class LightUserSerializerWithProfile(serializers.ModelSerializer):
                 "role": instance.role,
             }
 			
-			
+class UserIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id",)			

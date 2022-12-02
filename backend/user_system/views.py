@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, viewsets
-from .seralizers import PatientProfileSerializer, UserSerializer, LightUserSerializer, DoctorProfileSerializer
+from .seralizers import PatientProfileSerializer, UserSerializer, LightUserSerializer, DoctorProfileSerializer, UserIDSerializer
 from .models import Doctor, Patient, User, PatientProfile, DoctorProfile
 from django.contrib.auth.decorators import permission_required
 from rest_framework import status
@@ -39,3 +39,32 @@ class UserProfileView(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         data = {**serializer.data, **profile_serializer.data}
         return Response(data, status=status.HTTP_200_OK)
+
+class GetUserByProfiledID(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        """
+        Get the user profile consisting of the user object and the profile object.
+        """
+
+        # get the profile_id from request body
+        try:
+            profile_id = request.data["profile_id"]
+        except KeyError:
+            return Response({"profile_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        # get the profile object of the profile_id
+        try:
+            profile = DoctorProfile.objects.get(doctor_id=profile_id)
+            user = profile.user
+        except DoctorProfile.DoesNotExist:
+            try:
+                profile = PatientProfile.objects.get(patient_id=profile_id)
+                user = profile.user
+            except PatientProfile.DoesNotExist:
+                return Response({"No profile found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UserIDSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
