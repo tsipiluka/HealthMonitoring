@@ -26,8 +26,7 @@ export class MyPatientFinderComponent implements OnInit {
 
   searchMedicalFindings(){
     if(this.validateEmail(this.selectedPatientEmail!)){
-      const resEmail = {email: this.selectedPatientEmail}
-      this.myPatientFinderService.getMedicalFindings(resEmail).subscribe((medicalFindings: MedicalFinding[])=> {
+      this.myPatientFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[])=> {
         this.medicalFindings = medicalFindings
       })
     }
