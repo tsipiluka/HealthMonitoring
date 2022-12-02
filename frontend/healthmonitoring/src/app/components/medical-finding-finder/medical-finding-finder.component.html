@@ -5,7 +5,7 @@
             <h3>Suchen Sie einen Patienten nach seiner Email</h3>
         </div>
         <div class="col-12 inputField">
-            <p-autoComplete [(ngModel)]="selectedPatient" [minLength]="2" [suggestions]="patientenListLight" (onSelect)="loadFilteredMedicalFindings()" (completeMethod)="filterPatients($event)" field="patient_profile.patient_id" placeholder="Suche einen Patienten" [unique]="true" [showClear]="true" [dropdown]="true">
+            <p-autoComplete [(ngModel)]="selectedPatient" [minLength]="2" [suggestions]="patientenListLight" (onSelect)="loadFilteredMedicalFindings()" (completeMethod)="filterPatients($event)" field="patient_profile.patient_id" placeholder="Suche einen Patienten" [showClear]="true" [dropdown]="true">
                 <ng-template let-patient pTemplate="item">
                     <div>{{patient.patient_profile.patient_id}}</div>
                 </ng-template>
@@ -15,6 +15,7 @@
             <thead>
                 <tr>
                 <th scope="col">#</th>
+                <th scope="col">Patient</th>
                 <th scope="col">Krankheit</th>
                 <th scope="col">Medizin</th>
                 <th scope="col">Letztes Update am</th>
@@ -24,6 +25,7 @@
             <tbody>
                 <tr *ngFor="let finding of medicalFindingsLight; let i = index">
                     <th scope="row">{{i}}</th>
+                    <td>{{finding.patient.first_name}} {{finding.patient.last_name}} ({{finding.patient.patient_profile.patient_id}})</td>
                     <td>{{finding.disease}}</td>
                     <td>{{finding.medicine}}</td>
                     <td>{{finding.updated_at}}</td>
