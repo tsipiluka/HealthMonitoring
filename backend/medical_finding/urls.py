@@ -7,6 +7,7 @@ from .views import (
     CreateMedicalFinding,
     UpdateMedicalFinding,
     GetMedicalFinding,
+    DeleteMedicalFinding,
 )
 
 app_name = "medical_finding"
@@ -40,5 +41,10 @@ urlpatterns = [
         "get_medical_finding/<str:finding_id>/",
         GetMedicalFinding.as_view(),
         name="get_medical_finding",
+    ),
+    path(
+        "delete_medical_finding/<str:finding_id>/",
+        DeleteMedicalFinding.as_view(),
+        name="delete_medical_finding",
     ),
 ]

@@ -206,3 +206,38 @@ class GetMedicalFinding(APIView):
                     serializer = MedicalFindingSerializer(medical_finding)
                     return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class DeleteMedicalFinding(APIView):
+
+    """
+    Delete a medical finding. Only the patient can
+    delete the medical finding.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, finding_id):
+        try:
+            return MedicalFinding.objects.get(uid=finding_id)
+        except MedicalFinding.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, finding_id):
+
+        # check if the finding id is valid uuid
+        if not is_valid_uuid(finding_id):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        medical_finding = self.get_object(finding_id)
+        if user.is_patient():
+            patient = Patient.objects.get(id=user.pk)
+            if patient == medical_finding.patient:
+                medical_finding.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
