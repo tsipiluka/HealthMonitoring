@@ -11,6 +11,18 @@ export class DashboardService {
 
   constructor(private http: HttpClient) { }
 
+  getUserId(val: any): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
+    return this.http.post(this.APIUrl + '/user_system/user/',val, {'headers': headers})
+  }
+
+  addReadAccessToMedicalFinding(mfID: string, val: any): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
+    return this.http.post(this.APIUrl + '/api/add_reading_right/'+mfID+'/', val,{'headers': headers})
+  }
+
   loadMedicalFindings(): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
