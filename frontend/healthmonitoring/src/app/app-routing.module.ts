@@ -31,10 +31,6 @@ const routes: Routes = [
     component: DashboardComponent
   },
   {
-    path: 'myPatientFinder',
-    component: MyPatientFinderComponent
-  },
-  {
     path: 'medicalFindingFinder',
     component: MedicalFindingFinderComponent
   },
