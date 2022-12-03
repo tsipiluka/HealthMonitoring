@@ -5,6 +5,7 @@ import { LoginService } from '../login/service/login.service';
 import { DashboardService } from './service/dashboard.service';
 import { jsPDF } from "jspdf";
 import { UserService } from 'src/app/services/user-service/user.service';
+import {trigger,state,style,transition,animate} from '@angular/animations';
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -19,18 +20,29 @@ export interface ReadAccessUser{
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  animations: [
+    trigger('errorState', [
+        state('hidden', style({
+            opacity: 0
+        })),
+        state('visible', style({
+            opacity: 1
+        })),
+        transition('visible => hidden', animate('400ms ease-in')),
+        transition('hidden => visible', animate('400ms ease-out'))
+    ])
+],
 })
 export class DashboardComponent implements OnInit {
 
   medicalFindingList: MedicalFinding[] = []
   user: any 
 
+  profileIdRegex: RegExp = /^[a-zA-Z]{2}#[0-9]{4}$/
   modify_mode: boolean = false
   medicalFindingModel: boolean = false
   selectedMedicalFinding: MedicalFinding | undefined
-
-  tester: boolean = true
 
   new_disease: string | undefined
   new_medicine: string | undefined
@@ -48,7 +60,9 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem('access_token', res.access)
       this.userService.getUserInformation().subscribe((userInfo: any)=>{
         this.user = userInfo
-        this.loadMedicalFindings()
+        if(!this.validateIfDoctor()){
+          this.loadMedicalFindings()
+        }
       })
     },
     err => {
@@ -97,7 +111,7 @@ export class DashboardComponent implements OnInit {
     this.selectedUsers = [];
     this.new_disease = medicalFinding.disease
     this.new_medicine = medicalFinding.medicine
-    this.selectedDoctorID = medicalFinding.treator !== null ? medicalFinding.treator.doctor_profile.doctor_id : ''
+    this.selectedDoctorID = medicalFinding.treator !== null ? medicalFinding.treator.doctor_profile.doctor_id : undefined
     this.dashboardService.getReadAccessFromMedicalFinding(medicalFinding.uid).subscribe((user: any)=>{
       for(let i = 0; i < user.length; i++){
         if(user[i]!.reader.role ==='PATIENT'){
@@ -149,11 +163,7 @@ export class DashboardComponent implements OnInit {
           this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.uid, readUser).subscribe()
         })
       }
-      this.medicalFindingModel = false
-      this.new_disease = ''
-      this.new_medicine = ''
-      this.selectedDoctorID = ''
-      this.selectedUsers = []
+      this.resetMedicalFindingValues()
       this.loadMedicalFindings()
     })
   }
@@ -163,29 +173,74 @@ export class DashboardComponent implements OnInit {
   }
 
   changeMedicalFinding(){
-    const a = 1
+    if(this.validateStringInput(this.new_medicine!) && this.validateStringInput(this.new_disease!)){
+      let changedValues = {}
+      if(this.selectedDoctorID !== undefined && this.selectedDoctorID !== ''){
+        if(this.validateProfileID(this.selectedDoctorID!)){
+          const profil_id = {profile_id: this.selectedDoctorID}  
+          this.userService.getUserId(profil_id).subscribe((user: any)=>{
+            changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: user.id } 
+            this.changeMedicalFindingHelper(changedValues)
+          })
+          
+        }else{
+          changedValues = {disease: this.new_disease, medicine: this.new_medicine} 
+          this.changeMedicalFindingHelper(changedValues)
+        }
+      }else{
+        changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: null } 
+          this.changeMedicalFindingHelper(changedValues)
+      }
+    }
+  }
+
+  changeMedicalFindingHelper(changedValues: any){
+    this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
+      this.resetMedicalFindingValues()
+      this.loadMedicalFindings()
+    })
   }
 
   deleteReadAccess(key: string){
     if(this.modify_mode){
-      const profil_id = {profile_id: key}  
       this.dashboardService.deleteReadAccessFromMedicalFinding(this.selectedMedicalFinding!.uid, this.currentReadAccessObjects[key].reader.id).subscribe()
     }
   }
 
   addReadAccess(key:string){
-    if(this.modify_mode){
-      const profil_id = {profile_id: key}  
-      this.userService.getUserId(profil_id).subscribe((user: any) => {
-        const readUser = {reader: user.id}
-        this.dashboardService.addReadAccessToMedicalFinding(this.selectedMedicalFinding!.uid, readUser).subscribe((res: any)=>{
-          this.currentReadAccessObjects[key] = res
+    if(this.validateProfileID(key)){
+      if(this.modify_mode){
+        const profil_id = {profile_id: key}  
+        this.userService.getUserId(profil_id).subscribe((user: any) => {
+          const readUser = {reader: user.id}
+          this.dashboardService.addReadAccessToMedicalFinding(this.selectedMedicalFinding!.uid, readUser).subscribe((res: any)=>{
+            this.currentReadAccessObjects[key] = res
+          })
         })
-      })
+      }
+    }else{
+      this.selectedUsers.pop()
     }
   }
 
-  checkIfDoctor(){
+  validateIfDoctor(){
     return this.user!.role === "DOCTOR"
+  }
+
+  validateStringInput(str: string){
+    return str !== ''
+  }
+
+  resetMedicalFindingValues(){
+    this.medicalFindingModel = false
+    this.new_disease = ''
+    this.new_medicine = ''
+    this.selectedDoctorID = ''
+    this.selectedUsers = []
+    this.currentReadAccessObjects = {}
+  }
+
+  validateProfileID(profilId: string){
+    return this.profileIdRegex.test(profilId)
   }
 }

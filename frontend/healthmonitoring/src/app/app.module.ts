@@ -20,6 +20,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { NgxCaptchaModule} from 'ngx-captcha'
 
 
+
 // Primeng Modules
 import {CardModule} from 'primeng/card';
 import {CalendarModule} from 'primeng/calendar';
@@ -32,6 +33,10 @@ import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {ChipsModule} from 'primeng/chips';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {KeyFilterModule} from 'primeng/keyfilter';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+
 
 
 
@@ -72,7 +77,10 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
     ButtonModule,
     InputTextModule,
     ChipsModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    KeyFilterModule,
+    MessagesModule,
+    MessageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

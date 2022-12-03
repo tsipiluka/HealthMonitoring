@@ -1,8 +1,8 @@
 <app-nav></app-nav>
-<div *ngIf="this.checkIfDoctor()">
+<div *ngIf="this.validateIfDoctor()">
     <app-my-patient-finder></app-my-patient-finder>
 </div>
-<div *ngIf="!this.checkIfDoctor()">
+<div *ngIf="!this.validateIfDoctor()">
     <div class="container">
         <div class="addEntryBtn">
             <button pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
@@ -45,7 +45,7 @@
     </div>
     
     <p-dialog [header]="getModifyEntryModelHeader()" [(visible)]="medicalFindingModel" [modal]="true"
-        [draggable]="false" [resizable]="false">
+        [draggable]="false" [resizable]="false" (onHide)="resetMedicalFindingValues()">
             <div class="row">
                 <div class="new-entry-item col-3">
                     <div class="col-12">
@@ -68,7 +68,10 @@
                         <b>Doktor</b>
                     </div>
                     <div class="col-12">
-                        <input type="text" pInputText [(ngModel)]="selectedDoctorID"> 
+                        <form #form="ngForm">
+                            <input id="selectedDoctorID" type="text" name="selectedDoctorID" [(ngModel)]="selectedDoctorID" pInputText [pKeyFilter]="this.profileIdRegex" [pValidateOnly]="true" placeholder="AB#1234" style="margin-right: .5em">
+                            <p-message severity="error" text="Not a valid Profile ID" [@errorState]="form.dirty && !form.valid ? 'visible' : 'hidden'"></p-message>
+                        </form> 
                     </div>
                 </div>
                 <div class="new-entry-item col-12">
@@ -86,5 +89,4 @@
             </ng-template>
     </p-dialog>
 </div>
-
 
