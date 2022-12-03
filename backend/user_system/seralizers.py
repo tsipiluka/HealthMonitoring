@@ -45,9 +45,13 @@ class PatientSerializer(serializers.ModelSerializer):
 
 
 class PatientProfileSerializer(serializers.ModelSerializer):
+
+    # user = PatientSerializer()
+    
     class Meta:
         model = PatientProfile
-        fields = ("patient_id",)
+        fields = ("patient_id", )
+
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
@@ -59,7 +63,7 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
 class LightUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name", "email", "role")
+        fields = ("id", "first_name", "last_name", "email", "role", "birth_date")
 
 
 class LightUserSerializerWithProfile(serializers.ModelSerializer):
