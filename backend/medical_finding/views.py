@@ -366,7 +366,7 @@ class DeleteReadingRight(APIView):
         except MedicalFinding.DoesNotExist:
             raise Http404
 
-    def delete(self, request, finding_id):
+    def delete(self, request, finding_id, reader_id):
 
         # check if the finding id is valid uuid
         if not is_valid_uuid(finding_id):
@@ -378,7 +378,7 @@ class DeleteReadingRight(APIView):
             patient = Patient.objects.get(id=user.pk)
             if patient == medical_finding.patient:
                 reading_right = FindingReadingRight.objects.get(
-                    medical_finding=medical_finding, reader=request.data["reader"]
+                    medical_finding=medical_finding, reader=reader_id
                 )
                 reading_right.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
