@@ -61,7 +61,7 @@ urlpatterns = [
         name="add_reading_right",
     ),
     path(
-        "delete_reading_right/<str:finding_id>/<str:reader_id>/",
+        "delete_reading_right/<str:finding_id>/<int:reader_id>/",
         DeleteReadingRight.as_view(),
         name="delete_reading_right",
     ),
