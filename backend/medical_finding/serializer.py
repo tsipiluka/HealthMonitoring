@@ -34,18 +34,19 @@ class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
         model = MedicalFinding
         disease = serializers.CharField(required=False)
         medicine = serializers.CharField(required=False)
-        exclude = ["created_at", "updated_at", "treator"]
+        exclude = ["created_at", "updated_at"]
 
         extra_kwargs = {
             "disease": {"required": False},
             "medicine": {"required": False},
+            "treator": {"required": False}
         }
 
     def validate(self, data):
         # check if either medicine or disease is provided
-        if not data.get("disease") and not data.get("medicine"):
+        if not data.get("disease") and not data.get("medicine") and data.get("treator") != None:
             raise serializers.ValidationError(
-                "Either medicine or disease must be provided"
+                "Either medicine, disease or treator must be provided"
             )
         return data
 
