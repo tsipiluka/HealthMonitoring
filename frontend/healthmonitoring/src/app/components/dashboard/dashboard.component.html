@@ -31,7 +31,7 @@
                             <button type="button" class="btn btn-primary" (click)="createPdf(finding)">
                                 PDF
                             </button>
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary" (click)="displayChangeEntryModel(finding)">
                                 Change
                             </button>
                             <button type="button" class="btn btn-primary" (click)="deleteMedicalFinding(finding.uid)">
@@ -44,7 +44,7 @@
         </div>
     </div>
     
-    <p-dialog header="Füge einen neuen Eintrag hinzu" [(visible)]="addEntryModel" [modal]="true"
+    <p-dialog [header]="getModifyEntryModelHeader()" [(visible)]="medicalFindingModel" [modal]="true"
         [draggable]="false" [resizable]="false">
             <div class="row">
                 <div class="new-entry-item col-3">
@@ -76,12 +76,13 @@
                         <b>Welche Personen sollen den Befund einsehen können?</b>
                     </div>
                     <div class="col-12">
-                        <p-chips [(ngModel)]="selectedUsers"></p-chips>
+                        <p-chips #chips [(ngModel)]="selectedUsers" (onAdd)="addReadAccess($event.value)" (onRemove)="deleteReadAccess($event.value)"></p-chips>
                     </div>
                 </div>
             </div>
             <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
+            <p-button *ngIf="!this.modify_mode" icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
+            <p-button *ngIf="this.modify_mode" icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
             </ng-template>
     </p-dialog>
 </div>
