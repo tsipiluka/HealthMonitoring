@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { LoginService } from './service/login.service';
 import pgk from '../../../../secrets.json'
 import {MessageService} from 'primeng/api';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [MessageService]
+  providers: [MessageService, LoginService, HttpClient]
   
 })
 export class LoginComponent implements OnInit {

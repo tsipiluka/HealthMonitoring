@@ -8,6 +8,7 @@ import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -35,7 +36,7 @@ export interface ReadAccessUser{
         transition('hidden => visible', animate('400ms ease-out'))
     ])
   ],
-  providers: [MessageService]
+  providers: [MessageService, UserService, HttpClient, LoginService, DashboardService]
 })
 export class DashboardComponent implements OnInit {
 
