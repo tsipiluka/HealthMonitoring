@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
 
   createNewMedicalFinding(){
     if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_medicine!)){
-      if(this.validateStringInput(this.selectedDoctorID!)){
+      if(!this.validateStringInput(this.selectedDoctorID!)){
         const medicalFinding_info = { 
           'disease': this.new_disease, 
           'medicine': this.new_medicine,
