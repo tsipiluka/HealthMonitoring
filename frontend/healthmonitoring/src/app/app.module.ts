@@ -37,6 +37,7 @@ import {KeyFilterModule} from 'primeng/keyfilter';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ToastModule} from 'primeng/toast';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import {ToastModule} from 'primeng/toast';
     UserPasswordResetComponent,
     MyPatientFinderComponent,
     MedicalFindingFinderComponent,
+    PagenotfoundComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { MedicalFindingFinderComponent } from './components/medical-finding-finder/medical-finding-finder.component';
 import { MyPatientFinderComponent } from './components/my-patient-finder/my-patient-finder.component';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { UserActivationComponent } from './components/user-activation/user-activation.component';
@@ -38,10 +39,12 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent
   },
-  {
-    path: '',
-    component: DashboardComponent
-  }
+  { path: '', 
+    redirectTo: '/login',
+    pathMatch: 'full' 
+  },
+  { path: '**',
+    component: PagenotfoundComponent },
 ];
 
 @NgModule({
