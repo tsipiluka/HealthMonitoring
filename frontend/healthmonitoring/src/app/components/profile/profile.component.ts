@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ProfileService } from './service/profile.service';
 import {ConfirmationService} from 'primeng/api';
 import { UserService } from 'src/app/services/user-service/user.service';
+import { LoginService } from '../login/service/login.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 
 @Component({
@@ -26,14 +28,25 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private profileService: ProfileService,
     private userService: UserService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private loginService: LoginService,
+    private errorHandler: ErrorHandlerService
   ) { }
 
   ngOnInit(): void {
-    this.userService.getUserInformation().subscribe((userinfo: any)=>{
-      this.user = userinfo
-      this.birth_date = new Date(this.user.birth_date)
+    const refresh_token = {
+      "refresh": localStorage.getItem('refresh_token')
+    } 
+    this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
+      localStorage.setItem('access_token', res.access)
+      this.userService.getUserInformation().subscribe((userinfo: any)=>{
+        this.user = userinfo
+        this.birth_date = new Date(this.user.birth_date)
+      })
+    },err =>{
+      this.errorHandler.handleError(err)
     })
+    
   }
 
   displayPasswordChangeModel(){

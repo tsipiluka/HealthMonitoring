@@ -7,6 +7,7 @@ import { jsPDF } from "jspdf";
 import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -52,7 +53,8 @@ export class DashboardComponent implements OnInit {
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
-  constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) {}
+  constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
+    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -66,10 +68,8 @@ export class DashboardComponent implements OnInit {
           this.loadMedicalFindings()
         }
       })
-    },
-    err => {
-      // ERRORHANDLER
-      this.router.navigate(['login'])
+    },err=>{
+      this.errorHandler.handleError(err)
     })
   }
 

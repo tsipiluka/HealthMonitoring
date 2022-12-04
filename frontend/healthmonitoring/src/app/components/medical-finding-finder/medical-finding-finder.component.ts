@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { Patient } from 'src/app/entities/patient.modal';
 import { User } from 'src/app/entities/user.modal';
+import { LoginService } from '../login/service/login.service';
 import { MedicalFindingFinderService } from './service/medical-finding-finder.service';
 
 @Component({
@@ -18,10 +20,18 @@ export class MedicalFindingFinderComponent {
   patientenListLight: Patient[] = []
   selectedPatient: Patient | undefined
 
-  constructor(private medicalFindingFinderService: MedicalFindingFinderService, private router: Router){}
+  constructor(private medicalFindingFinderService: MedicalFindingFinderService,private errorHandler: ErrorHandlerService, private loginService: LoginService,private router: Router){}
 
   ngOnInit(): void {
-    this.loadMedicalFindings()
+    const refresh_token = {
+      "refresh": localStorage.getItem('refresh_token')
+    } 
+    this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
+      localStorage.setItem('access_token', res.access)
+      this.loadMedicalFindings()
+    },err=>{
+      this.errorHandler.handleError(err)
+    })
   }
 
   loadMedicalFindings(){
