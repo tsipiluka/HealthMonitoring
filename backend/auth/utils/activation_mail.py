@@ -15,7 +15,7 @@ def send_activation_mail(user: User):
     uid = urlsafe_b64encode(force_bytes(user.pk))
     # remove the b' from the uid
     uid = force_str(uid)
-    # send_mail(subject, f'Hello {user.first_name} \nThis is a message sent to you because you registered at Health Monitoring Portal.\nToken: {token}\nUID: {uid}', 'notify@wh0cares.live',
-    # [user.email], fail_silently=False)
+    send_mail(subject, f'Hello {user.first_name} \nThis is a message sent to you because you registered at Health Monitoring Portal.\n Visit http://localhost:4200/activate/{token}/{uid}', 'notify@wh0cares.live',
+    [user.email], fail_silently=False)
     print(token)
     print(uid)

@@ -1,12 +1,6 @@
-from django.db import models
-
-# Create your models here.
 from django.dispatch import receiver
-from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
-from user_system.models import User
-
 
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
@@ -23,10 +17,3 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     send_mail(subject, f'Visit the following link to reset your password at HealthMonitoring http://localhost:4200/password-reset/{token}', 'notify@wh0cares.live',
     [reset_password_token.user.email], fail_silently=False)
     print(token)
-
-
-# reset_password_token.key
-# [reset_password_token.user.email],
-
-# from django.utils.encoding import force_str, force_bytes
-# from django.core.mail import send_mail
