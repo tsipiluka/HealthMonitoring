@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django_cryptography.fields import encrypt
 
 
 class AbstractUser(AbstractUser):
@@ -66,6 +67,9 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField(_("email address"), unique=True)
+
+    first_name = encrypt(models.CharField(max_length=50))
+    last_name = encrypt(models.CharField(max_length=50))
 
     objects = UserManager()
 
