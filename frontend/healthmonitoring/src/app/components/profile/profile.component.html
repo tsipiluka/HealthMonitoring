@@ -9,10 +9,10 @@
         </div>
         <div class="col-6">
           <div class="row">
-            <div class="col-6 card-item">
+            <div *ngIf="this.user!==undefined" class="col-6 card-item">
               <b>Vorname</b><p>{{this.user!.first_name}}</p>
             </div>  
-            <div class="col-6 card-item">
+            <div *ngIf="this.user!==undefined" class="col-6 card-item">
               <b>Nachname</b><p>{{this.user!.last_name}}</p>
             </div> 
             <div class="col-12 card-item">
@@ -21,11 +21,11 @@
                 <p-calendar [(ngModel)]="birth_date" [style]="{'width': '180px'}" [disabled]="true" [showIcon]="true" dateFormat="yy-mm-dd" inputId="icon"></p-calendar>
               </div>
             </div> 
-            <div class="col-12 card-item">
+            <div *ngIf="this.user!==undefined" class="col-12 card-item">
               <b *ngIf="this.user!.role === 'PATIENT'">Patienten ID</b><p>{{this.user!.patient_id}}</p>
               <b *ngIf="this.user!.role === 'DOCTOR'">Doktor ID</b><p>{{this.user!.doctor_id}}</p>
             </div> 
-            <div class="col-12 card-item">
+            <div *ngIf="this.user !== undefined" class="col-12 card-item">
               <b>E-Mail</b><p>{{this.user!.email}}</p>
             </div> 
           </div>
