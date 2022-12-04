@@ -17,7 +17,7 @@
                     <th scope="col">Krankheit</th>
                     <th scope="col">Medizin</th>
                     <th scope="col">Letztes Update am</th>
-                    <th scope="col">Optionen</th>
+                    <th scope="col"style="text-align: center">Optionen</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,14 +28,14 @@
                         <td>{{finding.disease}}</td>
                         <td>{{finding.medicine}}</td>
                         <td>{{finding.updated_at}}</td>
-                        <td>    
-                            <button type="button" class="btn btn-primary" (click)="createPdf(finding)">
+                        <td style="text-align: right">    
+                            <button type="button" class="btn btn-primary optionBtn" (click)="createPdf(finding)">
                                 PDF
                             </button>
-                            <button type="button" class="btn btn-primary" (click)="displayChangeEntryModel(finding)">
+                            <button type="button" class="btn btn-primary optionBtn" (click)="displayChangeEntryModel(finding)">
                                 Change
                             </button>
-                            <button type="button" class="btn btn-primary" (click)="deleteMedicalFinding(finding.uid)">
+                            <button type="button" class="btn btn-primary optionBtn" (click)="deleteMedicalFinding(finding.uid)">
                                 Delete
                             </button>
                         </td>
