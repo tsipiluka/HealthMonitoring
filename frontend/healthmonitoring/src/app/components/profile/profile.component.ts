@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfileService } from './service/profile.service';
-import {ConfirmationService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { LoginService } from '../login/service/login.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
@@ -11,7 +11,7 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService, MessageService]
 })
 export class ProfileComponent implements OnInit {
 
@@ -30,7 +30,8 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private confirmationService: ConfirmationService,
     private loginService: LoginService,
-    private errorHandler: ErrorHandlerService
+    private errorHandler: ErrorHandlerService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -53,18 +54,34 @@ export class ProfileComponent implements OnInit {
     this.passwordChangeModel = true
   }
 
+  showWarnMsg(msg: string){
+    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
+  }
+
   resetPassword(){
     this.passwordChangeModel = false
-    if(this.checkPassword(this.new_password1!) && this.checkPassword(this.new_password2!)){
-      const passwords = {
-        'old_password': this.old_password,
-        'new_password': this.new_password1,
-        'new_password2': this.new_password2
+    if(this.checkPassword(this.old_password!)){
+      if(this.checkPassword(this.new_password1!)){
+        if(this.new_password1 === this.new_password2){
+          const passwords = {
+            'old_password': this.old_password,
+            'new_password': this.new_password1,
+            'new_password2': this.new_password2
+          }
+          this.profileService.resetPassword(passwords).subscribe(()=>{
+            localStorage.clear()
+            this.router.navigate(['login'])
+          },err =>{
+            this.showWarnMsg("Das alte Passwort ist nicht korrekt!")
+          })
+        }else{
+          this.showWarnMsg("Die beiden Passwörter stimmen nicht überein!")
+        }
+      }else{
+        this.showWarnMsg("Das Passwort entspricht nicht den Anforderungen!")
       }
-      this.profileService.resetPassword(passwords).subscribe(()=>{
-        localStorage.clear()
-        this.router.navigate(['login'])
-      })
+    }else{
+      this.showWarnMsg("Das alte Passwort ist nicht korrekt!")
     }
   }
 
