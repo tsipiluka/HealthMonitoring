@@ -36,8 +36,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
-
-
+import {ToastModule} from 'primeng/toast';
 
 
 @NgModule({
@@ -80,7 +79,8 @@ import {MessageModule} from 'primeng/message';
     AutoCompleteModule,
     KeyFilterModule,
     MessagesModule,
-    MessageModule
+    MessageModule,
+    ToastModule
   ],
   providers: [],
   bootstrap: [AppComponent]

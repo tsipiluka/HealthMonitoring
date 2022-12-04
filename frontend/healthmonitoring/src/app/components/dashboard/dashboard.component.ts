@@ -6,6 +6,7 @@ import { DashboardService } from './service/dashboard.service';
 import { jsPDF } from "jspdf";
 import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
+import {MessageService} from 'primeng/api';
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -32,7 +33,8 @@ export interface ReadAccessUser{
         transition('visible => hidden', animate('400ms ease-in')),
         transition('hidden => visible', animate('400ms ease-out'))
     ])
-],
+  ],
+  providers: [MessageService]
 })
 export class DashboardComponent implements OnInit {
 
@@ -50,7 +52,7 @@ export class DashboardComponent implements OnInit {
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
-  constructor(private userService: UserService,private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) {}
+  constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,private dashboardService: DashboardService,  private router: Router) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -86,7 +88,16 @@ export class DashboardComponent implements OnInit {
   deleteMedicalFinding(uid: string) {
     this.dashboardService.deleteMedicalFinding(uid).subscribe((res: any) => {
       this.loadMedicalFindings()
+      this.showSuccessMsg("Sie haben den Eintrag erfolgreich gelöscht!")
     })
+  }
+
+  showWarnMsg(msg: string){
+    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
+  }
+  
+  showSuccessMsg(msg: string){
+    this.messageService.add({severity:'success', summary: 'Success', detail: msg});
   }
 
   createPdf(finding: MedicalFinding,) {
@@ -133,8 +144,8 @@ export class DashboardComponent implements OnInit {
   }
 
   createNewMedicalFinding(){
-    if(this.new_disease !== '' && this.new_medicine !== ''){
-      if(this.selectedDoctorID === undefined || this.selectedDoctorID === '' || this.selectedDoctorID === null){
+    if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_medicine!)){
+      if(this.validateStringInput(this.selectedDoctorID!)){
         const medicalFinding_info = { 
           'disease': this.new_disease, 
           'medicine': this.new_medicine,
@@ -151,18 +162,24 @@ export class DashboardComponent implements OnInit {
           this.createNewMedicalFindingHelper(medicalFinding_info)
         })
       }
+    }else{
+      this.showWarnMsg("Bitte tragen Sie eine Krankheit und die verschriebene Medizin ein!")
     }
   }
 
   createNewMedicalFindingHelper(medicalFinding_info: any){
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
       for(let i = 0; i<this.selectedUsers.length; i++){
+        console.log(this.selectedUsers[i])
         const profil_id = {profile_id: this.selectedUsers[i]}  
         this.userService.getUserId(profil_id).subscribe((user2: any) => {
           const readUser = {reader: user2.id}
           this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.uid, readUser).subscribe()
+        }, err => {
+          this.showWarnMsg(profil_id.profile_id+" konnte nicht hinzugefügt werden!")
         })
       }
+      this.showSuccessMsg("Sie haben einen medizinischen Befund erfolgreich hinzugefügt!")
       this.resetMedicalFindingValues()
       this.loadMedicalFindings()
     })
@@ -175,22 +192,23 @@ export class DashboardComponent implements OnInit {
   changeMedicalFinding(){
     if(this.validateStringInput(this.new_medicine!) && this.validateStringInput(this.new_disease!)){
       let changedValues = {}
-      if(this.selectedDoctorID !== undefined && this.selectedDoctorID !== ''){
+      if(this.validateStringInput(this.selectedDoctorID!)){
         if(this.validateProfileID(this.selectedDoctorID!)){
           const profil_id = {profile_id: this.selectedDoctorID}  
           this.userService.getUserId(profil_id).subscribe((user: any)=>{
             changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: user.id } 
             this.changeMedicalFindingHelper(changedValues)
-          })
-          
+          }) 
         }else{
           changedValues = {disease: this.new_disease, medicine: this.new_medicine} 
           this.changeMedicalFindingHelper(changedValues)
         }
       }else{
         changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: null } 
-          this.changeMedicalFindingHelper(changedValues)
+        this.changeMedicalFindingHelper(changedValues)
       }
+    }else{
+      this.showWarnMsg("Das Krankheits und Medizinfeld dürfen nicht leer sein!")
     }
   }
 
@@ -198,6 +216,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
       this.resetMedicalFindingValues()
       this.loadMedicalFindings()
+      this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
     })
   }
 
@@ -228,14 +247,14 @@ export class DashboardComponent implements OnInit {
   }
 
   validateStringInput(str: string){
-    return str !== ''
+    return str !== '' && str !== undefined && str !== null
   }
 
   resetMedicalFindingValues(){
     this.medicalFindingModel = false
     this.new_disease = ''
     this.new_medicine = ''
-    this.selectedDoctorID = ''
+    this.selectedDoctorID = undefined
     this.selectedUsers = []
     this.currentReadAccessObjects = {}
   }

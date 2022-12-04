@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './service/login.service';
 import pgk from '../../../../secrets.json'
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  providers: [MessageService]
   
 })
 export class LoginComponent implements OnInit {
@@ -18,7 +20,7 @@ export class LoginComponent implements OnInit {
   captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
   captchaStatus: boolean = false
 
-  constructor(private router: Router,private loginService: LoginService) {}
+  constructor(private messageService: MessageService,private router: Router,private loginService: LoginService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -31,17 +33,32 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if(this.validateEmail(this.email!) && this.validatePassword(this.password!) && this.captchaStatus){
-      const creds = {email: this.email, password: this.password}
-      this.loginService.loginUser(creds).subscribe((res:any)=>{
-        localStorage.setItem('access_token', res.access)
-        localStorage.setItem('refresh_token', res.refresh)
-        this.router.navigate(['dashboard'])
-      }, err => {
-        // TODO error popup
-        console.log(err)
-      })
+    if(this.validateEmail(this.email!)){
+      if(this.validatePassword(this.password!)){
+        if(this.captchaStatus){
+          const creds = {email: this.email, password: this.password}
+          this.loginService.loginUser(creds).subscribe((res:any)=>{
+            localStorage.setItem('access_token', res.access)
+            localStorage.setItem('refresh_token', res.refresh)
+            this.router.navigate(['dashboard'])
+          }, err => {
+            if(err.status === 401){
+              this.showWarnMsg("Der angegebene User existiert nicht oder die Daten sind falsch!")
+            }
+          })
+        }else{
+          this.showWarnMsg("Bitte bestätigen Sie das Captcha!")
+        }
+      }else{
+        this.showWarnMsg("Das Password entspricht nicht den Anforderungen!")
+      }
+    }else{
+      this.showWarnMsg("Bitte tragen Sie eine gültige Email ein!")
     }
+  }
+
+  showWarnMsg(msg: string){
+    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
   }
 
   validateEmail(email: string): boolean{
@@ -60,9 +77,13 @@ export class LoginComponent implements OnInit {
     if(this.validateEmail(this.resetEmail!)){
       const resetEmail = {email: this.resetEmail}
       this.loginService.resetPassword(resetEmail).subscribe(() => {
-        this.resetEmail = ''
-        // TODO: Notification that the email was send
+        this.showWarnMsg("Ein Password Reset wurde angefragt!")
+      }, err => {
+        this.showWarnMsg("Ein Password Reset wurde angefragt!")
       })
+    }else{
+      this.showWarnMsg("Bitte tragen Sie eine gültige Email ein!")
     }
+    this.resetEmail = ''
   }
 }
