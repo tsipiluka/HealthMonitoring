@@ -3,6 +3,7 @@
     <app-my-patient-finder></app-my-patient-finder>
 </div>
 <div *ngIf="!this.validateIfDoctor()">
+    <p-toast position="top-center"></p-toast>
     <div class="container">
         <div class="addEntryBtn">
             <button pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>

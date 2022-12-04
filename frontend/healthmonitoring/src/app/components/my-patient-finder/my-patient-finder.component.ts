@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user-service/user.service';
 import { DashboardService } from '../dashboard/service/dashboard.service';
 import { MyPatientFinderService } from './service/my-patient-finder.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
+import {MessageService} from 'primeng/api';
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -33,7 +34,8 @@ export interface ReadAccessUser{
         transition('visible => hidden', animate('400ms ease-in')),
         transition('hidden => visible', animate('400ms ease-out'))
     ])
-],
+  ],
+  providers: [MessageService]
 })
 export class MyPatientFinderComponent implements OnInit {
 
@@ -55,10 +57,18 @@ export class MyPatientFinderComponent implements OnInit {
   patientenListLight: Patient[] = []
   selectedPatient: Patient | undefined
 
-  constructor(private userService: UserService,private dashboardService: DashboardService,private myPatientFinderService: MyPatientFinderService, private router: Router){}
+  constructor(private userService: UserService,private messageService: MessageService,private dashboardService: DashboardService,private myPatientFinderService: MyPatientFinderService, private router: Router){}
 
   ngOnInit(): void {
     this.loadMedicalFindings()
+  }
+
+  showWarnMsg(msg: string){
+    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
+  }
+  
+  showSuccessMsg(msg: string){
+    this.messageService.add({severity:'success', summary: 'Success', detail: msg});
   }
 
   loadMedicalFindings(){
@@ -99,6 +109,7 @@ export class MyPatientFinderComponent implements OnInit {
     this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
       this.resetMedicalFindingValues()
       this.loadMedicalFindings()
+      this.showSuccessMsg("Sie sind nicht länger für den medizinischen Befund verantwortlich!")
     })
   }
 
@@ -145,6 +156,7 @@ export class MyPatientFinderComponent implements OnInit {
       this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
         this.resetMedicalFindingValues()
         this.loadMedicalFindings()
+        this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
       })
     }
   }
@@ -176,7 +188,7 @@ export class MyPatientFinderComponent implements OnInit {
   }
 
   validateStringInput(str: string){
-    return str !== ''
+    return str !== '' && str !== undefined && str !== null
   }
 
   resetMedicalFindingValues(){
