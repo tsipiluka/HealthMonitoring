@@ -1,10 +1,16 @@
+<p-toast position="top-center"></p-toast>
 <div class="activationCard">
     <p-card header="Activate your Account" subheader="Please click on the activate button to activate your account!" [style]="{width: '360px'}" styleClass="p-card-shadow">
         <ng-template pTemplate="header">
             <img alt="Card" src="https://www.thieme.de/statics/bilder/thieme/final/de/bilder/tw_heilpraxis/patientenakte_rdax_440x277.jpg">
         </ng-template>
-        <ng-template pTemplate="footer">
-            <p-button label="Activate" icon="pi pi-check" (click)="activateAccount()"></p-button>
+        <ng-template pTemplate="footer">    
+            <div class="col-12">
+                <p-button label="Activate" icon="pi pi-check" (click)="activateAccount()"></p-button>
+            </div> 
+            <div class="col-12">
+                <a class="loginBtn" type="button" (click)="redirectToLogin()">Back to Login</a>
+            </div> 
         </ng-template>
     </p-card>
 </div>
