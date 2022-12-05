@@ -8,9 +8,10 @@ describe('Registration Testing', () => {
     cy.visit('http://localhost:4200/registration')
   })
 
-  const firstname = 'David'
-  const lastname = 'Kneller'
-  const birthday = '2001-04-30'
+  const firstname = 'Tester'
+  const lastname = 'Tester'
+  const birthday = '1920-01-01'
+  // const email = chance.email()
   const email = 'peterlustiggames@gmail.com'
   const unv_password = 'Tester123321'
   const val_password = 'Tester123321+'
