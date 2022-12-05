@@ -3,8 +3,8 @@
         <a href="http://localhost:4200/dashboard"><img src="https://cdn-icons-png.flaticon.com/512/387/387561.png" class="logo"></a>
     </span>
     <div *ngIf="this.user !== undefined">
-        <p *ngIf="this.checkIfDoctor()" class="loggedInMsg">Doktor ID: {{this.user!.doctor_id}}</p>
-        <p *ngIf="!this.checkIfDoctor()" class="loggedInMsg">Patienten ID: {{this.user!.patient_id}}</p>
+        <p *ngIf="this.checkIfDoctor()" id="loggedInMsg" class="loggedInMsg">Doktor ID: {{this.user!.doctor_id}}</p>
+        <p *ngIf="!this.checkIfDoctor()" id="loggedInMsg" class="loggedInMsg">Patienten ID: {{this.user!.patient_id}}</p>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
         aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">

@@ -1,4 +1,4 @@
-<p-toast position="top-center"></p-toast>
+<p-toast id="toastMessage" position="top-center">zap</p-toast>
 <div class="container">
     <body>
       <div class="session">
@@ -26,8 +26,9 @@
             </div>
           </div>
           <div class="captcha">
-            <ngx-recaptcha2 #captchaElem [siteKey]="captchaSiteKey" formControlName="recaptcha" (success)="captchaSuccess($event)"></ngx-recaptcha2>
+            <ngx-recaptcha2 [siteKey]="captchaSiteKey" formControlName="recaptcha" (success)="captchaSuccess($event)"></ngx-recaptcha2>
           </div>
+          <button id="captchaElem" (click)="this.captchaSuccess($event)"></button>
           <button id="loginBtn"class="login" (click)="login()">Log in</button>
           <a type="button" class="resetPassword" (click)="resetPasswordOP.toggle($event)"> Forgot Password?</a>
           <a href="http://localhost:4200/registration" class="discrete" >or Sign Up</a>
