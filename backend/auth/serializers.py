@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from rest_framework import serializers
 from user_system.models import User
 from rest_framework.validators import UniqueValidator
@@ -9,6 +10,7 @@ from .utils.activation_mail import send_activation_mail
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+
     email = serializers.EmailField(
         required=True, validators=[UniqueValidator(queryset=User.objects.all())]
     )
@@ -18,8 +20,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
     password2 = serializers.CharField(write_only=True, required=True)
     birth_date = serializers.DateField(required=True)
-    role = serializers.ChoiceField(choices=User.Role.choices, required=True)
-
     class Meta:
         model = User
         fields = (
@@ -29,12 +29,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "birth_date",
-            "role",
         )
         extra_kwargs = {
             "first_name": {"required": True},
             "last_name": {"required": True},
-            "role": {"required": True},
         }
 
     def validate(self, attrs):
@@ -52,6 +50,17 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"last_name": "Last name cannot be empty."}
             )
+        
+        # if role exists throw error
+        if "role" in attrs:
+            raise serializers.ValidationError(
+                {"role": "Role cannot be set manually."}
+            )
+        # only allow fields that are in fields
+        unknown =  set(self.initial_data) - set(self.fields)
+        if unknown:
+            raise ValidationError("Forbidden field(s): {}".format(", ".join(unknown)))
+
         return attrs
 
     def create(self, validated_data):
@@ -60,28 +69,15 @@ class RegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             birth_date=validated_data["birth_date"],
-            role=validated_data["role"],
         )
         user.set_password(validated_data["password"])
         user.save()
 
-        print("user created")
-        # send an account verification email
         try:
             send_activation_mail(user)
         except Exception as e:
             print(e)
             print("email not sent")
-
-        # print(EMAIL_HOST_PASSWORD)
-        # send_mail('Using SparkPost with Django', 'This is a message from Django using SparkPost!', 'django-sparkpost@wh0cares.live',
-        #         [user.email], fail_silently=False)
-
-        # try:
-        #     send_mail('Welcome to HealthMonitoring', ' Hello ' +user.first_name+ '\n This is a message sent to you because you registered at Health Monitoring Portal.', 'notify@wh0cares.live',
-        #     [user.email], fail_silently=False)
-        # except:
-        #     print("Error sending email")
 
         return user
 
