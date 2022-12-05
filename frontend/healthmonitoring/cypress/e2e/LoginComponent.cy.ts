@@ -2,7 +2,7 @@ import Chance from 'chance';
 
 const chance = new Chance();
 
-describe('empty spec', () => {
+describe('Login Testing', () => {
   const email = chance.email();
   const unvalid_pass = 'UnvalidPassword23'
   const valid_pass = 'Tester123321+'
