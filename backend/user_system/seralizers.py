@@ -4,9 +4,11 @@ from user_system.models import Doctor, Patient, User
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    # dont allow to set role
+    # role = serializers.CharField(read_only=True)
     class Meta:
         model = User
-
         fields = (
             "id",
             "email",
@@ -22,6 +24,12 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name": {"required": True},
             "last_name": {"required": True},
         }
+
+    def validate(self, attrs):
+        if "role" in attrs:
+            raise serializers.ValidationError(
+                {"role": "Role cannot be set manually."}
+            )
 
 
 class DoctorSerializer(serializers.ModelSerializer):
