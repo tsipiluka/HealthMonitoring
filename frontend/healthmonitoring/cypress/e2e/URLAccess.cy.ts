@@ -1,8 +1,7 @@
-import Chance from 'chance';
-
-const chance = new Chance();
+import * as Chance from 'chance';
 
 describe('URLAccess Testing', () => {
+  const chance = new Chance();
   
   const loginUrl = 'http://localhost:4200/login'
 

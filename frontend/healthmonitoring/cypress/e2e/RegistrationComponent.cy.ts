@@ -1,8 +1,7 @@
-import Chance from 'chance';
-
-const chance = new Chance();
+import * as Chance from 'chance';
 
 describe('Registration Testing', () => {
+  const chance = new Chance();
 
   beforeEach(()=>{
     cy.visit('http://localhost:4200/registration')

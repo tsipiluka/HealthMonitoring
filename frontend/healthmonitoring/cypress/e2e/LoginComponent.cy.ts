@@ -1,8 +1,7 @@
-import Chance from 'chance';
-
-const chance = new Chance();
+import * as Chance from 'chance';
 
 describe('Login Testing', () => {
+  const chance = Chance();
   const email = chance.email();
   const unvalid_pass = 'UnvalidPassword23'
   const valid_pass = 'Tester123321+'
