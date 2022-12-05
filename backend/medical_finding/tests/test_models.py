@@ -8,14 +8,18 @@ from medical_finding.serializer import MedicalFindingSerializer
 
 class TestMedicalFinding(TestCase):
 
-    def test_create_medical_finding(self):
+    def test_create_medical_finding(self, patient=None, doctor=None):
         """
         Test if medical findings can be created.
         """
-        user = TestUserModel().test_doctor()
-        patient = TestUserModel().test_patient()
+        if patient is None:
+            patient = TestUserModel().test_patient()
+        if doctor is None:
+            doctor = TestUserModel().test_doctor()
+
+
         medical_finding = MedicalFinding.objects.create(
-            treator=user,
+            treator=doctor,
             patient=patient,
             disease="Disease",
             medicine="Medicine",
@@ -24,7 +28,9 @@ class TestMedicalFinding(TestCase):
         self.assertEqual(medical_finding.disease, "Disease")
         self.assertEqual(medical_finding.medicine, "Medicine")
         self.assertEqual(medical_finding.patient, patient)
-        self.assertEqual(medical_finding.treator, user)
+        self.assertEqual(medical_finding.treator, doctor)
+
+        return medical_finding
 
     def test_create_finding_reading_right(self):
         """

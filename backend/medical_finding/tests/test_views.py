@@ -6,7 +6,7 @@ from rest_framework.test import force_authenticate, APIRequestFactory
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.test.client import encode_multipart, RequestFactory
 from user_system.tests.test_models import TestUserModel
-
+from medical_finding.tests.test_models import TestMedicalFinding
 class TestListMedicalFindingViews(APITestCase):
 
     def test_medical_findings_patient(self):
@@ -54,7 +54,36 @@ class TestListMedicalFindingViews(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = self.client.get(reverse('medical_finding:medical_findings_doctor'))
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+
+
+class TestGetMedicalFindingViews(APITestCase):
+
+    def test_get_medical_finding(self):
+        """
+        Test if a medical finding can be retrieved.
+        Expected: 200 OK
+        """
+        user = TestUserModel().test_patient()
+        refresh = RefreshToken.for_user(user)
+        finding = TestMedicalFinding().test_create_medical_finding(patient=user)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        response = self.client.get(reverse('medical_finding:get_medical_finding', kwargs={'finding_id': finding.uid}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_medical_finding_as_other_patient(self):
+        """
+        Test if a medical finding can be retrieved by a patient
+        that is not the owner of the medical finding.
+        Expected: 400 BAD REQUEST
+        """
+        user = TestUserModel().test_patient(email="patient1@test.de")
+        user2 = TestUserModel().test_patient(email="patient2@test.de")
+        refresh = RefreshToken.for_user(user)
+        finding = TestMedicalFinding().test_create_medical_finding()
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        response = self.client.get(reverse('medical_finding:get_medical_finding', kwargs={'finding_id': finding.uid}))
+
+
 class TestCreateMedicalFindingViews(APITestCase):
 
     def test_create_medical_finding_patient(self):
@@ -108,3 +137,51 @@ class TestCreateMedicalFindingViews(APITestCase):
 
         # check if patient1 is the owner of the medical finding and not patient2
         self.assertEqual(response.data['patient']['id'], patient1.id)
+
+class TestUpdateMedicalFindingViews(APITestCase):
+    
+    def test_update_medical_finding_disease(self):
+        """
+        Test if medical findings can be updated.
+        Expected: 200 OK
+        """
+        patient = TestUserModel().test_patient()
+        refresh = RefreshToken.for_user(patient)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        response = self.client.post(reverse('medical_finding:create_medical_finding'), {
+            "disease": "Disease",
+            "medicine": "Medicine",
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        finding_id = response.data['uid']
+
+        response = self.client.put(reverse('medical_finding:update_medical_finding', kwargs={'finding_id': finding_id}), {
+            "disease": "Disease2",
+            "medicine": "Medicine",
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['disease'], "Disease2")
+
+    def test_update_medical_finding_disease_other_patient(self):
+        """
+        Test if medical findings can be updated by other patients.
+        Expected: 401 UNAUTHORIZED
+        """
+        patient1 = TestUserModel().test_patient(email="patient1@test.de")
+        patient2 = TestUserModel().test_patient(email="patient2@test.de")
+        refresh = RefreshToken.for_user(patient1)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        response = self.client.post(reverse('medical_finding:create_medical_finding'), {
+            "disease": "Disease",
+            "medicine": "Medicine",
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        finding_id = response.data['uid']
+
+        refresh = RefreshToken.for_user(patient2)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        response = self.client.put(reverse('medical_finding:update_medical_finding', kwargs={'finding_id': finding_id}), {
+            "disease": "Disease2",
+            "medicine": "Medicine",
+        })
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
