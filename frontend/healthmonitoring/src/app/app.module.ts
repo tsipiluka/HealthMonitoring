@@ -62,7 +62,6 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
     HttpClientModule,
     NgbModule,
     CommonModule,
-    HttpClientModule,
     NgbModule,
     ReactiveFormsModule,
     NgxCaptchaModule,

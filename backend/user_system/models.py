@@ -76,7 +76,7 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    role = models.CharField(max_length=50, choices=Role.choices)
+    role = models.CharField(max_length=50, choices=Role.choices, default=Role.PATIENT)
     birth_date = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
     def save(self, *args, **kwargs):

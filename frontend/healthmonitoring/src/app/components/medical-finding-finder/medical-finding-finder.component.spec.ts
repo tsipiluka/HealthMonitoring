@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MedicalFindingFinderComponent } from './medical-finding-finder.component';
 
 describe('MedicalFindingFinderComponent', () => {
@@ -8,6 +8,7 @@ describe('MedicalFindingFinderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [ MedicalFindingFinderComponent ]
     })
     .compileComponents();
