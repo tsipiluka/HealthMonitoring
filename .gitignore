@@ -54,7 +54,8 @@ localhost.key
 
 
 # Cypress
-*.mp4
+/frontend/healthmonitoring/cypress/screenshots/
+/frontend/healthmonitoring/cypress/videos/
 
 
 
