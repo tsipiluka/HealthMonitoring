@@ -21,7 +21,6 @@ class TestRegisterView(APITestCase):
             "first_name": "Test",
             "last_name": "Test",
             "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
         }
         response = self.client.post(reverse("auth_register"), data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -39,7 +38,6 @@ class TestRegisterView(APITestCase):
             "first_name": "Test",
             "last_name": "Test",
             "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
         }
         response = self.client.post(reverse("auth_register"), data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -58,7 +56,6 @@ class TestRegisterView(APITestCase):
             "first_name": "Test",
             "last_name": "Test",
             "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
         }
         response = self.client.post(reverse("auth_register"), data, format="json")
         print(response.status_code)
@@ -77,7 +74,6 @@ class TestRegisterView(APITestCase):
             "first_name": "Test",
             "last_name": "Test",
             "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
         }
         response = self.client.post(reverse("auth_register"), data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -137,7 +133,6 @@ class TestRegisterView(APITestCase):
             "first_name": "Test",
             "last_name": "Test",
             "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
         }
         response = self.client.post(reverse("auth_register"), data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -157,7 +152,6 @@ class TestRegisterView(APITestCase):
             "first_name": "Test",
             "last_name": "Test",
             "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
         }
         response = self.client.post(reverse("auth_register"), data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -180,7 +174,6 @@ class TestLoginView(APITestCase):
             "first_name": "Test",
             "last_name": "Test",
             "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
         }
         response = self.client.post(reverse("auth_register"), register_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -211,8 +204,7 @@ class TestDeleteUser(APITestCase):
             "password2": "MySecretPassword123!",
             "first_name": "Test",
             "last_name": "Test",
-            "birth_date": "1990-01-01",
-            "role": User.Role.PATIENT,
+            "birth_date": "1990-01-01"
         }
         response = self.client.post(reverse("auth_register"), register_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -247,7 +239,6 @@ class TestPasswordChange(APITestCase):
             first_name="Test",
             last_name="Test",
             birth_date="1990-01-01",
-            role=User.Role.PATIENT,
         )
         user.set_password("MySecretPassword123!")
         user.is_active = True
@@ -284,7 +275,6 @@ class TestPasswordChange(APITestCase):
             first_name="Test",
             last_name="Test",
             birth_date="1990-01-01",
-            role=User.Role.PATIENT,
         )
         user.set_password("MySecretPassword123!")
         user.is_active = True
@@ -322,7 +312,6 @@ class TestPasswordChange(APITestCase):
             first_name="Test",
             last_name="Test",
             birth_date="1990-01-01",
-            role=User.Role.PATIENT,
         )
         user.set_password("MySecretPassword123!")
         user.is_active = True
