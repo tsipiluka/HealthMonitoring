@@ -7,6 +7,7 @@ import { DashboardService } from '../dashboard/service/dashboard.service';
 import { MyPatientFinderService } from './service/my-patient-finder.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
+import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -57,7 +58,7 @@ export class MyPatientFinderComponent implements OnInit {
   patientenListLight: Patient[] = []
   selectedPatient: Patient | undefined
 
-  constructor(private userService: UserService,private messageService: MessageService,private dashboardService: DashboardService,private myPatientFinderService: MyPatientFinderService, private router: Router){}
+  constructor(private userService: UserService,private fileshareService: FileshareService,private messageService: MessageService,private dashboardService: DashboardService,private myPatientFinderService: MyPatientFinderService, private router: Router){}
 
   ngOnInit(): void {
     this.loadMedicalFindings()
@@ -115,6 +116,15 @@ export class MyPatientFinderComponent implements OnInit {
 
   validateEmail(email: string): boolean{
     return /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(email)
+  }
+
+  downloadPdf(finding: MedicalFinding){
+    this.selectedMedicalFinding = finding
+    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe(err =>{
+      if(err.status === 404){
+        this.showWarnMsg("Es existiert kein Dokument zu dem Befund!")
+      }
+    })
   }
 
   displayChangeEntryModel(medicalFinding: MedicalFinding){

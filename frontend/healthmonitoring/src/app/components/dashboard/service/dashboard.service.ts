@@ -52,11 +52,4 @@ export class DashboardService {
     .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
     return this.http.delete(this.APIUrl + '/api/delete_medical_finding/'+ uid+ '/',{'headers': headers})
   }
-
-  uploadMedicalFindingDocument(val: any): Observable<any>{
-    const headers= new HttpHeaders()
-    .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
-    // return this.http.post(this.APIUrl + '/upload/'+mfID+'/',file,{'headers': headers})
-    return this.http.post(this.APIUrl + '/upload/',val,{'headers': headers})
-  }
 }

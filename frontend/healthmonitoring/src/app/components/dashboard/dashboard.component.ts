@@ -9,6 +9,7 @@ import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { FormGroup } from '@angular/forms';
+import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -56,7 +57,8 @@ export class DashboardComponent implements OnInit {
   currentReadAccessObjects: ReadAccessUser = {}
 
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
-    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService) {}
+    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
+    private fileshareService: FileshareService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -105,6 +107,15 @@ export class DashboardComponent implements OnInit {
   displayAddEntryModel(){
     this.modify_mode = false
     this.medicalFindingModel = true
+  }
+
+  downloadPdf(finding: MedicalFinding){
+    this.selectedMedicalFinding = finding
+    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe(err =>{
+      if(err.status === 404){
+        this.showWarnMsg("Es existiert kein Dokument zu dem Befund!")
+      }
+    })
   }
 
   displayChangeEntryModel(medicalFinding: MedicalFinding){
@@ -164,7 +175,7 @@ export class DashboardComponent implements OnInit {
         const formData = new FormData();
         formData.append("medical_finding", medicalFinding.uid);
         formData.append("file", this.new_file, this.new_file.name);
-        this.dashboardService.uploadMedicalFindingDocument(formData).subscribe()
+        this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
       }
       for(let i = 0; i<this.selectedUsers.length; i++){
         console.log(this.selectedUsers[i])

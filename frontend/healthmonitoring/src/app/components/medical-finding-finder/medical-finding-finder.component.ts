@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { Patient } from 'src/app/entities/patient.modal';
 import { User } from 'src/app/entities/user.modal';
+import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 import { LoginService } from '../login/service/login.service';
 import { MedicalFindingFinderService } from './service/medical-finding-finder.service';
 
 @Component({
   selector: 'app-medical-finding-finder',
   templateUrl: './medical-finding-finder.component.html',
-  styleUrls: ['./medical-finding-finder.component.css']
+  styleUrls: ['./medical-finding-finder.component.css'],
+  providers: [MessageService]
 })
 export class MedicalFindingFinderComponent {
 
@@ -18,8 +21,9 @@ export class MedicalFindingFinderComponent {
   medicalFindingsLight: MedicalFinding[] = []
   patientenListLight: Patient[] = []
   selectedPatient: Patient | undefined
+  selectedMedicalFinding: MedicalFinding | undefined
 
-  constructor(private medicalFindingFinderService: MedicalFindingFinderService,private errorHandler: ErrorHandlerService, private loginService: LoginService,private router: Router){}
+  constructor(private medicalFindingFinderService: MedicalFindingFinderService, private messageService: MessageService,private fileshareService: FileshareService,private errorHandler: ErrorHandlerService, private loginService: LoginService,private router: Router){}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -59,6 +63,19 @@ export class MedicalFindingFinderComponent {
         }
     }
     this.patientenListLight = filtered;
+  }
+
+  downloadPdf(finding: MedicalFinding){
+    this.selectedMedicalFinding = finding
+    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe(err =>{
+      if(err.status === 404){
+        this.showWarnMsg("Es existiert kein Dokument zu dem Befund!")
+      }
+    })
+  }
+
+  showWarnMsg(msg: string){
+    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
   }
   
   loadFilteredMedicalFindings(){
