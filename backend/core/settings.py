@@ -10,12 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from .read_secrets import ReadSecrets as rs
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_URL =  '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,6 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-*tp8^*b3(1^byq8h-vv^ah=z#fr8kbqp_4m19gilm@-f+nj)h)"
+# AES KEY used for file encryption by package encrypted_files
+AES_KEY = b'\x1a>\xf8\xcd\xe2\x8e_~V\x14\x98\xc2\x1f\xf9\xea\xf8\xd7c\xb3`!d\xd4\xe3+\xf7Q\x83\xb5~\x8f\xdd'
+
+FILE_UPLOAD_HANDLERS = [
+    "encrypted_files.uploadhandler.EncryptedFileUploadHandler",
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler"
+]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,7 +57,9 @@ INSTALLED_APPS = [
     "medical_finding",
     "rest_framework_simplejwt",
     "corsheaders",
+    "encrypted_files",
     "user_system",
+    "upload_files",
 ]
 
 MIDDLEWARE = [
