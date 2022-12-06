@@ -138,7 +138,7 @@ export class MyPatientFinderComponent implements OnInit {
     this.selectedUsers = [];
     this.new_disease = medicalFinding.disease
     this.new_medicine = medicalFinding.medicine
-    this.new_file = medicalFinding.file;
+    this.new_file = undefined
     this.dashboardService.getReadAccessFromMedicalFinding(medicalFinding.uid).subscribe((user: any)=>{
       for(let i = 0; i < user.length; i++){
         if(user[i]!.reader.role ==='PATIENT'){
@@ -158,12 +158,27 @@ export class MyPatientFinderComponent implements OnInit {
   changeMedicalFinding(){
     if(this.validateStringInput(this.new_medicine!) && this.validateStringInput(this.new_disease!)){
       const changedValues = {disease: this.new_disease, medicine: this.new_medicine} 
-      this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
-        this.resetMedicalFindingValues()
-        this.loadMedicalFindings()
-        this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
+      this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe((res: any)=>{
+        this.selectedMedicalFinding = res
+        if(this.new_file){
+          this.fileshareService.deleteMedicalFindingDocument(res.uid).subscribe(()=>{
+            this.changeDocumentfromMedicalFinding()
+          }, err=>{
+            this.changeDocumentfromMedicalFinding()
+          })
+        }
       })
     }
+  }
+
+  changeDocumentfromMedicalFinding(){
+    const formData = new FormData();
+    formData.append("medical_finding", this.selectedMedicalFinding!.uid);
+    formData.append("file", this.new_file!, this.new_file!.name);
+    this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
+    this.resetMedicalFindingValues()
+    this.loadMedicalFindings()
+    this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
   }
 
   deleteReadAccess(key: string){
