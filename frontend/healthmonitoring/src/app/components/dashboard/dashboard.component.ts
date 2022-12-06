@@ -101,19 +101,7 @@ export class DashboardComponent implements OnInit {
   showSuccessMsg(msg: string){
     this.messageService.add({severity:'success', summary: 'Success', detail: msg});
   }
-
-  createPdf(finding: MedicalFinding,) {
-      let doc = new jsPDF('p', 'pt', 'a4')
-      doc.text(finding.uid, 290, 20)
-      doc.text("This document contains confidential medical information about Person XY", 40, 60)
-      doc.text("Disease: "+finding.disease , 40, 90)
-      doc.text("Required Medicine: "+finding.medicine , 40, 110)
-      doc.text("Zu Risiken und Nebenwirkungen lesen Sie die Packungsbeilage und fragen", 40, 200)
-      doc.text("Sie Ihren Arzt oder Apotheker. ", 40, 220)
-
-      window.open(doc.output('bloburl'))
-  }
-
+  
   displayAddEntryModel(){
     this.modify_mode = false
     this.medicalFindingModel = true
