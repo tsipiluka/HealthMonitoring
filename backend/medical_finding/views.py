@@ -1,28 +1,23 @@
 import os
-import uuid
-from django.http import Http404
-from django.shortcuts import render
-from rest_framework.views import APIView
-
-# Create your views here.
-from rest_framework.response import Response
+from uuid import UUID
 
 from core import settings
-from .models import MedicalFinding, FindingReadingRight
-from .serializer import (
-    MedicalFindingSerializer,
-    UpdateMedicalFindingSerializer,
-    ReadingRightSerializer,
-    AddReadingRightSerializer,
-    CreateMedicalFindingSerializer
-)
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
+from django.http import Http404
+from django.shortcuts import render
+from medical_finding.models import FindingReadingRight, MedicalFinding
+from medical_finding.serializer import (AddReadingRightSerializer,
+                                        CreateMedicalFindingSerializer,
+                                        MedicalFindingSerializer,
+                                        ReadingRightSerializer,
+                                        UpdateMedicalFindingSerializer)
 from rest_framework import status
-from user_system.models import Patient, Doctor
-from uuid import UUID
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from upload_files.models import File
-
+from user_system.models import Doctor, Patient
+from upload_files.serializers import LightFileSerializer
 
 def is_valid_uuid(uuid_to_test, version=4):
 
@@ -31,6 +26,16 @@ def is_valid_uuid(uuid_to_test, version=4):
     except ValueError:
         return False
     return str(uuid_obj) == uuid_to_test
+
+def find_file_to_finding(medical_finding_id):
+    try:
+        file = File.objects.get(medical_finding=medical_finding_id)
+        file_serializer = LightFileSerializer(file)
+        return file_serializer
+    except File.DoesNotExist:
+        file = None
+        return None
+
 
 
 class ListMedicalFindingsPatient(APIView):
@@ -50,6 +55,15 @@ class ListMedicalFindingsPatient(APIView):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer = MedicalFindingSerializer(medical_findings, many=True)
+
+        for finding in serializer.data:
+            file = find_file_to_finding(finding["uid"])
+            print (file)
+            if file:                
+                finding["file"] = file.data
+            else:
+                finding["file"] = None
+
         # return the user obj instead of the id
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -71,7 +85,15 @@ class ListMedicalFindingsDoctor(APIView):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer = MedicalFindingSerializer(medical_findings, many=True)
-        # return the user obj instead of the id
+        
+        for finding in serializer.data:
+            file = find_file_to_finding(finding["uid"])
+            print (file)
+            if file:                
+                finding["file"] = file.data
+            else:
+                finding["file"] = None
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -92,6 +114,15 @@ class ListMedicalFindingsReader(APIView):
         for reading_right in reading_rights:
             medical_findings.append(reading_right.medical_finding)
         serializer = MedicalFindingSerializer(medical_findings, many=True)
+
+        for finding in serializer.data:
+            file = find_file_to_finding(finding["uid"])
+            print (file)
+            if file:                
+                finding["file"] = file.data
+            else:
+                finding["file"] = None
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -196,6 +227,8 @@ class GetMedicalFinding(APIView):
 
         user = request.user
         medical_finding = self.get_object(finding_id)
+        
+        # get the file which has the medical_finding id
         if user.is_doctor():
             doctor = Doctor.objects.get(id=user.pk)
             if doctor == medical_finding.treator:
@@ -211,7 +244,7 @@ class GetMedicalFinding(APIView):
             for reading_right in reading_rights:
                 if reading_right.medical_finding == medical_finding:
                     serializer = MedicalFindingSerializer(medical_finding)
-                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
