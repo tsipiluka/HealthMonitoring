@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit {
 
   new_disease: string | undefined
   new_medicine: string | undefined
+  new_file: FormData | undefined 
   selectedDoctorID: string | undefined
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
@@ -144,11 +145,13 @@ export class DashboardComponent implements OnInit {
   }
 
   createNewMedicalFinding(){
+    console.log(this.new_file)
     if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_medicine!)){
       if(!this.validateStringInput(this.selectedDoctorID!)){
         const medicalFinding_info = { 
           'disease': this.new_disease, 
           'medicine': this.new_medicine,
+          'file': this.new_file
         }
         this.createNewMedicalFindingHelper(medicalFinding_info)
       }else{
@@ -157,7 +160,8 @@ export class DashboardComponent implements OnInit {
           const medicalFinding_info = { 
             'disease': this.new_disease, 
             'medicine': this.new_medicine,
-            'treator': user.id
+            'treator': user.id,
+            'file': this.new_file
           }
           this.createNewMedicalFindingHelper(medicalFinding_info)
         })
@@ -169,6 +173,7 @@ export class DashboardComponent implements OnInit {
 
   createNewMedicalFindingHelper(medicalFinding_info: any){
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
+      this.dashboardService.uploadMedicalFindingDocument(medicalFinding.uid,this.new_file).subscribe()
       for(let i = 0; i<this.selectedUsers.length; i++){
         console.log(this.selectedUsers[i])
         const profil_id = {profile_id: this.selectedUsers[i]}  
@@ -254,6 +259,7 @@ export class DashboardComponent implements OnInit {
     this.medicalFindingModel = false
     this.new_disease = ''
     this.new_medicine = ''
+    this.new_file = undefined
     this.selectedDoctorID = undefined
     this.selectedUsers = []
     this.currentReadAccessObjects = {}
@@ -261,5 +267,15 @@ export class DashboardComponent implements OnInit {
 
   validateProfileID(profilId: string){
     return this.profileIdRegex.test(profilId)
+  }
+
+  onFileSelected(event: any){
+    const file = event.target.files[0]
+    if (file){
+      console.log(file.name)
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+      this.new_file = formData
+    }
   }
 }
