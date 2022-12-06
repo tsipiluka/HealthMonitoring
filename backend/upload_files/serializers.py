@@ -9,3 +9,9 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = "__all__"
+class LightFileSerializer(serializers.ModelSerializer):
+
+    file_name = serializers.CharField(source='file.name', read_only=True)
+    class Meta:
+        model = File
+        fields = ("id", "file_name", "created_at")
