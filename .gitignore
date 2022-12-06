@@ -429,3 +429,6 @@ secrets.json
 
 # .vscode folder
 .vscode/
+
+# ignore backend/media folder
+backend/media/

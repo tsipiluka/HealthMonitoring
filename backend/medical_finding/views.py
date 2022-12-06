@@ -1,3 +1,4 @@
+import os
 import uuid
 from django.http import Http404
 from django.shortcuts import render
@@ -5,6 +6,8 @@ from rest_framework.views import APIView
 
 # Create your views here.
 from rest_framework.response import Response
+
+from core import settings
 from .models import MedicalFinding, FindingReadingRight
 from .serializer import (
     MedicalFindingSerializer,
@@ -18,6 +21,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from user_system.models import Patient, Doctor
 from uuid import UUID
+from upload_files.models import File
 
 
 def is_valid_uuid(uuid_to_test, version=4):
@@ -215,7 +219,8 @@ class DeleteMedicalFinding(APIView):
 
     """
     Delete a medical finding. Only the patient can
-    delete the medical finding.
+    delete the medical finding. Also deletes the
+    belonging file if it exists.
     """
 
     authentication_classes = [JWTAuthentication]
@@ -238,7 +243,11 @@ class DeleteMedicalFinding(APIView):
         if user.is_patient():
             patient = Patient.objects.get(id=user.pk)
             if patient == medical_finding.patient:
+                # delete the belonging file if it exists
+                f = File.objects.filter(medical_finding=medical_finding).first()
                 medical_finding.delete()
+                if f:
+                    os.remove(os.path.join(settings.MEDIA_ROOT, f.file.name))
                 return Response(status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED)

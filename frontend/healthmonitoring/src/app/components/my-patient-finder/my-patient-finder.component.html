@@ -30,8 +30,8 @@
                     <td>{{finding.medicine}}</td>
                     <td>{{finding.updated_at}}</td>
                     <td style="text-align: right">      
-                        <button type="button" class="btn btn-primary optionBtn" (click)="createPdf(finding)">
-                            PDF
+                        <button type="button" class="btn btn-primary optionBtn" (click)="downloadPdf(finding)">
+                            Download File
                         </button>
                         <button type="button" class="btn btn-primary optionBtn" (click)="displayChangeEntryModel(finding)">
                             Change
@@ -64,17 +64,14 @@
                         <input type="text" pInputText [(ngModel)]="new_medicine"> 
                     </div>
                 </div>
-                <!-- <div class="new-entry-item col-3">
+                <div class="new-entry-item col-12">
                     <div class="col-12">
-                        <b>Doktor</b>
+                        <b>Datei hochladen:</b>
                     </div>
                     <div class="col-12">
-                        <form #form="ngForm">
-                            <input id="selectedDoctorID" type="text" name="selectedDoctorID" [(ngModel)]="selectedDoctorID" pInputText [pKeyFilter]="this.profileIdRegex" [pValidateOnly]="true" placeholder="AB#1234" style="margin-right: .5em">
-                            <p-message severity="error" text="Not a valid Profile ID" [@errorState]="form.dirty && !form.valid ? 'visible' : 'hidden'"></p-message>
-                        </form> 
+                        <input type="file" class="file-upload" [(ngModel)]="new_file" (change)="onFileSelected($event)">
                     </div>
-                </div> -->
+                </div>
                 <div class="new-entry-item col-12">
                     <div class="col-12">
                         <b>Welche Personen sollen den Befund einsehen können?</b>
