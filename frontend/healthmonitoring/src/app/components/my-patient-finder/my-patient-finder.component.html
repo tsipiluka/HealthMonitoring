@@ -75,6 +75,7 @@
                         </form> 
                     </div>
                 </div> -->
+                <input type="file" class="file-upload" [(ngModel)]="new_file" (change)="onFileSelected($event)">
                 <div class="new-entry-item col-12">
                     <div class="col-12">
                         <b>Welche Personen sollen den Befund einsehen können?</b>

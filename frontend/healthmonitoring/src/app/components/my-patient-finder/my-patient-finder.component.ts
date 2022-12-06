@@ -49,6 +49,7 @@ export class MyPatientFinderComponent implements OnInit {
 
   new_disease: string | undefined
   new_medicine: string | undefined
+  new_file: File | undefined
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
@@ -134,6 +135,7 @@ export class MyPatientFinderComponent implements OnInit {
     this.selectedUsers = [];
     this.new_disease = medicalFinding.disease
     this.new_medicine = medicalFinding.medicine
+    this.new_file = medicalFinding.file;
     this.dashboardService.getReadAccessFromMedicalFinding(medicalFinding.uid).subscribe((user: any)=>{
       for(let i = 0; i < user.length; i++){
         if(user[i]!.reader.role ==='PATIENT'){
@@ -201,5 +203,9 @@ export class MyPatientFinderComponent implements OnInit {
 
   validateProfileID(profilId: string){
     return this.profileIdRegex.test(profilId)
+  }
+  
+  onFileSelected(event: any){
+    this.new_file = event.target.files[0]
   }
 }
