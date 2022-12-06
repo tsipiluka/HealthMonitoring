@@ -16,4 +16,6 @@ urlpatterns = [
     path("api/", include("medical_finding.urls")),
     # path("user/",  include('django.contrib.auth.urls')),
     # path("api2/", include('user_system.urls')),
+    path("upload/", include("upload_files.urls")),
+    path("download/", include("download_files.urls")),
 ]
