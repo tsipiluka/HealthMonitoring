@@ -243,9 +243,9 @@ class DeleteMedicalFinding(APIView):
         if user.is_patient():
             patient = Patient.objects.get(id=user.pk)
             if patient == medical_finding.patient:
-                medical_finding.delete()
                 # delete the belonging file if it exists
                 f = File.objects.filter(medical_finding=medical_finding).first()
+                medical_finding.delete()
                 if f:
                     os.remove(os.path.join(settings.MEDIA_ROOT, f.file.name))
                 return Response(status=status.HTTP_204_NO_CONTENT)
