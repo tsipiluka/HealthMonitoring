@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "encrypted_files",
     "user_system",
     "upload_files",
+    "download_files",
 ]
 
 MIDDLEWARE = [
