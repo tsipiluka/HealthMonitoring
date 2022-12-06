@@ -20,7 +20,7 @@ export class FileshareService {
   downloadMedicalFindingDocument(mfID: string): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', 'Bearer '+localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/download/'+mfID+'/',{'headers': headers})
+    return this.http.get(this.APIUrl + '/download/'+mfID+'/',{'headers': headers, observe: 'response', responseType: 'blob' })
   }
 
   deleteMedicalFindingDocument(mfID: string): Observable<any>{

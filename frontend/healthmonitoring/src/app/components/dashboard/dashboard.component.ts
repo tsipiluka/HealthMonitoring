@@ -11,6 +11,7 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { FormGroup } from '@angular/forms';
 import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 
+
 export interface ReadAccessObject{
   medical_finding: string,
   reader: number,
@@ -111,9 +112,15 @@ export class DashboardComponent implements OnInit {
 
   downloadPdf(finding: MedicalFinding){
     this.selectedMedicalFinding = finding
-    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe(err =>{
-      if(err.status === 404){
-        this.showWarnMsg("Es existiert kein Dokument zu dem Befund!")
+    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
+      let blob: Blob = res.body as Blob;
+      let a = document.createElement('a')
+      a.download= 'befund.'+res.body.type.split('/')[1]
+      a.href = window.URL.createObjectURL(blob)
+      a.click()
+    }, err=>{
+      if(err.status===404){
+        this.showWarnMsg("Es wurde keine medizinische Datei zu dem Befund hochgeladen!")
       }
     })
   }
