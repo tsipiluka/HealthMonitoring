@@ -174,8 +174,9 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
       if (this.new_file){
         const formData = new FormData();
+        formData.append("medical_finding", medicalFinding.uid);
         formData.append("file", this.new_file, this.new_file.name);
-        this.dashboardService.uploadMedicalFindingDocument(medicalFinding.uid,formData).subscribe()
+        this.dashboardService.uploadMedicalFindingDocument(formData).subscribe()
       }
       for(let i = 0; i<this.selectedUsers.length; i++){
         console.log(this.selectedUsers[i])
