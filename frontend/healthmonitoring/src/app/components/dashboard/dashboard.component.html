@@ -31,7 +31,7 @@
                             <td>{{finding.updated_at}}</td>
                             <td style="text-align: right">    
                                 <button type="button" class="btn btn-primary optionBtn" (click)="downloadPdf(finding)">
-                                    PDF
+                                    Download File
                                 </button>
                                 <button type="button" class="btn btn-primary optionBtn" (click)="displayChangeEntryModel(finding)">
                                     Change
@@ -80,7 +80,9 @@
                         <div class="col-12">
                             <b>Datei hochladen:</b>
                         </div>
-                        <input type="file" class="file-upload" [(ngModel)]="new_file" (change)="onFileSelected($event)">
+                        <div class="col-12">
+                            <input type="file" class="file-upload" [(ngModel)]="new_file" (change)="onFileSelected($event)">
+                        </div>
                     </div>
                     <div class="new-entry-item col-12">
                         <div class="col-12">
