@@ -7,20 +7,22 @@ jobs:
     name: E2E on Chrome
     steps:
       - uses: actions/checkout@v2
+      - run: cd frontend/healthmonitoring
+      - uses: bahmutov/npm-install@v1
+      - name: Start Frontend
+        run: ng serve &   
       - uses: cypress-io/github-action@v4
         with:
           start: |  
             cd /backend 
             pip install -r requirements.txt
-            python manage.py runserver&
+            python manage.py runserver &
             python manage.py createpatient pat1@pat.de Tester123321+ Pat Pat
-            cd /frontend/healthmonitoring
-            npm i
-            ng serve&
+          wait-on: 'http://127.0.0.1:4200 , http://127.0.0.1:8000'
           browser: chrome
-          # working-directory: ./frontend/healthmonitoring/
-          project: ./frontend/healthmonitoring/
-          config-file: ./frontend/healthmonitoring/cypress.config.ts
+          working-directory: cypress/e2e
+          # project: ./frontend/healthmonitoring/
+          # config-file: ./frontend/healthmonitoring/cypress.config.ts
         env: 
           CYPRESS_host: "127.0.0.1"
           CYPRESS_port: 4200
