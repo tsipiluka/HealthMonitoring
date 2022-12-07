@@ -13,9 +13,9 @@ services:
     depends_on:
       - db
   frontend:
-      build: 'frontend/healthmonitoring/'
-      ports:
-        - 4200:80
+    build: 'frontend/healthmonitoring/'
+    ports:
+      - 4200:80
   db:
     image: postgres:13
     volumes:
