@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './service/login.service';
-import pgk from '../../../../secrets.json'
+// import pgk from '../../../../secrets.json'
 import {MessageService} from 'primeng/api';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
@@ -18,7 +18,8 @@ export class LoginComponent implements OnInit {
   password: string | undefined
   resetEmail: string | undefined
 
-  captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
+  // captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
+  captchaSiteKey: string = ''
   captchaStatus: boolean = false
 
   constructor(private messageService: MessageService,private router: Router,private loginService: LoginService) {}

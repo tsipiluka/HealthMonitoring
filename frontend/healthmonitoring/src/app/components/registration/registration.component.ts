@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import pkg from '../../../../secrets.json';
+// import pkg from '../../../../secrets.json';
 import { RegistrationService } from './service/registration.service';
 import {MessageService} from 'primeng/api';
 
@@ -12,7 +12,8 @@ import {MessageService} from 'primeng/api';
 })
 export class RegistrationComponent implements OnInit {
 
-  captchaSiteKey: string = pkg.CAPTCHA_SITEKEY
+  // captchaSiteKey: string = pkg.CAPTCHA_SITEKEY
+  captchaSiteKey: string = ''
   captchaStatus: boolean = false
 
   firstname: string | undefined
