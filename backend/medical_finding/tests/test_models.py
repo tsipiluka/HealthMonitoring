@@ -1,9 +1,9 @@
 from django.test import TestCase
-
-from medical_finding.models import MedicalFinding, FindingReadingRight, BaseModel
-from user_system.models import User, Doctor, Patient
-from user_system.tests.test_models import TestUserModel
+from medical_finding.models import (BaseModel, FindingReadingRight,
+                                    MedicalFinding)
 from medical_finding.serializer import MedicalFindingSerializer
+from user_system.models import Doctor, Patient, User
+from user_system.tests.test_models import TestUserModel
 
 
 class TestMedicalFinding(TestCase):
