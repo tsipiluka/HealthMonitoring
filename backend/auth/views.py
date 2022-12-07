@@ -20,7 +20,6 @@ class RegisterView(generics.CreateAPIView):
 
 class DeleteUserView(APIView):
     def delete(self, request, format=None):
-        print(request.user)
         try:
             user = User.objects.get(id=request.user.id)
             user.delete()
@@ -70,15 +69,11 @@ class ChangePasswordView(UpdateAPIView):
 
 class ActivateAccountView(APIView):
     def post(self, request, token, uidb64):
-        print(token)
-        print(uidb64)
 
         try:
             uid = force_str(urlsafe_b64decode(uidb64))
             # get user from the uid
             user = User.objects.get(pk=uid)
-            print(token)
-            print(user)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
             return Response(

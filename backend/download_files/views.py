@@ -45,7 +45,6 @@ class FileDownloadView(APIView):
         medical_finding = MedicalFinding.objects.get(pk=medical_finding_id)
 
         if not medical_finding:
-            print("Medical finding is none")
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if not (request.user == medical_finding.patient or request.user == medical_finding.treator):

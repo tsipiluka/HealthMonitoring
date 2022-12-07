@@ -17,5 +17,3 @@ def send_activation_mail(user: User):
     uid = force_str(uid)
     send_mail(subject, f'Hello {user.first_name} \nThis is a message sent to you because you registered at Health Monitoring Portal.\n Visit http://localhost:4200/activate/{token}/{uid}', 'notify@wh0cares.live',
     [user.email], fail_silently=False)
-    print(token)
-    print(uid)
