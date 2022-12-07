@@ -9,11 +9,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
-      - name: Start app with docker-compose
-        uses: sudo-bot/action-docker-compose@latest
-        with:
-          # https://docs.docker.com/compose/reference/overview/
-          cli-args: "up"
+      # - name: Start app with docker-compose
+      #   uses: sudo-bot/action-docker-compose@latest
+      #   with:
+      #     # https://docs.docker.com/compose/reference/overview/
+      #     cli-args: "up"
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: frontend/healthmonitoring
