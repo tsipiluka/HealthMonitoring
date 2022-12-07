@@ -10,7 +10,7 @@ jobs:
       - uses: cypress-io/github-action@v4
         with:
           browser: chrome
-          project: ./frontend/healthmonitoring/
+          project: ./Healthmonitoring/frontend/healthmonitoring/
         env: 
           CYPRESS_host: api.dev.local
           CYPRESS_port: 4222
