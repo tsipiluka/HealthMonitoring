@@ -13,21 +13,6 @@ jobs:
         with:
           working-directory: frontend/healthmonitoring
           install-command: npm i --force
-      # - name: Start Frontend
-      #   with:
-      #     working-directory: frontend/healthmonitoring
-      #   run: ng serve &
-      # - name: Start backend
-      #   uses: brettcannon/pip-secure-install@v1.0.0
-      #   with:
-      #     working-directory: backend
-      #   run: |
-      #     pip install -r requirements.txt
-      #     python manage.py runserver &
-      #     # python manage.py createpatient pat1@pat.de Tester123321+ Pat Pat
-      - name: Start app
-        run: |
-          docker-compose up -d
       - uses: cypress-io/github-action@v4
         with:
           wait-on: 'http://127.0.0.1:4200 , http://127.0.0.1:8000'
