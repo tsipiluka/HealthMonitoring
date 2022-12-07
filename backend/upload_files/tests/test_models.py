@@ -6,8 +6,12 @@ from medical_finding.tests.test_models import TestMedicalFinding
 
 class TestFileModel(TestCase):
     
-    def test_create_file(self):
-        finding = TestMedicalFinding().test_create_medical_finding()
+    def test_create_file(self, patient=None, doctor=None):
+
+        if patient is not None:
+            finding = TestMedicalFinding().test_create_medical_finding(patient=patient)
+        else:
+            finding = TestMedicalFinding().test_create_medical_finding()
         file_path = os.path.join(os.path.dirname(__file__), "upload_files", "test.txt")
         file_data = SimpleUploadedFile(
             file_path, b"file_content", content_type="text/plain"
