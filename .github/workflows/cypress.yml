@@ -7,20 +7,26 @@ jobs:
     name: E2E on Chrome
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: frontend/healthmonitoring
-      - name: Start Frontend
-        with:
-          working-directory: frontend/healthmonitoring
-        run: ng serve &
-      - name: Start backend
-        with:
-          working-directory: backend
+      # - name: Start Frontend
+      #   with:
+      #     working-directory: frontend/healthmonitoring
+      #   run: ng serve &
+      # - name: Start backend
+      #   uses: brettcannon/pip-secure-install@v1.0.0
+      #   with:
+      #     working-directory: backend
+      #   run: |
+      #     pip install -r requirements.txt
+      #     python manage.py runserver &
+      #     # python manage.py createpatient pat1@pat.de Tester123321+ Pat Pat
+      - name: Start app
         run: |
-          pip install -r requirements.txt
-          python manage.py runserver &
-          # python manage.py createpatient pat1@pat.de Tester123321+ Pat Pat
+          docker-compose up -d
       - uses: cypress-io/github-action@v4
         with:
           wait-on: 'http://127.0.0.1:4200 , http://127.0.0.1:8000'
