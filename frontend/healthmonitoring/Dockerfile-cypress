@@ -1,0 +1,20 @@
+# base image
+FROM cypress/browsers:chrome65-ff57
+
+# set working directory
+# RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
+
+# install cypress
+
+COPY package.json .
+RUN npm install --force
+
+# copy cypress files and folders
+COPY cypress /usr/src/app/cypress
+COPY cypress.config.ts /usr/src/app/cypress/cypress.config.ts
+
+# confirm the cypress install
+# RUN npx cypress verify
+
+CMD ["npx","cypress", "run"]
