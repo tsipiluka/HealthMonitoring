@@ -1,4 +1,5 @@
 import os
+import uuid
 from django.conf import settings
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
@@ -21,8 +22,21 @@ class FileUploadView(APIView):
 
         file_serializer = FileSerializer(data=request.data)
 
+        if not request.data.get('medical_finding'):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
         medical_finding_id = request.data.get('medical_finding')
-        medical_finding = MedicalFinding.objects.filter(uid=medical_finding_id).first()
+
+        try:
+            medical_finding_id = uuid.UUID(medical_finding_id, version=4)
+        except ValueError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            medical_finding = MedicalFinding.objects.get(uid=medical_finding_id)
+        except MedicalFinding.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
 
         if not (request.user == medical_finding.patient or request.user == medical_finding.treator):
             return Response(status=status.HTTP_403_FORBIDDEN)
@@ -42,6 +56,7 @@ class DeleteUploadedFileView(APIView):
         medical_finding = MedicalFinding.objects.filter(uid=medical_finding_id).first()
 
         if not (request.user == medical_finding.patient or request.user == medical_finding.treator):
+        
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         f = File.objects.filter(medical_finding=medical_finding_id).first()
