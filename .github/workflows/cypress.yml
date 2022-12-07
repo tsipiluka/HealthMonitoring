@@ -13,8 +13,9 @@ jobs:
         with:
           working-directory: frontend/healthmonitoring
           install-command: npm i --force
-      - uses: cypress-io/github-action@v4
+      - uses: cypress-io/github-action@v4 
         with:
+          install: false
           wait-on: 'http://127.0.0.1:4200 , http://127.0.0.1:8000'
           browser: chrome
           working-directory: frontend/healthmonitoring
