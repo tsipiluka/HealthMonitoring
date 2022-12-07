@@ -12,6 +12,7 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: frontend/healthmonitoring
+          install-command: npm i --force
       # - name: Start Frontend
       #   with:
       #     working-directory: frontend/healthmonitoring

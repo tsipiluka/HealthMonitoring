@@ -18,18 +18,21 @@ services:
       dockerfile: Dockerfile
     ports:
       - 4200:80
-  cypress:
-    image: "cypress/included:4.1.0"
-    command: "--browser chrome"
-    volumes:
-      - ./frontend/healthmonitoring/cypress:/cypress
-      - ./frontend/healthmonitoring/cypress.json:/cypress.json
-    # build:
-    #   context: 'frontend/healthmonitoring/'
-    #   dockerfile: Dockerfile-cypress
-    depends_on:
-      - frontend
-    # network_mode: 'host'
+  # cypress:
+  #   build:
+  #     context: 'frontend/healthmonitoring/'
+  #     dockerfile: Dockerfile-cypress
+  #   command: "npx cypress run "
+  #   volumes:
+  #     # - ./frontend/healthmonitoring/cypress:/cypress
+  #     - ./frontend/healthmonitoring/cypress.config.ts:/cypress.config.ts
+  #     - ./frontend/healthmonitoring/cypress/tsconfig.json:/tsconfig.json
+  #   # build:
+  #   #   context: 'frontend/healthmonitoring/'
+  #   #   dockerfile: Dockerfile-cypress
+  #   depends_on:
+  #     - frontend
+  #   # network_mode: 'host'
   db:
     image: postgres:13
     volumes:
