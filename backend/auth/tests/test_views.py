@@ -58,7 +58,6 @@ class TestRegisterView(APITestCase):
             "birth_date": "1990-01-01",
         }
         response = self.client.post(reverse("auth_register"), data, format="json")
-        print(response.status_code)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(User.objects.count(), 0)
 
