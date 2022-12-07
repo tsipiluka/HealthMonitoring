@@ -18,7 +18,7 @@
                 <th scope="col">Doktor (Doktor ID)</th>
                 <th scope="col">Patient (Patient ID)</th>
                 <th scope="col">Krankheit</th>
-                <th scope="col">Medizin</th>
+                <th scope="col">Kommentar</th>
                 <th scope="col">Letztes Update am</th>
                 <th scope="col">Optionen</th>
                 </tr>
@@ -30,7 +30,7 @@
                     <td *ngIf="finding.treator ===null">-</td>
                     <td>{{finding.patient.first_name}} {{finding.patient.last_name}} ({{finding.patient.patient_profile.patient_id}})</td>
                     <td>{{finding.disease}}</td>
-                    <td>{{finding.medicine}}</td>
+                    <td>{{finding.comment}}</td>
                     <td>{{finding.updated_at}}</td>
                     <td>    
                         <button type="button" class="btn btn-primary" (click)="downloadPdf(finding)">
