@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { LoginService } from '../login/service/login.service';
 import { DashboardService } from './service/dashboard.service';
-import { jsPDF } from "jspdf";
 import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
