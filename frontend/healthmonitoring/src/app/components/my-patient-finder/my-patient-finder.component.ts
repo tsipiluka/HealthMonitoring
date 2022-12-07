@@ -48,7 +48,7 @@ export class MyPatientFinderComponent implements OnInit {
   selectedMedicalFinding: MedicalFinding | undefined
 
   new_disease: string | undefined
-  new_medicine: string | undefined
+  new_comment: string | undefined
   new_file: File | undefined
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
@@ -137,7 +137,7 @@ export class MyPatientFinderComponent implements OnInit {
     this.selectedMedicalFinding = medicalFinding
     this.selectedUsers = [];
     this.new_disease = medicalFinding.disease
-    this.new_medicine = medicalFinding.medicine
+    this.new_comment = medicalFinding.comment
     this.new_file = undefined
     this.dashboardService.getReadAccessFromMedicalFinding(medicalFinding.uid).subscribe((user: any)=>{
       for(let i = 0; i < user.length; i++){
@@ -156,8 +156,8 @@ export class MyPatientFinderComponent implements OnInit {
   }
 
   changeMedicalFinding(){
-    if(this.validateStringInput(this.new_medicine!) && this.validateStringInput(this.new_disease!)){
-      const changedValues = {disease: this.new_disease, medicine: this.new_medicine} 
+    if(this.validateStringInput(this.new_comment!) && this.validateStringInput(this.new_disease!)){
+      const changedValues = {disease: this.new_disease, comment: this.new_comment} 
       this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe((res: any)=>{
         this.selectedMedicalFinding = res
         if(this.new_file){
@@ -214,7 +214,7 @@ export class MyPatientFinderComponent implements OnInit {
   resetMedicalFindingValues(){
     this.medicalFindingModel = false
     this.new_disease = ''
-    this.new_medicine = ''
+    this.new_comment = ''
     this.selectedUsers = []
     this.currentReadAccessObjects = {}
   }

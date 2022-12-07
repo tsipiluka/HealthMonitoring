@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
   selectedMedicalFinding: MedicalFinding | undefined
 
   new_disease: string | undefined
-  new_medicine: string | undefined
+  new_comment: string | undefined
   new_file: File | undefined 
   selectedDoctorID: string | undefined
   selectedUsers: string[] = []
@@ -128,7 +128,7 @@ export class DashboardComponent implements OnInit {
     this.selectedMedicalFinding = medicalFinding
     this.selectedUsers = [];
     this.new_disease = medicalFinding.disease
-    this.new_medicine = medicalFinding.medicine
+    this.new_comment = medicalFinding.comment
     this.selectedDoctorID = medicalFinding.treator !== null ? medicalFinding.treator.doctor_profile.doctor_id : undefined
     this.new_file = undefined
     this.dashboardService.getReadAccessFromMedicalFinding(medicalFinding.uid).subscribe((user: any)=>{
@@ -152,20 +152,20 @@ export class DashboardComponent implements OnInit {
   }
 
   createNewMedicalFinding(){
-    if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_medicine!)){
+    if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_comment!)){
       if(!this.validateStringInput(this.selectedDoctorID!)){
         const medicalFinding_info = { 
-          'disease': this.new_disease, 
-          'medicine': this.new_medicine
+          disease: this.new_disease, 
+          comment: this.new_comment
         }
         this.createNewMedicalFindingHelper(medicalFinding_info)
       }else{
         const doctorID = {profile_id: this.selectedDoctorID!}
         this.userService.getUserId(doctorID).subscribe((user: any) => {
           const medicalFinding_info = { 
-            'disease': this.new_disease, 
-            'medicine': this.new_medicine,
-            'treator': user.id
+            disease: this.new_disease, 
+            comment: this.new_comment,
+            treator: user.id
           }
           this.createNewMedicalFindingHelper(medicalFinding_info)
         })
@@ -204,21 +204,21 @@ export class DashboardComponent implements OnInit {
   }
 
   changeMedicalFinding(){
-    if(this.validateStringInput(this.new_medicine!) && this.validateStringInput(this.new_disease!)){
+    if(this.validateStringInput(this.new_comment!) && this.validateStringInput(this.new_disease!)){
       let changedValues = {}
       if(this.validateStringInput(this.selectedDoctorID!)){
         if(this.validateProfileID(this.selectedDoctorID!)){
           const profil_id = {profile_id: this.selectedDoctorID}  
           this.userService.getUserId(profil_id).subscribe((user: any)=>{
-            changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: user.id } 
+            changedValues = {disease: this.new_disease, comment: this.new_comment,treator: user.id } 
             this.changeMedicalFindingHelper(changedValues)
           }) 
         }else{
-          changedValues = {disease: this.new_disease, medicine: this.new_medicine} 
+          changedValues = {disease: this.new_disease, comment: this.new_comment} 
           this.changeMedicalFindingHelper(changedValues)
         }
       }else{
-        changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: null } 
+        changedValues = {disease: this.new_disease, comment: this.new_comment,treator: null } 
         this.changeMedicalFindingHelper(changedValues)
       }
     }else{
@@ -282,7 +282,7 @@ export class DashboardComponent implements OnInit {
   resetMedicalFindingValues(){
     this.medicalFindingModel = false
     this.new_disease = ''
-    this.new_medicine = ''
+    this.new_comment = ''
     this.new_file = undefined
     this.selectedDoctorID = undefined
     this.selectedUsers = []
