@@ -23,8 +23,8 @@ jobs:
           install: false
           # wait-on: 'http://127.0.0.1:4200 , http://127.0.0.1:8000'
           browser: chrome
-          # working-directory: frontend/healthmonitoring
-          project: frontend/healthmonitoring/
+          working-directory: frontend/healthmonitoring
+          # project: frontend/healthmonitoring/
           config-file: frontend/healthmonitoring/cypress.config.ts
         env: 
           CYPRESS_host: "127.0.0.1"
