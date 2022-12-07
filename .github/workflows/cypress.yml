@@ -7,7 +7,7 @@ jobs:
     name: E2E on Chrome
     steps:
       - uses: actions/checkout@v2
-      - run: cd frontend/healthmonitoring
+      - run: chroot frontend/healthmonitoring
       - uses: bahmutov/npm-install@v1
       - name: Start Frontend
         run: ng serve &   
