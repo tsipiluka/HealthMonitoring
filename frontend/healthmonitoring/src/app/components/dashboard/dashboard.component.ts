@@ -8,6 +8,9 @@ import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { FormGroup } from '@angular/forms';
+import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
+
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -49,12 +52,14 @@ export class DashboardComponent implements OnInit {
 
   new_disease: string | undefined
   new_medicine: string | undefined
+  new_file: File | undefined 
   selectedDoctorID: string | undefined
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
-    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService) {}
+    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
+    private fileshareService: FileshareService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -99,22 +104,25 @@ export class DashboardComponent implements OnInit {
   showSuccessMsg(msg: string){
     this.messageService.add({severity:'success', summary: 'Success', detail: msg});
   }
-
-  createPdf(finding: MedicalFinding,) {
-      let doc = new jsPDF('p', 'pt', 'a4')
-      doc.text(finding.uid, 290, 20)
-      doc.text("This document contains confidential medical information about Person XY", 40, 60)
-      doc.text("Disease: "+finding.disease , 40, 90)
-      doc.text("Required Medicine: "+finding.medicine , 40, 110)
-      doc.text("Zu Risiken und Nebenwirkungen lesen Sie die Packungsbeilage und fragen", 40, 200)
-      doc.text("Sie Ihren Arzt oder Apotheker. ", 40, 220)
-
-      window.open(doc.output('bloburl'))
-  }
-
+  
   displayAddEntryModel(){
     this.modify_mode = false
     this.medicalFindingModel = true
+  }
+
+  downloadPdf(finding: MedicalFinding){
+    this.selectedMedicalFinding = finding
+    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
+      let blob: Blob = res.body as Blob;
+      let a = document.createElement('a')
+      a.download= 'befund.'+res.body.type.split('/')[1]
+      a.href = window.URL.createObjectURL(blob)
+      a.click()
+    }, err=>{
+      if(err.status===404){
+        this.showWarnMsg("Es wurde keine medizinische Datei zu dem Befund hochgeladen!")
+      }
+    })
   }
 
   displayChangeEntryModel(medicalFinding: MedicalFinding){
@@ -123,6 +131,7 @@ export class DashboardComponent implements OnInit {
     this.new_disease = medicalFinding.disease
     this.new_medicine = medicalFinding.medicine
     this.selectedDoctorID = medicalFinding.treator !== null ? medicalFinding.treator.doctor_profile.doctor_id : undefined
+    this.new_file = undefined
     this.dashboardService.getReadAccessFromMedicalFinding(medicalFinding.uid).subscribe((user: any)=>{
       for(let i = 0; i < user.length; i++){
         if(user[i]!.reader.role ==='PATIENT'){
@@ -148,7 +157,7 @@ export class DashboardComponent implements OnInit {
       if(!this.validateStringInput(this.selectedDoctorID!)){
         const medicalFinding_info = { 
           'disease': this.new_disease, 
-          'medicine': this.new_medicine,
+          'medicine': this.new_medicine
         }
         this.createNewMedicalFindingHelper(medicalFinding_info)
       }else{
@@ -169,6 +178,12 @@ export class DashboardComponent implements OnInit {
 
   createNewMedicalFindingHelper(medicalFinding_info: any){
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
+      if (this.new_file){
+        const formData = new FormData();
+        formData.append("medical_finding", medicalFinding.uid);
+        formData.append("file", this.new_file, this.new_file.name);
+        this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
+      }
       for(let i = 0; i<this.selectedUsers.length; i++){
         console.log(this.selectedUsers[i])
         const profil_id = {profile_id: this.selectedUsers[i]}  
@@ -213,11 +228,26 @@ export class DashboardComponent implements OnInit {
   }
 
   changeMedicalFindingHelper(changedValues: any){
-    this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
-      this.resetMedicalFindingValues()
-      this.loadMedicalFindings()
-      this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
+    this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe((res: any)=>{
+      this.selectedMedicalFinding = res
+      if(this.new_file){
+        this.fileshareService.deleteMedicalFindingDocument(res.uid).subscribe(()=>{
+          this.changeDocumentfromMedicalFinding()
+        }, err=>{
+          this.changeDocumentfromMedicalFinding()
+        })
+      }
     })
+  }
+
+  changeDocumentfromMedicalFinding(){
+    const formData = new FormData();
+    formData.append("medical_finding", this.selectedMedicalFinding!.uid);
+    formData.append("file", this.new_file!, this.new_file!.name);
+    this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
+    this.resetMedicalFindingValues()
+    this.loadMedicalFindings()
+    this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
   }
 
   deleteReadAccess(key: string){
@@ -254,6 +284,7 @@ export class DashboardComponent implements OnInit {
     this.medicalFindingModel = false
     this.new_disease = ''
     this.new_medicine = ''
+    this.new_file = undefined
     this.selectedDoctorID = undefined
     this.selectedUsers = []
     this.currentReadAccessObjects = {}
@@ -261,5 +292,9 @@ export class DashboardComponent implements OnInit {
 
   validateProfileID(profilId: string){
     return this.profileIdRegex.test(profilId)
+  }
+
+  onFileSelected(event: any){
+    this.new_file = event.target.files[0]
   }
 }
