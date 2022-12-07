@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { LoginService } from './service/login.service';
 import pgk from '../../../../secrets.json'
 import {MessageService} from 'primeng/api';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [MessageService]
+  providers: [MessageService, LoginService, HttpClient]
   
 })
 export class LoginComponent implements OnInit {
@@ -58,7 +59,7 @@ export class LoginComponent implements OnInit {
   }
 
   showWarnMsg(msg: string){
-    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
+    this.messageService.add({id: 'toastMessage', severity:'warn', summary: 'Warn', detail: msg});
   }
   
   showSuccessMsg(msg: string){

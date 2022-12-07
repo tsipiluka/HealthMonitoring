@@ -53,6 +53,9 @@ localhost.crt
 localhost.key
 
 
+# Cypress
+/frontend/healthmonitoring/cypress/screenshots/
+/frontend/healthmonitoring/cypress/videos/
 
 
 

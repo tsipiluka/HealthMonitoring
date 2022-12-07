@@ -7,7 +7,7 @@
         <p-toast position="top-center"></p-toast>
         <div class="container">
             <div class="addEntryBtn">
-                <button pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
+                <button id="addMedicalFindingID" pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
             </div>
             <div class="row">
                 <table class="table table-dark">
@@ -54,7 +54,7 @@
                             <b>Krankheit</b>
                         </div>
                         <div class="col-12">
-                            <input type="text" pInputText [(ngModel)]="new_disease">
+                            <input id="diseaseFieldID" type="text" pInputText [(ngModel)]="new_disease">
                         </div>
                     </div>
                     <div class="new-entry-item col-3">
@@ -81,7 +81,7 @@
                             <b>Datei hochladen:</b>
                         </div>
                         <div class="col-12">
-                            <input type="file" class="file-upload" [(ngModel)]="new_file" (change)="onFileSelected($event)">
+                            <input id="fieldUploadFieldId" type="file" class="file-upload" [(ngModel)]="new_file" (change)="onFileSelected($event)">
                         </div>
                     </div>
                     <div class="new-entry-item col-12">
@@ -94,8 +94,8 @@
                     </div>
                 </div>
                 <ng-template pTemplate="footer">
-                <p-button *ngIf="!this.modify_mode" icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
-                <p-button *ngIf="this.modify_mode" icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
+                <p-button *ngIf="!this.modify_mode" id="finishAddMedicalFindingFieldId" icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
+                <p-button *ngIf="this.modify_mode" id="finishAddMedicalFindingFieldId" icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
                 </ng-template>
         </p-dialog>
     </div>  
