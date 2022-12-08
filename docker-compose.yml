@@ -19,6 +19,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
       - /var/www/html:/var/www/html
+      - /static:/static  # <-- needs testing
     ports:
       - 80:80
       - 443:443
