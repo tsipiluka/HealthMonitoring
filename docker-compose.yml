@@ -2,9 +2,10 @@ services:
   backend:
     build: 'backend/'
     command: >
-      sh -c "python /code/manage.py makemigrations && python /code/manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:80"
+      sh -c "python /code/manage.py collectstatic --no-input  && python /code/manage.py makemigrations && python /code/manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:80"
     volumes:
       - ./backend/:/code
+      - /static:/static # <-- needs testing
     depends_on:
       - db
   # frontend:
