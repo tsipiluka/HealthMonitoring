@@ -22,11 +22,11 @@ class TestMedicalFinding(TestCase):
             treator=doctor,
             patient=patient,
             disease="Disease",
-            medicine="Medicine",
+            comment="Comment",
         )
 
         self.assertEqual(medical_finding.disease, "Disease")
-        self.assertEqual(medical_finding.medicine, "Medicine")
+        self.assertEqual(medical_finding.comment, "Comment")
         self.assertEqual(medical_finding.patient, patient)
         self.assertEqual(medical_finding.treator, doctor)
 
@@ -43,7 +43,7 @@ class TestMedicalFinding(TestCase):
             treator=doctor,
             patient=patient,
             disease="Disease",
-            medicine="Medicine",
+            comment="Comment",
         )
         patient2 = TestUserModel().test_patient(email="patient2@test.de")
         finding_reading_right = FindingReadingRight.objects.create(
