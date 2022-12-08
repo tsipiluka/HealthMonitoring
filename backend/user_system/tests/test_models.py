@@ -1,17 +1,15 @@
+from user_system.models import User
 
-from user_system.models import User, Doctor, Patient, DoctorProfile, PatientProfile
-
-from rest_framework.test import APIClient, APITestCase
+from rest_framework.test import APITestCase
 
 
 class TestUserModel(APITestCase):
-
     def test_patient(self, email="patient@test.de"):
         user = User.objects.create_user(
             email=email,
             first_name="test",
             last_name="test",
-            role = User.Role.PATIENT,
+            role=User.Role.PATIENT,
         )
         user.set_password("test")
         # set is_active to true
@@ -24,7 +22,7 @@ class TestUserModel(APITestCase):
             email=email,
             first_name="test",
             last_name="test",
-            role = User.Role.DOCTOR,
+            role=User.Role.DOCTOR,
         )
         user.set_password("test")
         user.is_active = True

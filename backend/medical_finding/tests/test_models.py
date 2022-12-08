@@ -1,13 +1,9 @@
 from django.test import TestCase
-from medical_finding.models import (BaseModel, FindingReadingRight,
-                                    MedicalFinding)
-from medical_finding.serializer import MedicalFindingSerializer
-from user_system.models import Doctor, Patient, User
+from medical_finding.models import FindingReadingRight, MedicalFinding
 from user_system.tests.test_models import TestUserModel
 
 
 class TestMedicalFinding(TestCase):
-
     def test_create_medical_finding(self, patient=None, doctor=None):
         """
         Test if medical findings can be created.
@@ -16,7 +12,6 @@ class TestMedicalFinding(TestCase):
             patient = TestUserModel().test_patient()
         if doctor is None:
             doctor = TestUserModel().test_doctor()
-
 
         medical_finding = MedicalFinding.objects.create(
             treator=doctor,
@@ -52,4 +47,3 @@ class TestMedicalFinding(TestCase):
 
         self.assertEqual(finding_reading_right.medical_finding, medical_finding)
         self.assertEqual(finding_reading_right.reader, patient2)
-        

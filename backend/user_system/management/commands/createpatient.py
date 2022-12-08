@@ -1,11 +1,12 @@
 from django.core.management.base import BaseCommand
-from django.utils import timezone
-from user_system.models import User, DoctorProfile
+from user_system.models import User
+
 
 class Command(BaseCommand):
     """
     Create a patient with an interactive prompt
     """
+
     help = "Create a patient"
 
     def add_arguments(self, parser):
@@ -19,7 +20,7 @@ class Command(BaseCommand):
         password = options["password"]
         first_name = options["first_name"]
         last_name = options["last_name"]
-        user = User.objects.create_user(
+        User.objects.create_user(
             email=email,
             password=password,
             first_name=first_name,
@@ -29,7 +30,6 @@ class Command(BaseCommand):
         )
 
         # also create the DoctorProfile for the instance
-        #DoctorProfile.objects.create(user=user, doctor_id=user.id)
+        # DoctorProfile.objects.create(user=user, doctor_id=user.id)
 
         self.stdout.write(self.style.SUCCESS("Patient created successfully"))
-        
