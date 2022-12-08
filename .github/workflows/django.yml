@@ -36,4 +36,9 @@ jobs:
     # the manage.py file is in backend/manage.py
     - name: Run Django Tests
       run: |
-        python backend/manage.py test
+        python backend/manage.py test auth
+        python backend/manage.py test core
+        python backend/manage.py test download_files
+        python backend/manage.py test upload_files
+        python backend/manage.py test medical_findings
+        python backend/manage.py test user_system
