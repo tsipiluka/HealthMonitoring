@@ -97,7 +97,7 @@ class TestCreateMedicalFindingViews(APITestCase):
         response = self.client.post(reverse('medical_finding:create_medical_finding'), {
             "patient": patient.id,
             "disease": "Disease",
-            "medicine": "Medicine",
+            "comment": "comment",
         })
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     
@@ -113,7 +113,7 @@ class TestCreateMedicalFindingViews(APITestCase):
         response = self.client.post(reverse('medical_finding:create_medical_finding'), {
             "patient": doctor.id,
             "disease": "Disease",
-            "medicine": "Medicine",
+            "comment": "comment",
         })
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -130,7 +130,7 @@ class TestCreateMedicalFindingViews(APITestCase):
         response = self.client.post(reverse('medical_finding:create_medical_finding'), {
             "patient": patient2.id,
             "disease": "Disease",
-            "medicine": "Medicine",
+            "comment": "comment",
         })
         #check if patient1 is the owner of the medical finding and not patient2
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -150,14 +150,14 @@ class TestUpdateMedicalFindingViews(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = self.client.post(reverse('medical_finding:create_medical_finding'), {
             "disease": "Disease",
-            "medicine": "Medicine",
+            "comment": "comment",
         })
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         finding_id = response.data['uid']
 
         response = self.client.put(reverse('medical_finding:update_medical_finding', kwargs={'finding_id': finding_id}), {
             "disease": "Disease2",
-            "medicine": "Medicine",
+            "comment": "comment",
         })
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['disease'], "Disease2")
@@ -173,7 +173,7 @@ class TestUpdateMedicalFindingViews(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = self.client.post(reverse('medical_finding:create_medical_finding'), {
             "disease": "Disease",
-            "medicine": "Medicine",
+            "comment": "comment",
         })
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         finding_id = response.data['uid']
@@ -182,6 +182,6 @@ class TestUpdateMedicalFindingViews(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = self.client.put(reverse('medical_finding:update_medical_finding', kwargs={'finding_id': finding_id}), {
             "disease": "Disease2",
-            "medicine": "Medicine",
+            "comment": "comment",
         })
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
