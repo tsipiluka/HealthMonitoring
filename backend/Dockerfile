@@ -7,11 +7,13 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set work directory
-WORKDIR /code
+WORKDIR /backend
 
-# Install dependencies
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+COPY requirements.txt /backend/
 
-# Copy project
-COPY . .
+RUN pip install -r requirements.txt && \
+    pip install --upgrade pip
+
+COPY ./entrypoint.sh /
+
+ENTRYPOINT [ "sh", "/entrypoint.sh" ]
