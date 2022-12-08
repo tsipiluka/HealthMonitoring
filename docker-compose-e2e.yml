@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  backend:
+    build: 'backend/'
+    command: >
+      sh -c "python /code/manage.py makemigrations && python /code/manage.py migrate &&
+             python /code/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend/:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: 'frontend/healthmonitoring/'
+      dockerfile: Dockerfile
+    ports:
+      - 4200:80
+  cypress:
+    image: cypress
+    build:
+      context: 'frontend/healthmonitoring/'
+      dockerfile: Dockerfile-cypress
+    container_name: cypress
+    depends_on:
+      - frontend
+    environment:
+      - CYPRESS_baseUrl=http://frontend
+    command: npx cypress run
+    volumes:
+      - ./frontend/healtmonitoring/cypress:/app/cypress
+      - ./frontend/healtmonitoring/cypress.config.ts:/app/cypress.config.ts
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+volumes:
+  postgres_data:

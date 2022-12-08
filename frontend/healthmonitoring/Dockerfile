@@ -19,7 +19,7 @@
 
 # NEUER Dockerfile
 
-FROM node:18.12.1-alpine as builder
+FROM cypress/base:16.18.1 as builder
 
 # install chrome for protractor tests
 # RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -

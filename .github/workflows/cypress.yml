@@ -27,5 +27,5 @@ jobs:
           # project: frontend/healthmonitoring/
           config-file: cypress.config.ts
         env: 
-          CYPRESS_host: "127.0.0.1"
+          CYPRESS_host: "frontend"
           CYPRESS_port: 4200
