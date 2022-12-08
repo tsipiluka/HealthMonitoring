@@ -1,21 +1,29 @@
-version: "3.9"
-
 services:
   backend:
     build: 'backend/'
     command: >
-      sh -c "gunicorn core.wsgi:application --bind 0.0.0.0:8000 && python /code/manage.py makemigrations && python /code/manage.py migrate &&
-             python /code/manage.py runserver 0.0.0.0:8000"
+      sh -c "python /code/manage.py makemigrations && python /code/manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:80"
     volumes:
       - ./backend/:/code
-    ports:
-      - 8000:8000
     depends_on:
       - db
   frontend:
-      build: 'frontend/healthmonitoring/'
-      ports:
-        - 4200:80
+    build: 'frontend/healthmonitoring/'
+    ports:
+      - 4200:80
+  reverse_proxy:
+    image: nginx:1.19.0
+    volumes:
+      - ./conf/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+      - /var/www/html:/var/www/html
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - backend
+      - frontend
   db:
     image: postgres:13
     volumes:
