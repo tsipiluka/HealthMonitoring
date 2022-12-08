@@ -27,9 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if "role" in attrs:
-            raise serializers.ValidationError(
-                {"role": "Role cannot be set manually."}
-            )
+            raise serializers.ValidationError({"role": "Role cannot be set manually."})
 
 
 class DoctorSerializer(serializers.ModelSerializer):
@@ -55,11 +53,10 @@ class PatientSerializer(serializers.ModelSerializer):
 class PatientProfileSerializer(serializers.ModelSerializer):
 
     # user = PatientSerializer()
-    
+
     class Meta:
         model = PatientProfile
-        fields = ("patient_id", )
-
+        fields = ("patient_id",)
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
@@ -82,7 +79,7 @@ class LightUserSerializerWithProfile(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "first_name", "last_name", "role")
-    
+
     def to_representation(self, instance):
         if instance.is_patient():
             return {
@@ -90,7 +87,9 @@ class LightUserSerializerWithProfile(serializers.ModelSerializer):
                 "first_name": instance.first_name,
                 "last_name": instance.last_name,
                 "role": instance.role,
-                "patient_profile": PatientProfileSerializer(instance.patient_profile).data,
+                "patient_profile": PatientProfileSerializer(
+                    instance.patient_profile
+                ).data,
             }
         elif instance.is_doctor():
             return {
@@ -107,8 +106,9 @@ class LightUserSerializerWithProfile(serializers.ModelSerializer):
                 "last_name": instance.last_name,
                 "role": instance.role,
             }
-			
+
+
 class UserIDSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id",)			
+        fields = ("id",)

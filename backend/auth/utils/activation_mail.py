@@ -4,7 +4,6 @@ from django.core.mail import send_mail
 from user_system.models import User
 from .tokens import email_verification_token
 from django.utils.encoding import force_str, force_bytes
-from django.utils.http import urlsafe_base64_decode
 
 
 def send_activation_mail(user: User):
@@ -15,5 +14,10 @@ def send_activation_mail(user: User):
     uid = urlsafe_b64encode(force_bytes(user.pk))
     # remove the b' from the uid
     uid = force_str(uid)
-    send_mail(subject, f'Hello {user.first_name} \nThis is a message sent to you because you registered at Health Monitoring Portal.\n Visit http://localhost:4200/activate/{token}/{uid}', 'notify@wh0cares.live',
-    [user.email], fail_silently=False)
+    send_mail(
+        subject,
+        f"Hello {user.first_name} \nThis is a message sent to you because you registered at Health Monitoring Portal.\n Visit http://localhost:4200/activate/{token}/{uid}",
+        "notify@wh0cares.live",
+        [user.email],
+        fail_silently=False,
+    )

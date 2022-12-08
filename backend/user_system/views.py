@@ -1,22 +1,22 @@
-from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import authentication, permissions, viewsets
-from .seralizers import PatientProfileSerializer, UserSerializer, LightUserSerializer, DoctorProfileSerializer, UserIDSerializer
-from .models import Doctor, Patient, User, PatientProfile, DoctorProfile
-from django.contrib.auth.decorators import permission_required
+from rest_framework import permissions
+from .seralizers import (
+    PatientProfileSerializer,
+    LightUserSerializer,
+    DoctorProfileSerializer,
+    UserIDSerializer,
+)
+from .models import PatientProfile, DoctorProfile
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 class UserProfileView(APIView):
     authentication_classes = [JWTAuthentication]
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
-        """
-        Get the user profile consisting of the user object and the profile object.
-        """
     def get(self, request):
         """
         Get the user profile consisting of the user object and the profile object.
@@ -40,6 +40,7 @@ class UserProfileView(APIView):
         data = {**serializer.data, **profile_serializer.data}
         return Response(data, status=status.HTTP_200_OK)
 
+
 class GetUserByProfiledID(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
@@ -53,7 +54,9 @@ class GetUserByProfiledID(APIView):
         try:
             profile_id = request.data["profile_id"]
         except KeyError:
-            return Response({"profile_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"profile_id is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
         # get the profile object of the profile_id
         try:
             profile = DoctorProfile.objects.get(doctor_id=profile_id)
@@ -67,4 +70,3 @@ class GetUserByProfiledID(APIView):
 
         serializer = UserIDSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-

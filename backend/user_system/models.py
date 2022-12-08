@@ -79,6 +79,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=50, choices=Role.choices, default=Role.PATIENT)
     birth_date = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
+
     def save(self, *args, **kwargs):
         # if not self.pk:
         #     self.role = self.base_role
@@ -113,7 +114,7 @@ def create_patient_profile(sender, instance, created, **kwargs):
             + "#"
             + str(uuid.uuid4().int)[:4]
         )
-        #patient_id = instance.first_name[:3] + instance.last_name[:3] + str(instance.id)
+        # patient_id = instance.first_name[:3] + instance.last_name[:3] + str(instance.id)
         PatientProfile.objects.create(user=instance, patient_id=patient_id)
 
 

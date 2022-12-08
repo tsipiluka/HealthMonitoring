@@ -1,5 +1,5 @@
 import os
-from rest_framework.test import APITestCase, APIClient
+from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -8,7 +8,6 @@ from medical_finding.tests.test_models import TestMedicalFinding
 
 
 class TestFileUpload(APITestCase):
-
     def test_upload_file(self):
         """
         Test if a file can be uploaded.
@@ -23,14 +22,11 @@ class TestFileUpload(APITestCase):
         with open(file_path, "rb") as file:
             response = self.client.post(
                 reverse("upload_file"),
-                {"file": file, 
-                "medical_finding": medical_finding.uid
-                },
-
+                {"file": file, "medical_finding": medical_finding.uid},
                 format="multipart",
             )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
+
     def test_upload_file_no_finding(self):
         """
         Test if a file can be uploaded without a medical finding.
@@ -44,9 +40,7 @@ class TestFileUpload(APITestCase):
         with open(file_path, "rb") as file:
             response = self.client.post(
                 reverse("upload_file"),
-                {"file": file
-                },
-
+                {"file": file},
                 format="multipart",
             )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -64,17 +58,14 @@ class TestFileUpload(APITestCase):
         with open(file_path, "rb") as file:
             response = self.client.post(
                 reverse("upload_file"),
-                {"file": file, 
-                "medical_finding": "invalid"
-                },
-
+                {"file": file, "medical_finding": "invalid"},
                 format="multipart",
             )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+
     def test_upload_file_valid_uid(self):
         """
-        Test if a file can be uploaded with a valid random medical 
+        Test if a file can be uploaded with a valid random medical
         finding uid that does not exist.
         Expected: 400 BAD REQUEST
         """
@@ -86,10 +77,10 @@ class TestFileUpload(APITestCase):
         with open(file_path, "rb") as file:
             response = self.client.post(
                 reverse("upload_file"),
-                {"file": file, 
-                "medical_finding": "e0a7f2c0-8a2b-4f1d-8e95-6a8a7b4a6e2f"
+                {
+                    "file": file,
+                    "medical_finding": "e0a7f2c0-8a2b-4f1d-8e95-6a8a7b4a6e2f",
                 },
-
                 format="multipart",
             )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -105,13 +96,11 @@ class TestFileUpload(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = self.client.post(
             reverse("upload_file"),
-            {"medical_finding": medical_finding.uid
-            },
-
+            {"medical_finding": medical_finding.uid},
             format="multipart",
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+
     def test_upload_file_no_finding_access(self):
         """
         Test if a file can be uploaded without access to the medical finding.
@@ -127,10 +116,7 @@ class TestFileUpload(APITestCase):
         with open(file_path, "rb") as file:
             response = self.client.post(
                 reverse("upload_file"),
-                {"file": file, 
-                "medical_finding": medical_finding.uid
-                },
-
+                {"file": file, "medical_finding": medical_finding.uid},
                 format="multipart",
             )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

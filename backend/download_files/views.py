@@ -5,9 +5,7 @@ from rest_framework import status
 from medical_finding.models import FindingReadingRight
 from medical_finding.models import MedicalFinding
 from upload_files.models import File
-from django.http import HttpResponse
 from encrypted_files.base import EncryptedFile
-from rest_framework.response import Response
 from download_files.utils.media_types import get_media_type
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -21,6 +19,7 @@ def is_valid_uuid(uuid_to_test, version=4):
     except ValueError:
         return False
     return str(uuid_obj) == uuid_to_test
+
 
 class FileDownloadView(APIView):
     authentication_classes = [JWTAuthentication]
@@ -38,7 +37,7 @@ class FileDownloadView(APIView):
         Returns a decrypted file from the server
         if the file is not found, returns a 404
         """
-        
+
         if not is_valid_uuid(medical_finding_id):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -47,8 +46,13 @@ class FileDownloadView(APIView):
         if not medical_finding:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if not (request.user == medical_finding.patient or request.user == medical_finding.treator):
-            if not FindingReadingRight.objects.filter(medical_finding=medical_finding, reader=request.user).exists():
+        if not (
+            request.user == medical_finding.patient
+            or request.user == medical_finding.treator
+        ):
+            if not FindingReadingRight.objects.filter(
+                medical_finding=medical_finding, reader=request.user
+            ).exists():
                 return Response(status=status.HTTP_403_FORBIDDEN)
 
         f = File.objects.filter(medical_finding=medical_finding_id).first()
@@ -56,7 +60,7 @@ class FileDownloadView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         try:
             ef = EncryptedFile(f.file)
-        except:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+        except FileNotFoundError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         return HttpResponse(ef.read(), content_type=get_media_type(f.file.name))

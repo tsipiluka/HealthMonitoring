@@ -1,5 +1,4 @@
-from base64 import urlsafe_b64encode, urlsafe_b64decode
-from django.shortcuts import render
+from base64 import urlsafe_b64decode
 from .serializers import ChangePasswordSerializer, RegisterSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -7,7 +6,6 @@ from rest_framework.views import APIView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from django.utils.encoding import force_str
-from base64 import urlsafe_b64encode
 from .utils.tokens import email_verification_token
 from user_system.models import User
 
@@ -45,7 +43,6 @@ class ChangePasswordView(UpdateAPIView):
     def update(self, request, *args, **kwargs):
         self.object = self.get_object()
         serializer = self.get_serializer(data=request.data)
-        user = User.objects.get(id=request.user.id)
         if serializer.is_valid():
             # Check old password
             if not self.object.check_password(serializer.data.get("old_password")):
