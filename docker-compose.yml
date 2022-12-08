@@ -4,8 +4,9 @@ services:
     command: >
       sh -c "python /code/manage.py collectstatic --no-input  && python /code/manage.py makemigrations && python /code/manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:80"
     volumes:
-      - ./backend/:/code
+      # - ./backend/:/code
       - /static:/static # <-- needs testing
+      - media_uploads:/code/media
     depends_on:
       - db
   # frontend:
@@ -34,3 +35,4 @@ services:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
 volumes:
   postgres_data:
+  media_uploads:
