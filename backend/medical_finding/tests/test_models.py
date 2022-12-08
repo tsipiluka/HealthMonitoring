@@ -1,9 +1,9 @@
-from django.test import TestCase
 from medical_finding.models import FindingReadingRight, MedicalFinding
 from user_system.tests.test_models import TestUserModel
+from django.db import models
 
 
-class TestMedicalFinding(TestCase):
+class TestMedicalFinding(models.Model):
     def test_create_medical_finding(self, patient=None, doctor=None):
         """
         Test if medical findings can be created.
