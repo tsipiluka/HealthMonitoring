@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { ValidateInputService } from 'src/app/services/validateInput-service/validate-input-service.service';
 import { UserPasswordResetService } from './service/user-password-reset.service';
 
 @Component({
@@ -14,12 +15,13 @@ export class UserPasswordResetComponent {
   new_password1: string | undefined
   new_password2: string | undefined
 
-  constructor(private userPasswordResetService: UserPasswordResetService,private messageService: MessageService,private router: Router,private route: ActivatedRoute){}
+  constructor(private userPasswordResetService: UserPasswordResetService,private messageService: MessageService,private router: Router,private route: ActivatedRoute,
+    private validateInputService: ValidateInputService){}
 
   ngOnInit(): void {}
 
   resetPassword(){
-    if(this.validatePassword(this.new_password1!)){
+    if(this.validateInputService.validatePassword(this.new_password1!)){
       if(this.new_password1 === this.new_password2){
         this.route.params.subscribe(params => {
           const passwordResetRequestBody = {token: params['token'], password: this.new_password1}
@@ -43,9 +45,5 @@ export class UserPasswordResetComponent {
 
   redirectToLogin(){
     this.router.navigate(['login'])
-  }
-
-  validatePassword(password: string): boolean{
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})/.test(password)
   }
 }

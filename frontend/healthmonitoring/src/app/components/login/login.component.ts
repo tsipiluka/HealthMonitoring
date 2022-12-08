@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoginService } from './service/login.service';
 import pgk from '../../../../secrets.json'
 import {MessageService} from 'primeng/api';
+import { ValidateInputService} from 'src/app/services/validateInput-service/validate-input-service.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
   captchaStatus: boolean = false
 
-  constructor(private messageService: MessageService,private router: Router,private loginService: LoginService) {}
+  constructor(private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -33,8 +34,8 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if(this.validateEmail(this.email!)){
-      if(this.validatePassword(this.password!)){
+    if(this.validateInputService.validateEmail(this.email!)){
+      if(this.validateInputService.validatePassword(this.password!)){
         if(this.captchaStatus){
           const creds = {email: this.email, password: this.password}
           this.loginService.loginUser(creds).subscribe((res:any)=>{
@@ -65,20 +66,12 @@ export class LoginComponent implements OnInit {
     this.messageService.add({severity:'success', summary: 'Success', detail: msg});
   }
 
-  validateEmail(email: string): boolean{
-    return /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(email)
-  }
-
-  validatePassword(password: string): boolean{
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})/.test(password)
-  }
-
   captchaSuccess(event: any){
     this.captchaStatus = true
   }
 
   resetPassword(){
-    if(this.validateEmail(this.resetEmail!)){
+    if(this.validateInputService.validateEmail(this.resetEmail!)){
       const resetEmail = {email: this.resetEmail}
       this.loginService.resetPassword(resetEmail).subscribe()
       this.showSuccessMsg("Ein Password Reset wurde angefragt!")
