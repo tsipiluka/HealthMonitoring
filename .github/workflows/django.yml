@@ -43,20 +43,20 @@ jobs:
         python backend/manage.py test user_system
         python backend/manage.py test medical_finding
   
-  deploy:
-    needs: build-test
-    name: Deploy to Server
-    runs-on: ubuntu-latest
-    steps:
-      - name: using remote ssh commands using ssh key
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            cd /home/ubuntu/medical-finding
-            git pull
-            sudo docker-compose down
-            sudo docker-compose up -d --build
+#  deploy:
+#    needs: build-test
+#    name: Deploy to Server
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: using remote ssh commands using ssh key
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.USERNAME }}
+#          key: ${{ secrets.KEY }}
+#          port: ${{ secrets.PORT }}
+#          script: |
+#            cd /home/ubuntu/medical-finding
+#            git pull
+#            sudo docker-compose down
+#            sudo docker-compose up -d --build
