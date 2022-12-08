@@ -5,6 +5,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { LoginService } from '../login/service/login.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { ValidateInputService } from 'src/app/services/validateInput-service/validate-input-service.service';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class ProfileComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private loginService: LoginService,
     private errorHandler: ErrorHandlerService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private validateInputService: ValidateInputService
   ) { }
 
   ngOnInit(): void {
@@ -60,8 +62,8 @@ export class ProfileComponent implements OnInit {
 
   resetPassword(){
     this.passwordChangeModel = false
-    if(this.checkPassword(this.old_password!)){
-      if(this.checkPassword(this.new_password1!)){
+    if(this.validateInputService.validatePassword(this.old_password!)){
+      if(this.validateInputService.validatePassword(this.new_password1!)){
         if(this.new_password1 === this.new_password2){
           const passwords = {
             'old_password': this.old_password,
@@ -83,10 +85,6 @@ export class ProfileComponent implements OnInit {
     }else{
       this.showWarnMsg("Das alte Passwort ist nicht korrekt!")
     }
-  }
-
-  checkPassword(password: string): boolean{
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})/.test(password)
   }
 
   deleteAccount(){
