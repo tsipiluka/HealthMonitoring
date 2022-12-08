@@ -7,7 +7,8 @@ services:
       sh -c "python /code/manage.py makemigrations && python /code/manage.py migrate &&
              python /code/manage.py runserver 0.0.0.0:8000"
     volumes:
-      - ./backend/:/code
+#      - ./backend/:/code
+      - media_uploads:/code/media
     ports:
       - 8000:8000
     depends_on:
@@ -24,3 +25,4 @@ services:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
 volumes:
   postgres_data:
+  media_uploads:
