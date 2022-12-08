@@ -7,10 +7,10 @@ services:
       - ./backend/:/code
     depends_on:
       - db
-  frontend:
-    build: 'frontend/healthmonitoring/'
-    ports:
-      - 4200:80
+  # frontend:
+  #   build: 'frontend/healthmonitoring/'
+  #   ports:
+  #     - 4200:80
   reverse_proxy:
     image: nginx:1.19.0
     volumes:
