@@ -17,7 +17,7 @@ class BaseModel(models.Model):
 
 class MedicalFinding(BaseModel):
     disease = encrypt(models.CharField(max_length=100))
-    medicine = encrypt(models.CharField(max_length=100))
+    comment = encrypt(models.CharField(max_length=100))
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     treator = models.ForeignKey(
         Doctor, on_delete=models.CASCADE, related_name="treator", null=True, blank=True

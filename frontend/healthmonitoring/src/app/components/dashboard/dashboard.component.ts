@@ -3,11 +3,13 @@ import { Router } from '@angular/router';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { LoginService } from '../login/service/login.service';
 import { DashboardService } from './service/dashboard.service';
-import { jsPDF } from "jspdf";
 import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { FormGroup } from '@angular/forms';
+import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
+
 
 export interface ReadAccessObject{
   medical_finding: string,
@@ -48,13 +50,15 @@ export class DashboardComponent implements OnInit {
   selectedMedicalFinding: MedicalFinding | undefined
 
   new_disease: string | undefined
-  new_medicine: string | undefined
+  new_comment: string | undefined
+  new_file: File | undefined 
   selectedDoctorID: string | undefined
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
-    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService) {}
+    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
+    private fileshareService: FileshareService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -99,30 +103,34 @@ export class DashboardComponent implements OnInit {
   showSuccessMsg(msg: string){
     this.messageService.add({severity:'success', summary: 'Success', detail: msg});
   }
-
-  createPdf(finding: MedicalFinding,) {
-      let doc = new jsPDF('p', 'pt', 'a4')
-      doc.text(finding.uid, 290, 20)
-      doc.text("This document contains confidential medical information about Person XY", 40, 60)
-      doc.text("Disease: "+finding.disease , 40, 90)
-      doc.text("Required Medicine: "+finding.medicine , 40, 110)
-      doc.text("Zu Risiken und Nebenwirkungen lesen Sie die Packungsbeilage und fragen", 40, 200)
-      doc.text("Sie Ihren Arzt oder Apotheker. ", 40, 220)
-
-      window.open(doc.output('bloburl'))
-  }
-
+  
   displayAddEntryModel(){
     this.modify_mode = false
     this.medicalFindingModel = true
+  }
+
+  downloadPdf(finding: MedicalFinding){
+    this.selectedMedicalFinding = finding
+    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
+      let blob: Blob = res.body as Blob;
+      let a = document.createElement('a')
+      a.download= 'befund.'+res.body.type.split('/')[1]
+      a.href = window.URL.createObjectURL(blob)
+      a.click()
+    }, err=>{
+      if(err.status===404){
+        this.showWarnMsg("Es wurde keine medizinische Datei zu dem Befund hochgeladen!")
+      }
+    })
   }
 
   displayChangeEntryModel(medicalFinding: MedicalFinding){
     this.selectedMedicalFinding = medicalFinding
     this.selectedUsers = [];
     this.new_disease = medicalFinding.disease
-    this.new_medicine = medicalFinding.medicine
+    this.new_comment = medicalFinding.comment
     this.selectedDoctorID = medicalFinding.treator !== null ? medicalFinding.treator.doctor_profile.doctor_id : undefined
+    this.new_file = undefined
     this.dashboardService.getReadAccessFromMedicalFinding(medicalFinding.uid).subscribe((user: any)=>{
       for(let i = 0; i < user.length; i++){
         if(user[i]!.reader.role ==='PATIENT'){
@@ -144,20 +152,20 @@ export class DashboardComponent implements OnInit {
   }
 
   createNewMedicalFinding(){
-    if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_medicine!)){
+    if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_comment!)){
       if(!this.validateStringInput(this.selectedDoctorID!)){
         const medicalFinding_info = { 
-          'disease': this.new_disease, 
-          'medicine': this.new_medicine,
+          disease: this.new_disease, 
+          comment: this.new_comment
         }
         this.createNewMedicalFindingHelper(medicalFinding_info)
       }else{
         const doctorID = {profile_id: this.selectedDoctorID!}
         this.userService.getUserId(doctorID).subscribe((user: any) => {
           const medicalFinding_info = { 
-            'disease': this.new_disease, 
-            'medicine': this.new_medicine,
-            'treator': user.id
+            disease: this.new_disease, 
+            comment: this.new_comment,
+            treator: user.id
           }
           this.createNewMedicalFindingHelper(medicalFinding_info)
         })
@@ -169,6 +177,12 @@ export class DashboardComponent implements OnInit {
 
   createNewMedicalFindingHelper(medicalFinding_info: any){
     this.dashboardService.createMedicalFinding(medicalFinding_info).subscribe((medicalFinding: any)=>{
+      if (this.new_file){
+        const formData = new FormData();
+        formData.append("medical_finding", medicalFinding.uid);
+        formData.append("file", this.new_file, this.new_file.name);
+        this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
+      }
       for(let i = 0; i<this.selectedUsers.length; i++){
         console.log(this.selectedUsers[i])
         const profil_id = {profile_id: this.selectedUsers[i]}  
@@ -190,21 +204,21 @@ export class DashboardComponent implements OnInit {
   }
 
   changeMedicalFinding(){
-    if(this.validateStringInput(this.new_medicine!) && this.validateStringInput(this.new_disease!)){
+    if(this.validateStringInput(this.new_comment!) && this.validateStringInput(this.new_disease!)){
       let changedValues = {}
       if(this.validateStringInput(this.selectedDoctorID!)){
         if(this.validateProfileID(this.selectedDoctorID!)){
           const profil_id = {profile_id: this.selectedDoctorID}  
           this.userService.getUserId(profil_id).subscribe((user: any)=>{
-            changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: user.id } 
+            changedValues = {disease: this.new_disease, comment: this.new_comment,treator: user.id } 
             this.changeMedicalFindingHelper(changedValues)
           }) 
         }else{
-          changedValues = {disease: this.new_disease, medicine: this.new_medicine} 
+          changedValues = {disease: this.new_disease, comment: this.new_comment} 
           this.changeMedicalFindingHelper(changedValues)
         }
       }else{
-        changedValues = {disease: this.new_disease, medicine: this.new_medicine,treator: null } 
+        changedValues = {disease: this.new_disease, comment: this.new_comment,treator: null } 
         this.changeMedicalFindingHelper(changedValues)
       }
     }else{
@@ -213,11 +227,26 @@ export class DashboardComponent implements OnInit {
   }
 
   changeMedicalFindingHelper(changedValues: any){
-    this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
-      this.resetMedicalFindingValues()
-      this.loadMedicalFindings()
-      this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
+    this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe((res: any)=>{
+      this.selectedMedicalFinding = res
+      if(this.new_file){
+        this.fileshareService.deleteMedicalFindingDocument(res.uid).subscribe(()=>{
+          this.changeDocumentfromMedicalFinding()
+        }, err=>{
+          this.changeDocumentfromMedicalFinding()
+        })
+      }
     })
+  }
+
+  changeDocumentfromMedicalFinding(){
+    const formData = new FormData();
+    formData.append("medical_finding", this.selectedMedicalFinding!.uid);
+    formData.append("file", this.new_file!, this.new_file!.name);
+    this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
+    this.resetMedicalFindingValues()
+    this.loadMedicalFindings()
+    this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
   }
 
   deleteReadAccess(key: string){
@@ -253,7 +282,8 @@ export class DashboardComponent implements OnInit {
   resetMedicalFindingValues(){
     this.medicalFindingModel = false
     this.new_disease = ''
-    this.new_medicine = ''
+    this.new_comment = ''
+    this.new_file = undefined
     this.selectedDoctorID = undefined
     this.selectedUsers = []
     this.currentReadAccessObjects = {}
@@ -261,5 +291,9 @@ export class DashboardComponent implements OnInit {
 
   validateProfileID(profilId: string){
     return this.profileIdRegex.test(profilId)
+  }
+
+  onFileSelected(event: any){
+    this.new_file = event.target.files[0]
   }
 }

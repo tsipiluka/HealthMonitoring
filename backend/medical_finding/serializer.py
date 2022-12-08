@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from user_system.models import User
 from medical_finding.models import MedicalFinding, FindingReadingRight
 
-from user_system.seralizers import UserSerializer, LightUserSerializerWithProfile
+from user_system.seralizers import LightUserSerializerWithProfile
 
 
 class MedicalFindingSerializer(serializers.ModelSerializer):
@@ -13,6 +12,7 @@ class MedicalFindingSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalFinding
         exclude = ["created_at"]
+
 
 class CreateMedicalFindingSerializer(serializers.ModelSerializer):
 
@@ -30,23 +30,28 @@ class UpdateMedicalFindingSerializer(serializers.ModelSerializer):
 
     patient = serializers.PrimaryKeyRelatedField(read_only=True)
     # do not allow to change the diagnosed_by field and the patient field
+
     class Meta:
         model = MedicalFinding
         disease = serializers.CharField(required=False)
-        medicine = serializers.CharField(required=False)
+        comment = serializers.CharField(required=False)
         exclude = ["created_at", "updated_at"]
 
         extra_kwargs = {
             "disease": {"required": False},
-            "medicine": {"required": False},
-            "treator": {"required": False}
+            "comment": {"required": False},
+            "treator": {"required": False},
         }
 
     def validate(self, data):
-        # check if either medicine or disease is provided
-        if not data.get("disease") and not data.get("medicine") and data.get("treator") != None:
+        # check if either comment or disease is provided
+        if (
+            not data.get("disease")
+            and not data.get("comment")
+            and not data.get("treator")
+        ):
             raise serializers.ValidationError(
-                "Either medicine, disease or treator must be provided"
+                "Either comment, disease or treator must be provided"
             )
         return data
 
@@ -63,6 +68,7 @@ class ReadingRightSerializer(serializers.ModelSerializer):
 class AddReadingRightSerializer(serializers.ModelSerializer):
 
     medical_finding = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = FindingReadingRight
         exclude = ["created_at", "updated_at"]

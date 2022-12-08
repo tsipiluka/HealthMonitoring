@@ -3,9 +3,6 @@ from rest_framework import serializers
 from user_system.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from django.core.mail import send_mail
-
-# import from utils folder
 from .utils.activation_mail import send_activation_mail
 
 
@@ -20,6 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
     password2 = serializers.CharField(write_only=True, required=True)
     birth_date = serializers.DateField(required=True)
+
     class Meta:
         model = User
         fields = (
@@ -50,14 +48,12 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"last_name": "Last name cannot be empty."}
             )
-        
+
         # if role exists throw error
         if "role" in attrs:
-            raise serializers.ValidationError(
-                {"role": "Role cannot be set manually."}
-            )
+            raise serializers.ValidationError({"role": "Role cannot be set manually."})
         # only allow fields that are in fields
-        unknown =  set(self.initial_data) - set(self.fields)
+        unknown = set(self.initial_data) - set(self.fields)
         if unknown:
             raise ValidationError("Forbidden field(s): {}".format(", ".join(unknown)))
 

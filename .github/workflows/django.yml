@@ -1,0 +1,62 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    # the requirements.txt file is in backend/requirements.txt
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+    - name: Lint with Flake8
+    # the flake8 file is in backend/.flake8
+      run: |
+        pip install flake8
+        flake8 backend --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 backend --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    # the manage.py file is in backend/manage.py
+    - name: Run Django Tests
+      run: |
+        python backend/manage.py test auth
+        python backend/manage.py test core
+        python backend/manage.py test download_files
+        python backend/manage.py test upload_files
+        python backend/manage.py test user_system
+        python backend/manage.py test medical_finding
+  
+  deploy:
+    needs: build-test
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: using remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/ubuntu/medical-finding
+            git pull
+            sudo docker-compose down
+            sudo docker-compose up -d --build
