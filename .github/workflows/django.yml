@@ -41,3 +41,4 @@ jobs:
         python backend/manage.py test download_files
         python backend/manage.py test upload_files
         python backend/manage.py test user_system
+        python backend/manage.py test medical_finding
