@@ -1,6 +1,6 @@
 services:
   backend:
-    build: 'backend/core'
+    build: 'backend/'
     volumes:
       - ./backend/core:/backend
       - ./backend/core/static:/backend/static
