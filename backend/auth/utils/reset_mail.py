@@ -1,7 +1,7 @@
 from django.core.mail import send_mail
 from auth.email.activate_account import generate_mail
 
-from backend.core import settings
+from core import settings
 
 
 def send_reset_mail(sender, instance, reset_password_token, *args, **kwargs):
