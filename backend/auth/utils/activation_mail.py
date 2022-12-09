@@ -16,7 +16,7 @@ def send_activation_mail(user: User):
     uid = urlsafe_b64encode(force_bytes(user.pk))
     # remove the b' from the uid
     uid = force_str(uid)
-    link = settings.FRONTEND_URL + "/activate/" + token + "/" + uid
+    link = settings.FRONTEND_URL + "activate/" + token + "/" + uid
     name = user.first_name + " " + user.last_name
     send_mail(
         subject,
