@@ -184,22 +184,28 @@ export class DashboardComponent implements OnInit {
         const formData = new FormData();
         formData.append("medical_finding", medicalFinding.uid);
         formData.append("file", this.new_file, this.new_file.name);
-        this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
-      }
-      for(let i = 0; i<this.selectedUsers.length; i++){
-        console.log(this.selectedUsers[i])
-        const profil_id = {profile_id: this.selectedUsers[i]}  
-        this.userService.getUserId(profil_id).subscribe((user2: any) => {
-          const readUser = {reader: user2.id}
-          this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.uid, readUser).subscribe()
-        }, err => {
-          this.showWarnMsg(profil_id.profile_id+" konnte nicht hinzugefügt werden!")
+        this.fileshareService.uploadMedicalFindingDocument(formData).subscribe(()=>{
+          this.createNewMedicalFindingHelper2(medicalFinding)
         })
+      }else{
+        this.createNewMedicalFindingHelper2(medicalFinding)
       }
-      this.showSuccessMsg("Sie haben einen medizinischen Befund erfolgreich hinzugefügt!")
-      this.resetMedicalFindingValues()
-      this.loadMedicalFindings()
     })
+  }
+
+  createNewMedicalFindingHelper2(medicalFinding: any){
+    for(let i = 0; i<this.selectedUsers.length; i++){
+      const profil_id = {profile_id: this.selectedUsers[i]}  
+      this.userService.getUserId(profil_id).subscribe((user2: any) => {
+        const readUser = {reader: user2.id}
+        this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.uid, readUser).subscribe()
+      }, err => {
+        this.showWarnMsg(profil_id.profile_id+" konnte nicht hinzugefügt werden!")
+      })
+    }
+    this.showSuccessMsg("Sie haben einen medizinischen Befund erfolgreich hinzugefügt!")
+    this.resetMedicalFindingValues()
+    this.loadMedicalFindings()
   }
 
   getKeys(list: any): string[]{
