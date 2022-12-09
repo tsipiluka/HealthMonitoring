@@ -49,9 +49,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-localhost.crt
-localhost.key
-
 
 
 
