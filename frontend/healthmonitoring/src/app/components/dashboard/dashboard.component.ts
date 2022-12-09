@@ -222,7 +222,7 @@ export class DashboardComponent implements OnInit {
         this.changeMedicalFindingHelper(changedValues)
       }
     }else{
-      this.showWarnMsg("Das Krankheits und Medizinfeld dürfen nicht leer sein!")
+      this.showWarnMsg("Das Krankheits und Kommentarfeld dürfen nicht leer sein!")
     }
   }
 

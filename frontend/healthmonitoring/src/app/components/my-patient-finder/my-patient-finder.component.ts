@@ -164,6 +164,8 @@ export class MyPatientFinderComponent implements OnInit {
           })
         }
       })
+    }else{
+      this.showWarnMsg("Das Krankheits und Kommentarfeld dürfen nicht leer sein!")
     }
   }
 
