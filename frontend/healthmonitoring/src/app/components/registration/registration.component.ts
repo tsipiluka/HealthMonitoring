@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   password1: string | undefined
   password2: string | undefined
   
-  constructor(@Inject('BACKEND_API_URL') private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
+  constructor(@Inject('CAPTCHA_SITEKEY') private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
     private validateInputService: ValidateInputService) { }
 
   ngOnInit(): void {
