@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   
   captchaStatus: boolean = false
 
-  constructor(@Inject('CAPTCHA_SITEKEY') private captchaSiteKey: string, private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
+  constructor(@Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string, private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
     console.log(this.captchaSiteKey)
   }
 

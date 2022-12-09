@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   password1: string | undefined
   password2: string | undefined
   
-  constructor(@Inject('CAPTCHA_SITEKEY') private captchaSiteKey: string, private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
+  constructor(@Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string, private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
     private validateInputService: ValidateInputService) {
       console.log(this.captchaSiteKey)
      }
