@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
-  readonly APIUrl = "http://127.0.0.1:8000";
+  readonly APIUrl = "https://health-monitoring.wh0cares.live/api";
 
   constructor(private http: HttpClient) { }
 
