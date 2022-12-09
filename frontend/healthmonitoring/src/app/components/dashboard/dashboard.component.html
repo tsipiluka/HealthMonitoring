@@ -84,7 +84,7 @@
                             <b>Datei hochladen:</b>
                         </div>
                         <div class="col-12">
-                            <input type="file" class="file-upload" [(ngModel)]="new_file" (change)="onFileSelected($event)">
+                            <input type="file" class="file-upload" [(ngModel)]="new_file" [accept]="acceptedFileTypes" (change)="onFileSelected($event)">
                         </div>
                     </div>
                     <div class="new-entry-item col-12">
