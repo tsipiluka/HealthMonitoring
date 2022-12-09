@@ -30,7 +30,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   registerUser(){
-    console.log(this.firstname)
     if(this.validateStringInput(this.firstname!)){
       if(this.validateStringInput(this.lastname!)){
         if(this.validateDate(this.birthday!)){
