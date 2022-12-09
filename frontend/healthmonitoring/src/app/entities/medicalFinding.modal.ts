@@ -8,7 +8,7 @@ export interface IMedicalFinding {
     updated_at: Date,
     patient: Patient,
     treator: Doctor,
-    file: File
+    file: any
 }
 
 export class MedicalFinding implements IMedicalFinding {
@@ -19,6 +19,6 @@ export class MedicalFinding implements IMedicalFinding {
         public updated_at: Date,
         public patient: Patient,
         public treator: Doctor,
-        public file: File
+        public file: any
     ) {}
 }
