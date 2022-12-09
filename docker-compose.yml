@@ -33,6 +33,15 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+  # sonar-scanner:
+  #   image: sonarsource/sonar-scanner-cli
+  #   environment:
+  #     SONAR_HOST_URL: "http://localhost:9000"
+  #     SONAR_LOGIN: "sqp_fc5f78e6fe258efc30878a5475f759363cc53e01"
+  #     SONAR_SCANNER_OPTS: "-Dsonar.projectKey=healthmonitoring"
+  #   volumes:
+  #     - ".:/usr/src"
+  #   network_mode: "host"
 volumes:
   postgres_data:
   media_uploads:
