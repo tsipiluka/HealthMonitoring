@@ -235,8 +235,9 @@ export class DashboardComponent implements OnInit {
         }, err=>{
           this.changeDocumentfromMedicalFinding()
         })
+      }else{
+        this.loadAfterChange()
       }
-      this.loadAfterChange()
     })
   }
 

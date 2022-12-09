@@ -162,8 +162,9 @@ export class MyPatientFinderComponent implements OnInit {
           }, err=>{
             this.changeDocumentfromMedicalFinding()
           })
+        }else{
+          this.loadAfterChange()
         }
-        this.loadAfterChange()
       })
     }else{
       this.showWarnMsg("Das Krankheits und Kommentarfeld dürfen nicht leer sein!")
