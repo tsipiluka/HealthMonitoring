@@ -304,5 +304,6 @@ export class DashboardComponent implements OnInit {
 
   onFileSelected(event: any){
     this.new_file = event.target.files[0]
+    console.log(this.new_file?.type)
   }
 }
