@@ -1,0 +1,3 @@
+def generate_mail(resetlink, name):
+    content = f"Sehr geehrte/r {name},\nvielen Dank, dass Sie sich für einen Account bei uns registriert haben. Um die Registrierung abzuschließen, müssen Sie Ihre E-Mail-Adresse bestätigen. Klicken Sie dazu einfach auf den folgenden Link:{resetlink}\nBitte beachten Sie, dass Ihr Account nicht vollständig aktiviert wird, bis Sie Ihre E-Mail-Adresse bestätigt haben.\n\n Ihr Health-Monitoring Team"
+    return content

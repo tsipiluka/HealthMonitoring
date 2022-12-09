@@ -19,7 +19,7 @@ from .read_secrets import ReadSecrets as rs
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
+FRONTEND_URL = "https://www.health-monitoring.wh0cares.live/"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -36,10 +36,10 @@ FILE_UPLOAD_HANDLERS = [
 ]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["health-monitoring.wh0cares.live"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost"]
+CSRF_TRUSTED_ORIGINS = ["https://wh0cares.live", "https://health-monitoring.wh0cares.live"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -157,10 +157,8 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",  # angular dev server
-    "http://127.0.0.1:4200",  # angular dev server
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "https://health-monitoring.wh0cares.live",
+    "https://wh0cares.live",
 ]
 
 # CSRF_COOKIE_SECURE = True
