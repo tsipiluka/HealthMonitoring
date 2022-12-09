@@ -17,7 +17,7 @@ def password_reset_token_created(
     # current_site = get_current_site(self.request)
     subject = "Reset your password"
     token = reset_password_token.key
-    link = settings.FRONTEND_URL + "/password-reset/" + token
+    link = settings.FRONTEND_URL + "password-reset/" + token
     send_mail(
         subject,
         generate_mail(link),

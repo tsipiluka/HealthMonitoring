@@ -20,7 +20,7 @@ from .read_secrets import ReadSecrets as rs
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-FRONTEND_URL = "https://www.health-monitoring.wh0cares.live/"
+FRONTEND_URL = "https://health-monitoring.wh0cares.live/"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
