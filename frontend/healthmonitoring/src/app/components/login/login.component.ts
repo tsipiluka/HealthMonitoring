@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   captchaStatus: boolean = false
 
   constructor(private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
+    console.log(this.captchaSiteKey)
   }
 
   ngOnInit(): void {

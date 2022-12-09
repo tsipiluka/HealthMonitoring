@@ -25,7 +25,9 @@ export class RegistrationComponent implements OnInit {
   password2: string | undefined
   
   constructor(private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
-    private validateInputService: ValidateInputService) { }
+    private validateInputService: ValidateInputService) {
+      console.log(this.captchaSiteKey)
+     }
 
   ngOnInit(): void {
   }
