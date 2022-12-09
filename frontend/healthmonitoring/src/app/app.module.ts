@@ -19,6 +19,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NgxCaptchaModule} from 'ngx-captcha'
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
+import { environment } from 'src/environments/environment.prod';
 
 
 
@@ -39,7 +40,6 @@ import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ToastModule} from 'primeng/toast';
 import {FileUploadModule} from 'primeng/fileupload';
-import { environment } from 'src/environments/environment';
 
 
 @NgModule({

@@ -20,11 +20,11 @@ export class LoginComponent implements OnInit {
   resetEmail: string | undefined
 
   // captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
-  captchaSiteKey: string = environment.CAPTCHA_SITEKEY
+  // captchaSiteKey: string = Cap
   
   captchaStatus: boolean = false
 
-  constructor(@Inject('CAPTCHA_SITEKEY') private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
+  constructor(@Inject('CAPTCHA_SITEKEY') private captchaSiteKey: string, private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
     console.log(this.captchaSiteKey)
   }
 
