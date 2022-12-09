@@ -1,4 +1,7 @@
 from django.core.mail import send_mail
+from backend.auth.email.activate_account import generate_mail
+
+from backend.core import settings
 
 
 def send_reset_mail(sender, instance, reset_password_token, *args, **kwargs):
@@ -11,9 +14,10 @@ def send_reset_mail(sender, instance, reset_password_token, *args, **kwargs):
     # current_site = get_current_site(self.request)
     subject = "Reset your password"
     token = reset_password_token.key
+    link = settings.FRONTEND_URL + "password-reset/" + token
     send_mail(
         subject,
-        f"Visit the following link to reset your password at HealthMonitoring http://localhost:4200/password-reset/{token}",
+        generate_mail(link),
         "notify@wh0cares.live",
         [reset_password_token.user.email],
         fail_silently=False,
