@@ -20,7 +20,8 @@
                 <th scope="col">Krankheit</th>
                 <th scope="col">Kommentar</th>
                 <th scope="col">Letztes Update am</th>
-                <th scope="col">Optionen</th>
+                <th scioe="col">Datei</th>
+                <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -32,8 +33,10 @@
                     <td>{{finding.disease}}</td>
                     <td>{{finding.comment}}</td>
                     <td>{{finding.updated_at}}</td>
+                    <td *ngIf="finding.file !==null">{{finding.file.file_name}}</td>
+                    <td *ngIf="finding.file ===null">-</td>
                     <td>    
-                        <button type="button" class="btn btn-primary" (click)="downloadPdf(finding)">
+                        <button *ngIf="finding.file !==null" type="button" class="btn btn-primary" (click)="downloadPdf(finding)">
                             Download File
                         </button>
                     </td>
