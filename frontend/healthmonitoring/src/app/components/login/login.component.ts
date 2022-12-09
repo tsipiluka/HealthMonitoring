@@ -4,7 +4,7 @@ import { LoginService } from './service/login.service';
 // import pgk from '../../../../secrets.json'
 import {MessageService} from 'primeng/api';
 import { ValidateInputService} from 'src/app/services/validateInput-service/validate-input-service.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
