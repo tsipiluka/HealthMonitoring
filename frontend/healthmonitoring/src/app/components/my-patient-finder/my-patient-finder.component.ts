@@ -236,7 +236,7 @@ export class MyPatientFinderComponent implements OnInit {
       this.new_file = event.target.files[0]
     }else{
       this.new_file = undefined
-      this.showWarnMsg("Bitte wählen Sie eine Datei mit einer der folgenden Endungen aus: "+this.acceptedMediaTypes.join(", "))
+      this.showWarnMsg("Bitte wählen Sie eine Datei mit einer der folgenden Endungen aus: "+this.acceptedFileTypes)
     }
   }
 }
