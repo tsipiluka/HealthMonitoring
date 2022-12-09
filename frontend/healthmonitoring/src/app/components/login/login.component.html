@@ -30,7 +30,7 @@
           </div>
           <button class="login" (click)="login()">Log in</button>
           <a type="button" class="resetPassword" (click)="resetPasswordOP.toggle($event)"> Forgot Password?</a>
-          <a href="http://localhost:4200/registration" class="discrete" >or Sign Up</a>
+          <a (click)="redirectToRegistration()" type="button" class="discrete" >or Sign Up</a>
         </div>
       </div>
     </body>

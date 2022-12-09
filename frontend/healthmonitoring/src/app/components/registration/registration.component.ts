@@ -87,4 +87,8 @@ export class RegistrationComponent implements OnInit {
   captchaSuccess(event: any){
     this.captchaStatus = true
   }
+
+  redirectToLogin(){
+    this.router.navigate(['login'])
+  }
 }

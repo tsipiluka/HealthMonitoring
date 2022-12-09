@@ -31,4 +31,8 @@ export class NavComponent implements OnInit {
     localStorage.clear()
     this.router.navigate(['login'])
   }
+
+  redirectToGivenPage(page: string){
+    this.router.navigate([page])
+  }
 }

@@ -118,7 +118,7 @@
           <ngx-recaptcha2 #captchaElem [siteKey]="captchaSiteKey" formControlName="recaptcha" (success)="captchaSuccess($event)"></ngx-recaptcha2>
         </div>
         <button class="signup" (click)="registerUser()">Sign up</button>
-        <a href="http://localhost:4200/login" class="discrete" >or Login</a>
+        <a (click)="redirectToLogin()" type="button" class="discrete" >or Login</a>
       </div>
     </div>
   </body>

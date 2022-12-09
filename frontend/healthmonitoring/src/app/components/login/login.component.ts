@@ -80,4 +80,8 @@ export class LoginComponent implements OnInit {
     }
     this.resetEmail = undefined
   }
+
+  redirectToRegistration(){
+    this.router.navigate(['registration'])
+  }
 }
