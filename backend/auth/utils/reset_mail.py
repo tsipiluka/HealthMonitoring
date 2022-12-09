@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from backend.auth.email.activate_account import generate_mail
+from auth.email.activate_account import generate_mail
 
 from backend.core import settings
 
