@@ -52,4 +52,4 @@ RUN npm run build
 FROM nginx:1.13.9-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /usr/src/app/dist/healthmonitoring /usr/share/nginx/html^
+COPY --from=builder /usr/src/app/dist/healthmonitoring /usr/share/nginx/html
