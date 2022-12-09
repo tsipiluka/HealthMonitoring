@@ -54,7 +54,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /usr/src/app/dist/healthmonitoring /usr/share/nginx/html
 
-RUN echo "mainFileName=\"\$(ls /usr/share/nginx/html/main*.ts)\" && \
+RUN echo "mainFileName=\"\$(ls /usr/share/nginx/html/main*.js)\" && \
           envsubst '\$CAPTCHA_SITEKEY ' < \${mainFileName} > main.tmp && \
           mv main.tmp  \${mainFileName} && nginx -g 'daemon off;'" > run.sh
 
