@@ -57,6 +57,7 @@ export class DashboardComponent implements OnInit {
   currentReadAccessObjects: ReadAccessUser = {}
 
   acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
+  acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
     private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
@@ -303,6 +304,11 @@ export class DashboardComponent implements OnInit {
   }
 
   onFileSelected(event: any){
-    this.new_file = event.target.files[0]
+    if(this.acceptedMediaTypes.includes(event.target.files[0].type)){
+      this.new_file = event.target.files[0]
+    }else{
+      this.new_file = undefined
+      this.showWarnMsg("Bitte wählen Sie eine Datei mit einer der folgenden Endungen aus: "+this.acceptedMediaTypes.join(", "))
+    }
   }
 }
