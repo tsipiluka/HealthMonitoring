@@ -20,11 +20,11 @@ export class LoginComponent implements OnInit {
   resetEmail: string | undefined
 
   // captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
-  captchaSiteKey: string = environment.CAPTCHA_SITEKEY
+  captchaSiteKey: string = Inject('BACKEND_API_URL') 
   
   captchaStatus: boolean = false
 
-  constructor(@Inject('BACKEND_API_URL') private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
+  constructor(private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
   }
 
   ngOnInit(): void {
