@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   resetEmail: string | undefined
 
   // captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
-  captchSiteKey: string = environment.CAPTCHA_SITEKEY
+  captchaSiteKey: string = environment.CAPTCHA_SITEKEY
   
   captchaStatus: boolean = false
 
