@@ -9,6 +9,8 @@ services:
       - media_uploads:/code/media
     depends_on:
       - db
+    env_file:
+      - vars.env
   frontend:
     build: 'frontend/healthmonitoring/'
     ports:

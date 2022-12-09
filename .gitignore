@@ -429,3 +429,5 @@ secrets.json
 
 # ignore backend/media folder
 backend/media/
+
+vars.env
