@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class RegistrationComponent implements OnInit {
 
-  captchaSiteKey: string = environment.CAPTCHA_SITEKEY
+  captchaSiteKey: string = Inject('CAPTCHA_SITEKEY') 
   captchaStatus: boolean = false
 
   firstname: string | undefined
@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   password1: string | undefined
   password2: string | undefined
   
-  constructor(@Inject('CAPTCHA_SITEKEY') private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
+  constructor(private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
     private validateInputService: ValidateInputService) { }
 
   ngOnInit(): void {
