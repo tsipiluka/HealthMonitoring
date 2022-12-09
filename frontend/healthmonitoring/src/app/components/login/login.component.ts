@@ -18,16 +18,10 @@ export class LoginComponent implements OnInit {
   email: string | undefined
   password: string | undefined
   resetEmail: string | undefined
-
-  captchaSiteKey: string
-  // captchaSiteKey: string = Cap
   
   captchaStatus: boolean = false
 
-  constructor(@Inject('CAPTCHA_SITEKEY') public captchaSiteKeyA: string, private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
-    this.captchaSiteKey = captchaSiteKeyA
-    console.log(this.captchaSiteKey)
-  }
+  constructor(@Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string, private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {}
 
   ngOnInit(): void {
     const refresh_token = {
