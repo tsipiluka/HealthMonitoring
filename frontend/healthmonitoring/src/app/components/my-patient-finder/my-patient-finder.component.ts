@@ -175,8 +175,9 @@ export class MyPatientFinderComponent implements OnInit {
     const formData = new FormData();
     formData.append("medical_finding", this.selectedMedicalFinding!.uid);
     formData.append("file", this.new_file!, this.new_file!.name);
-    this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
-    this.loadAfterChange()
+    this.fileshareService.uploadMedicalFindingDocument(formData).subscribe(()=>{
+      this.loadAfterChange()
+    })
   }
 
   loadAfterChange(){
