@@ -163,6 +163,7 @@ export class MyPatientFinderComponent implements OnInit {
             this.changeDocumentfromMedicalFinding()
           })
         }
+        this.loadAfterChange()
       })
     }else{
       this.showWarnMsg("Das Krankheits und Kommentarfeld dürfen nicht leer sein!")
@@ -174,6 +175,10 @@ export class MyPatientFinderComponent implements OnInit {
     formData.append("medical_finding", this.selectedMedicalFinding!.uid);
     formData.append("file", this.new_file!, this.new_file!.name);
     this.fileshareService.uploadMedicalFindingDocument(formData).subscribe()
+    this.loadAfterChange()
+  }
+
+  loadAfterChange(){
     this.resetMedicalFindingValues()
     this.loadMedicalFindings()
     this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
