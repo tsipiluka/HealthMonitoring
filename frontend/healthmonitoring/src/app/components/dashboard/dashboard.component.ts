@@ -56,6 +56,8 @@ export class DashboardComponent implements OnInit {
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
+  acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
+
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
     private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
     private fileshareService: FileshareService) {}

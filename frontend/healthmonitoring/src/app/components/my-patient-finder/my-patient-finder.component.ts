@@ -58,6 +58,8 @@ export class MyPatientFinderComponent implements OnInit {
   patientenListLight: Patient[] = []
   selectedPatient: Patient | undefined
 
+  acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
+
   constructor(private userService: UserService,private fileshareService: FileshareService,private messageService: MessageService,private dashboardService: DashboardService,private myPatientFinderService: MyPatientFinderService, private router: Router){}
 
   ngOnInit(): void {
