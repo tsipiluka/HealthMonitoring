@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './service/login.service';
-import pgk from '../../../../secrets.json'
+// import pgk from '../../../../secrets.json'
 import {MessageService} from 'primeng/api';
 import { ValidateInputService} from 'src/app/services/validateInput-service/validate-input-service.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -18,10 +19,13 @@ export class LoginComponent implements OnInit {
   password: string | undefined
   resetEmail: string | undefined
 
-  captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
+  // captchaSiteKey: string = pgk.CAPTCHA_SITEKEY
+  captchSiteKey: string = environment.CAPTCHA_SITEKEY
+  
   captchaStatus: boolean = false
 
-  constructor(private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {}
+  constructor(@Inject('BACKEND_API_URL') private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {
+  }
 
   ngOnInit(): void {
     const refresh_token = {

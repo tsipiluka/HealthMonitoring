@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import pkg from '../../../../secrets.json';
+// import pkg from '../../../../secrets.json';
 import { RegistrationService } from './service/registration.service';
 import {MessageService} from 'primeng/api';
 import { ValidateInputService } from 'src/app/services/validateInput-service/validate-input-service.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-registration',
@@ -13,7 +14,7 @@ import { ValidateInputService } from 'src/app/services/validateInput-service/val
 })
 export class RegistrationComponent implements OnInit {
 
-  captchaSiteKey: string = pkg.CAPTCHA_SITEKEY
+  captchaSiteKey: string = environment.CAPTCHA_SITEKEY
   captchaStatus: boolean = false
 
   firstname: string | undefined
@@ -23,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   password1: string | undefined
   password2: string | undefined
   
-  constructor(private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
+  constructor(@Inject('BACKEND_API_URL') private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
     private validateInputService: ValidateInputService) { }
 
   ngOnInit(): void {

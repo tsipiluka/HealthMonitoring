@@ -39,6 +39,7 @@ import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ToastModule} from 'primeng/toast';
 import {FileUploadModule} from 'primeng/fileupload';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -85,7 +86,11 @@ import {FileUploadModule} from 'primeng/fileupload';
     ToastModule,
     FileUploadModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'CAPTCHA_SITEKEY', useValue: environment.CAPTCHA_SITEKEY
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
