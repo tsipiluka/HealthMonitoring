@@ -15,6 +15,8 @@ services:
     build: 'frontend/healthmonitoring/'
     ports:
       - 4200:80
+    env_file:
+      - vars.env
   reverse_proxy:
     image: nginx:1.19.0
     volumes:
