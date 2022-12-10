@@ -5,7 +5,7 @@ import { LoginService } from '../login/service/login.service';
 import { DashboardService } from './service/dashboard.service';
 import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { FormGroup } from '@angular/forms';
 import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
@@ -37,7 +37,7 @@ export interface ReadAccessUser{
         transition('hidden => visible', animate('400ms ease-out'))
     ])
   ],
-  providers: [MessageService]
+  providers: [ConfirmationService,MessageService]
 })
 export class DashboardComponent implements OnInit {
 
@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
     private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
-    private fileshareService: FileshareService) {}
+    private fileshareService: FileshareService,private confirmationService: ConfirmationService,) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -95,10 +95,17 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteMedicalFinding(uid: string) {
-    this.dashboardService.deleteMedicalFinding(uid).subscribe((res: any) => {
-      this.loadMedicalFindings()
-      this.showSuccessMsg("Sie haben den Eintrag erfolgreich gelöscht!")
-    })
+    this.confirmationService.confirm({
+      message: 'Sind Sie sich sicher, dass Sie den Befund löschen wollen?',
+      header: 'Befund unwiderruflich Löschen',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.dashboardService.deleteMedicalFinding(uid).subscribe((res: any) => {
+          this.loadMedicalFindings()
+          this.showSuccessMsg("Sie haben den Befund erfolgreich gelöscht!")
+        })
+      }
+    });
   }
 
   showWarnMsg(msg: string){
