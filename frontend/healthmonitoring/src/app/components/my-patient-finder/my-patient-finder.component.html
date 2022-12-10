@@ -90,7 +90,7 @@
             </div>
         </div>
         <ng-template pTemplate="footer">
-            <p-button icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
+            <p-button *ngIf="!this.requestLoading" icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
         </ng-template>
     </p-dialog>
 </div>
