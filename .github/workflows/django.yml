@@ -59,13 +59,13 @@ jobs:
       run: cd frontend/healthmonitoring && npm ci --force
 
     - name: Lint
-      run: npm run lint
+      run: cd frontend/healthmonitoring && npm run lint
 
     - name: Test
-      run: npm run test:ci
+      run: cd frontend/healthmonitoring && npm run test:ci
     
     - name: Build
-      run: npm run build:ci
+      run: cd frontend/healthmonitoring && npm run build:ci
 
   deploy:
     needs: [backend-test,frontend-test]
