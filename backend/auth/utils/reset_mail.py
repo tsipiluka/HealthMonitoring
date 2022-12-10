@@ -15,10 +15,15 @@ def send_reset_mail(sender, instance, reset_password_token, *args, **kwargs):
     subject = "Reset your password"
     token = reset_password_token.key
     link = settings.FRONTEND_URL + "password-reset/" + token
-    send_mail(
-        subject,
-        generate_mail(link),
-        "notify@wh0cares.live",
-        [reset_password_token.user.email],
-        fail_silently=False,
-    )
+
+    try:
+        send_mail(
+            subject,
+            generate_mail(link),
+            "notify@wh0cares.live",
+            [reset_password_token.user.email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        print(e)
+        print("failed to send email")
