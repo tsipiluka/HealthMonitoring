@@ -19,7 +19,7 @@
 
 # NEUER Dockerfile
 
-FROM cypress/base:16.18.1 as builder
+FROM node:18.12.1-alpine as builder
 
 # install chrome for protractor tests
 # RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -33,13 +33,13 @@ WORKDIR /usr/src/app
 # add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-RUN apt-get update
-RUN apt-get install gnupg2 -y
-RUN apt-get install wget -y
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-RUN apt-get update
-RUN apt-get install -yq google-chrome-stable
+#RUN apt-get update
+#RUN apt-get install gnupg2 -y
+#RUN apt-get install wget -y
+#RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+#RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+#RUN apt-get update
+#RUN apt-get install -yq google-chrome-stable
 
 # install and cache app dependencies
 # COPY package.json /usr/src/app/package.json
@@ -57,7 +57,6 @@ COPY . /usr/src/app
 # generate build
 RUN npm run build
 
-RUN npx cypress run
 
 
 FROM nginx:1.13.9-alpine

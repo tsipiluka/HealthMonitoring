@@ -18,20 +18,20 @@ services:
       dockerfile: Dockerfile
     ports:
       - 4200:80
-  #cypress:
-   # image: cypress
-    #build:
-     # context: 'frontend/healthmonitoring/'
-      #dockerfile: Dockerfile-cypress
-    #container_name: cypress
-    #depends_on:
-     # - frontend
-    #environment:
-     # - CYPRESS_baseUrl=http://frontend
-    #command: npx cypress run
-    #volumes:
-     # - ./frontend/healtmonitoring/cypress:/app/cypress
-     # - ./frontend/healtmonitoring/cypress.config.ts:/app/cypress.config.ts
+  cypress:
+    image: cypress
+    build:
+      context: 'frontend/healthmonitoring/'
+      dockerfile: Dockerfile-cypress
+    container_name: cypress
+    depends_on:
+      - frontend
+    environment:
+      - CYPRESS_baseUrl=http://frontend
+    command: npx cypress run
+    volumes:
+      - ./frontend/healthmonitoring/cypress:/app/cypress
+      - ./frontend/healthmonitoring/cypress.config.ts:/app/cypress.config.ts
   db:
     image: postgres:13
     volumes:

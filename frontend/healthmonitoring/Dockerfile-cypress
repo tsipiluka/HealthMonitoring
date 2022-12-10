@@ -19,7 +19,7 @@
 
 # CMD ["npx","cypress", "run"]
 
-FROM cypress/base:14
+FROM cypress/base:16.18.1
 WORKDIR /app
 
 # dependencies will be installed only if the package files change
@@ -30,7 +30,7 @@ COPY package-lock.json .
 # to small "started / finished" and avoid 1000s of lines of progress messages
 # https://github.com/cypress-io/cypress/issues/1243
 ENV CI=1
-RUN npm i --force
+RUN npm install --force
 # verify that Cypress has been installed correctly.
 # running this command separately from "cypress run" will also cache its result
 # to avoid verifying again when running the tests
