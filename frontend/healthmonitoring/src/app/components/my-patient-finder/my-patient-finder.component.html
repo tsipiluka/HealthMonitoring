@@ -50,6 +50,10 @@
 
     <p-dialog header="Bitte nehmen Sie ihre Änderungen vor" [(visible)]="medicalFindingModel" [modal]="true"
         [draggable]="false" [resizable]="false" (onHide)="resetMedicalFindingValues()">
+        <div *ngIf="this.requestLoading">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+        <div *ngIf="!this.requestLoading">
             <div class="row">
                 <div class="new-entry-item col-3">
                     <div class="col-12">
@@ -87,7 +91,7 @@
             <ng-template pTemplate="footer">
             <p-button icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
             </ng-template>
+        </div>
     </p-dialog>
-
 </div>
 

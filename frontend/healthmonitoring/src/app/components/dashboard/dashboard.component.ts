@@ -56,6 +56,8 @@ export class DashboardComponent implements OnInit {
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
+  requestLoading: boolean = false
+
   acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
   acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
@@ -155,6 +157,7 @@ export class DashboardComponent implements OnInit {
   }
 
   createNewMedicalFinding(){
+    this.requestLoading = true
     if(this.validateStringInput(this.new_disease!) && this.validateStringInput(this.new_comment!)){
       if(!this.validateStringInput(this.selectedDoctorID!)){
         const medicalFinding_info = { 
@@ -174,6 +177,7 @@ export class DashboardComponent implements OnInit {
         })
       }
     }else{
+      this.requestLoading = false
       this.showWarnMsg("Bitte tragen Sie eine Krankheit und die verschriebene Medizin ein!")
     }
   }
@@ -203,6 +207,7 @@ export class DashboardComponent implements OnInit {
         this.showWarnMsg(profil_id.profile_id+" konnte nicht hinzugefügt werden!")
       })
     }
+    this.requestLoading = false
     this.showSuccessMsg("Sie haben einen medizinischen Befund erfolgreich hinzugefügt!")
     this.resetMedicalFindingValues()
     this.loadMedicalFindings()
@@ -213,6 +218,7 @@ export class DashboardComponent implements OnInit {
   }
 
   changeMedicalFinding(){
+    this.requestLoading = true
     if(this.validateStringInput(this.new_comment!) && this.validateStringInput(this.new_disease!)){
       let changedValues = {}
       if(this.validateStringInput(this.selectedDoctorID!)){
@@ -231,6 +237,7 @@ export class DashboardComponent implements OnInit {
         this.changeMedicalFindingHelper(changedValues)
       }
     }else{
+      this.requestLoading = false
       this.showWarnMsg("Das Krankheits und Kommentarfeld dürfen nicht leer sein!")
     }
   }
@@ -260,6 +267,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadAfterChange(){
+    this.requestLoading = false
     this.resetMedicalFindingValues()
     this.loadMedicalFindings()
     this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
