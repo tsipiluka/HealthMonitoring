@@ -197,7 +197,6 @@ export class MyPatientFinderComponent implements OnInit {
   }
 
   loadAfterChange(){
-    this.requestLoading = false
     this.resetMedicalFindingValues()
     this.loadMedicalFindings()
     this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
@@ -235,6 +234,7 @@ export class MyPatientFinderComponent implements OnInit {
 
   resetMedicalFindingValues(){
     this.medicalFindingModel = false
+    this.requestLoading = false
     this.new_disease = ''
     this.new_comment = ''
     this.selectedUsers = []

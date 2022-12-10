@@ -214,7 +214,6 @@ export class DashboardComponent implements OnInit {
         this.showWarnMsg(profil_id.profile_id+" konnte nicht hinzugefügt werden!")
       })
     }
-    this.requestLoading = false
     this.showSuccessMsg("Sie haben einen medizinischen Befund erfolgreich hinzugefügt!")
     this.resetMedicalFindingValues()
     this.loadMedicalFindings()
@@ -274,7 +273,6 @@ export class DashboardComponent implements OnInit {
   }
 
   loadAfterChange(){
-    this.requestLoading = false
     this.resetMedicalFindingValues()
     this.loadMedicalFindings()
     this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
@@ -312,6 +310,7 @@ export class DashboardComponent implements OnInit {
 
   resetMedicalFindingValues(){
     this.medicalFindingModel = false
+    this.requestLoading = false
     this.new_disease = ''
     this.new_comment = ''
     this.new_file = undefined
