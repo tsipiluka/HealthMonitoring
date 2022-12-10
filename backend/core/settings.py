@@ -14,13 +14,20 @@ import base64
 import os
 from pathlib import Path
 import sys
+import base64
+
+AES_B64 = os.environ.get("AES_KEY", '0Ocl41YClYhHBAVrfvmqFnyxfeztLXyRqyRkSFGMz0U=')
+
+AES_KEY = base64.b64decode(AES_B64)
+
+print(AES_KEY)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 FRONTEND_URL = "https://health-monitoring.wh0cares.live/"
 SECRET_KEY = os.environ.get("SECRET_KEY", "secret")
-AES_KEY = os.environ.get("AES_KEY", b'\xd0\xe7%\xe3V\x02\x95\x88G\x04\x05k~\xf9\xaa\x16|\xb1}\xec\xed-|\x91\xab$dHQ\x8c\xcfE')
+# AES_KEY = os.environ.get("AES_KEY", b'\xd0\xe7%\xe3V\x02\x95\x88G\x04\x05k~\xf9\xaa\x16|\xb1}\xec\xed-|\x91\xab$dHQ\x8c\xcfE')
 
 FILE_UPLOAD_HANDLERS = [
     "encrypted_files.uploadhandler.EncryptedFileUploadHandler",
