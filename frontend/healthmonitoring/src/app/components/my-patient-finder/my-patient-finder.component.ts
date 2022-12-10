@@ -111,8 +111,9 @@ export class MyPatientFinderComponent implements OnInit {
     this.medicalFindingsLight = this.medicalFindings.filter(entry => entry.patient.patient_profile.patient_id === this.selectedPatient?.patient_profile.patient_id)
   }
 
-  deleteDoctorFromList(finding: MedicalFinding){
+  deleteDoctorFromList(event: Event, finding: MedicalFinding){
     this.confirmationService.confirm({
+      target: event.target!,
       message: 'Sind Sie sich sicher, dass Sie nicht weiter als Arzt für den ausgwählten Befund verantwortlich sein wollen?',
       header: 'Medinizische Untersuchung verlassen',
       icon: 'pi pi-info-circle',

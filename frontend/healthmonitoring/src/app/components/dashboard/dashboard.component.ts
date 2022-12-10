@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
     private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
-    private fileshareService: FileshareService,private confirmationService: ConfirmationService,) {}
+    private fileshareService: FileshareService,private confirmationService: ConfirmationService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -94,8 +94,9 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  deleteMedicalFinding(uid: string) {
+  deleteMedicalFinding(event: Event, uid: string) {
     this.confirmationService.confirm({
+      target: event.target!,
       message: 'Sind Sie sich sicher, dass Sie den Befund löschen wollen?',
       header: 'Befund unwiderruflich Löschen',
       icon: 'pi pi-info-circle',
