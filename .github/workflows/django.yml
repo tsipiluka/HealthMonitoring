@@ -54,7 +54,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: "frontend/healtmonitoring/package-lock.json"
+        cache-dependency-path: "./frontend/healthmonitoring/package-lock.json"
     - name: Install Dependencies
       run: cd frontend/healthmonitoring && npm ci --force
 
