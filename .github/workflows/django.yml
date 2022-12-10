@@ -67,7 +67,7 @@ jobs:
       run: npm run build:ci
 
   deploy:
-    needs: build-test
+    needs: [backend-test,frontend-test]
     name: Deploy to Server
     runs-on: ubuntu-latest
     steps:
