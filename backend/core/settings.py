@@ -22,7 +22,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 FRONTEND_URL = "https://health-monitoring.wh0cares.live/"
 SECRET_KEY = os.environ.get("SECRET_KEY")
-AES_KEY = base64.b64decode(os.environ.get("AES_KEY"))
+AES_KEY = os.environ.get("AES_KEY")
 
 FILE_UPLOAD_HANDLERS = [
     "encrypted_files.uploadhandler.EncryptedFileUploadHandler",
@@ -178,3 +178,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
+
+print(os.environ.get("EMAIL_HOST_USER"))
+print(os.environ.get("SECRET_KEY"))
+print(os.environ.get("AES_KEY"))
+
+aes_key1 = os.environ.get("AES_KEY")
