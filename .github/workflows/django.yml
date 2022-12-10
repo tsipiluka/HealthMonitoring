@@ -50,12 +50,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
+      run: cd frontend/healthmonitoring
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install Dependencies
-      run: cd frontend/healthmonitoring && npm ci --force
+      run: npm ci --force
 
     - name: Lint
       run: npm run lint
