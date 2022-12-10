@@ -1,0 +1,38 @@
+
+# # base image
+# FROM cypress/browsers:chrome65-ff57
+
+# # set working directory
+# # RUN mkdir /usr/src/app
+# WORKDIR /usr/src/app
+
+# # install cypress
+
+# COPY package.json .
+# RUN npm install --force
+
+# # copy cypress files and folders
+# COPY cypress /usr/src/app/cypress
+# COPY cypress.config.ts /usr/src/app/cypress/cypress.config.ts
+
+# # confirm the cypress install
+# # RUN npx cypress verify
+
+# CMD ["npx","cypress", "run"]
+
+FROM cypress/base:16.18.1
+WORKDIR /app
+
+# dependencies will be installed only if the package files change
+COPY package.json .
+COPY package-lock.json .
+
+# by setting CI environment variable we switch the Cypress install messages
+# to small "started / finished" and avoid 1000s of lines of progress messages
+# https://github.com/cypress-io/cypress/issues/1243
+ENV CI=1
+RUN npm install --force
+# verify that Cypress has been installed correctly.
+# running this command separately from "cypress run" will also cache its result
+# to avoid verifying again when running the tests
+RUN npx cypress verify
