@@ -1,15 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ServerUrlService } from 'src/app/core/server-url/server-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicalFindingFinderService {
 
-  readonly APIUrl = "https://health-monitoring.wh0cares.live/api";
+  readonly APIUrl = this.serverUrlService.getAPIUrl();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private serverUrlService: ServerUrlService) { }
 
   getMedicalFindings(): Observable<any>{
     const headers= new HttpHeaders()

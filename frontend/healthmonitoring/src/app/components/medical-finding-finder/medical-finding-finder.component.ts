@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
 import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { Patient } from 'src/app/entities/patient.modal';
-import { User } from 'src/app/entities/user.modal';
 import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 import { LoginService } from '../login/service/login.service';
 import { MedicalFindingFinderService } from './service/medical-finding-finder.service';
