@@ -24,8 +24,10 @@ services:
     image: postgres:13
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - vars-dev.env
+    environment:
+      - POSTGRES_DB=healthmonitoring
+      - POSTGRES_USER=specialuser
+      - POSTGRES_PASSWORD=SecretPassword1337!
 volumes:
   postgres_data:
   media_uploads:
