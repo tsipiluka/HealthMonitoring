@@ -19,8 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 FRONTEND_URL = "https://health-monitoring.wh0cares.live/"
-SECRET_KEY = os.environ.get("SECRET_KEY")
-AES_KEY = os.environ.get("AES_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "secret")
+AES_KEY = os.environ.get("AES_KEY", b'\xd0\xe7%\xe3V\x02\x95\x88G\x04\x05k~\xf9\xaa\x16|\xb1}\xec\xed-|\x91\xab$dHQ\x8c\xcfE')
 
 FILE_UPLOAD_HANDLERS = [
     "encrypted_files.uploadhandler.EncryptedFileUploadHandler",
