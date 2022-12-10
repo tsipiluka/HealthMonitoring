@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RegistrationComponent } from './registration.component';
+import { environment } from '../../../environments/environment.prod'
 
 describe('RegistrationComponent', () => {
   let component: RegistrationComponent;
@@ -9,7 +10,8 @@ describe('RegistrationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports:[HttpClientTestingModule],
-      declarations: [ RegistrationComponent ]
+      declarations: [ RegistrationComponent ],
+      providers: [{provide: 'CAPTCHA_SITEKEY', useValue: environment.CAPTCHA_SITEKEY}]
     })
     .compileComponents();
 
