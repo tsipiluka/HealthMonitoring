@@ -51,10 +51,10 @@
         
         <p-dialog [header]="getModifyEntryModelHeader()" [(visible)]="medicalFindingModel" [modal]="true"
             [draggable]="false" [resizable]="false" (onHide)="resetMedicalFindingValues()">
-            <div ngIf*="requestLoading">
+            <div *ngIf="requestLoading">
                 <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
             </div>
-            <div ngIf*="!requestLoading">
+            <div *ngIf="!requestLoading">
                 <div class="row">
                     <div class="new-entry-item col-3">
                         <div class="col-12">
