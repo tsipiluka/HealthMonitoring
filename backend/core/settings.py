@@ -22,7 +22,10 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 FRONTEND_URL = "https://health-monitoring.wh0cares.live/"
 SECRET_KEY = os.environ.get("SECRET_KEY")
-AES_KEY = os.environ.get("AES_KEY")
+# AES_KEY = os.environ.get("AES_KEY")
+AES_B64 = os.environ.get("AES_KEY", '0Ocl41YClYhHBAVrfvmqFnyxfeztLXyRqyRkSFGMz0U=')
+
+AES_KEY = base64.b64decode(AES_B64)
 
 FILE_UPLOAD_HANDLERS = [
     "encrypted_files.uploadhandler.EncryptedFileUploadHandler",
