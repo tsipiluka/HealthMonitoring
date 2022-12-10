@@ -55,8 +55,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install Dependencies
-      working-directory: ./frontend/healthmonitoring
-      run: npm ci --force
+      run: cd frontend/healthmonitoring && npm ci --force
 
     - name: Lint
       run: npm run lint
