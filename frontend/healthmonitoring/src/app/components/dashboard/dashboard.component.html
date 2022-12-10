@@ -100,11 +100,11 @@
                         </div>
                     </div>
                 </div>
-                <ng-template pTemplate="footer">
-                <p-button *ngIf="!this.modify_mode" icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
-                <p-button *ngIf="this.modify_mode" icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
-                </ng-template>
             </div>
+            <ng-template pTemplate="footer">
+                <p-button *ngIf="!this.modify_mode && !this.requestLoading" icon="pi pi-check" (click)="createNewMedicalFinding()" label="Hinzufügen" styleClass="p-button-text"></p-button>
+                <p-button *ngIf="this.modify_mode && !this.requestLoading" icon="pi pi-pencil" (click)="changeMedicalFinding()" label="Ändern" styleClass="p-button-text"></p-button>
+            </ng-template>
         </p-dialog>
     </div>  
 </div>
