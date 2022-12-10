@@ -58,6 +58,8 @@ export class MyPatientFinderComponent implements OnInit {
   patientenListLight: Patient[] = []
   selectedPatient: Patient | undefined
 
+  requestLoading: boolean = false
+
   acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
   acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
@@ -155,6 +157,7 @@ export class MyPatientFinderComponent implements OnInit {
   }
 
   changeMedicalFinding(){
+    this.requestLoading = true
     if(this.validateStringInput(this.new_comment!) && this.validateStringInput(this.new_disease!)){
       const changedValues = {disease: this.new_disease, comment: this.new_comment} 
       this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe((res: any)=>{
@@ -170,6 +173,7 @@ export class MyPatientFinderComponent implements OnInit {
         }
       })
     }else{
+      this.requestLoading = false
       this.showWarnMsg("Das Krankheits und Kommentarfeld dürfen nicht leer sein!")
     }
   }
@@ -184,6 +188,7 @@ export class MyPatientFinderComponent implements OnInit {
   }
 
   loadAfterChange(){
+    this.requestLoading = false
     this.resetMedicalFindingValues()
     this.loadMedicalFindings()
     this.showSuccessMsg("Sie haben den medizinischen Befund erfolgreich geändert!")
