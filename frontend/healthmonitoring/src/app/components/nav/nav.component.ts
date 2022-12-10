@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
 import { UserService } from 'src/app/services/user-service/user.service';
 
 @Component({

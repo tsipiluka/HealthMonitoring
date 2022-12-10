@@ -4,7 +4,7 @@ import { ProfileService } from './service/profile.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { LoginService } from '../login/service/login.service';
-import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
 import { ValidateInputService } from 'src/app/services/validateInput-service/validate-input-service.service';
 
 

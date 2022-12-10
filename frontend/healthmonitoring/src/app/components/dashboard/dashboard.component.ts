@@ -6,7 +6,7 @@ import { DashboardService } from './service/dashboard.service';
 import { UserService } from 'src/app/services/user-service/user.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
 import {MessageService} from 'primeng/api';
-import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
 import { FormGroup } from '@angular/forms';
 import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 
