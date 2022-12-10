@@ -6,7 +6,7 @@ import { UserService } from 'src/app/services/user-service/user.service';
 import { DashboardService } from '../dashboard/service/dashboard.service';
 import { MyPatientFinderService } from './service/my-patient-finder.service';
 import {trigger,state,style,transition,animate} from '@angular/animations';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 
 export interface ReadAccessObject{
@@ -35,7 +35,7 @@ export interface ReadAccessUser{
         transition('hidden => visible', animate('400ms ease-out'))
     ])
   ],
-  providers: [MessageService]
+  providers: [ConfirmationService, MessageService]
 })
 export class MyPatientFinderComponent implements OnInit {
 
@@ -63,7 +63,9 @@ export class MyPatientFinderComponent implements OnInit {
   acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
   acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
-  constructor(private userService: UserService,private fileshareService: FileshareService,private messageService: MessageService,private dashboardService: DashboardService,private myPatientFinderService: MyPatientFinderService, private router: Router){}
+  constructor(private userService: UserService,private fileshareService: FileshareService,private messageService: MessageService,
+    private dashboardService: DashboardService,private myPatientFinderService: MyPatientFinderService, private router: Router,
+    private confirmationService: ConfirmationService){}
 
   ngOnInit(): void {
     this.loadMedicalFindings()
@@ -110,13 +112,20 @@ export class MyPatientFinderComponent implements OnInit {
   }
 
   deleteDoctorFromList(finding: MedicalFinding){
-    this.selectedMedicalFinding = finding
-    const changedValues = {treator: null} 
-    this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
-      this.resetMedicalFindingValues()
-      this.loadMedicalFindings()
-      this.showSuccessMsg("Sie sind nicht länger für den medizinischen Befund verantwortlich!")
-    })
+    this.confirmationService.confirm({
+      message: 'Sind Sie sich sicher, dass Sie nicht weiter als Arzt für den ausgwählten Befund verantwortlich sein wollen?',
+      header: 'Medinizische Untersuchung verlassen',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.selectedMedicalFinding = finding
+        const changedValues = {treator: null} 
+        this.dashboardService.updateMedicalFinding(this.selectedMedicalFinding!.uid, changedValues).subscribe(()=>{
+          this.resetMedicalFindingValues()
+          this.loadMedicalFindings()
+          this.showSuccessMsg("Sie sind nicht länger für den medizinischen Befund verantwortlich!")
+        })
+      }
+    });
   }
 
   downloadPdf(finding: MedicalFinding){
