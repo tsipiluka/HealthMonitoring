@@ -10,25 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import base64
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 from .read_secrets import ReadSecrets as rs
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 FRONTEND_URL = "https://health-monitoring.wh0cares.live/"
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-*tp8^*b3(1^byq8h-vv^ah=z#fr8kbqp_4m19gilm@-f+nj)h)"
-# AES KEY used for file encryption by package encrypted_files
-AES_KEY = b"\x1a>\xf8\xcd\xe2\x8e_~V\x14\x98\xc2\x1f\xf9\xea\xf8\xd7c\xb3`!d\xd4\xe3+\xf7Q\x83\xb5~\x8f\xdd"
+SECRET_KEY = os.environ.get("SECRET_KEY")
+AES_KEY = base64.b64decode(os.environ.get("AES_KEY"))
 
 FILE_UPLOAD_HANDLERS = [
     "encrypted_files.uploadhandler.EncryptedFileUploadHandler",
@@ -37,10 +31,10 @@ FILE_UPLOAD_HANDLERS = [
 ]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["health-monitoring.wh0cares.live"]
-CSRF_TRUSTED_ORIGINS = ["https://wh0cares.live", "https://health-monitoring.wh0cares.live"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -170,8 +164,10 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "https://health-monitoring.wh0cares.live",
-    "https://wh0cares.live",
+    "http://localhost:4200",  # angular dev server
+    "http://127.0.0.1:4200",  # angular dev server
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
 
 # CSRF_COOKIE_SECURE = True
@@ -179,6 +175,6 @@ CORS_ALLOWED_ORIGINS = [
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.eu.sparkpostmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "SMTP_Injection"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
