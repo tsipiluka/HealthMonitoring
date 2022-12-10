@@ -58,8 +58,8 @@ jobs:
     - name: Install Dependencies
       run: cd frontend/healthmonitoring && npm ci --force
 
-    - name: Lint
-      run: cd frontend/healthmonitoring && npm run lint
+    # - name: Lint
+    #   run: cd frontend/healthmonitoring && npm run lint
 
     - name: Test
       run: cd frontend/healthmonitoring && npm run test:ci
