@@ -41,6 +41,7 @@ import {MessageModule} from 'primeng/message';
 import {ToastModule} from 'primeng/toast';
 import {FileUploadModule} from 'primeng/fileupload';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 
 @NgModule({
@@ -86,7 +87,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     MessageModule,
     ToastModule,
     FileUploadModule,
-    InputTextareaModule
+    InputTextareaModule,
+    ProgressBarModule
   ],
   providers: [
     {
