@@ -95,6 +95,8 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteMedicalFinding(event: Event, uid: string) {
+    console.log(event)
+    console.log(uid)
     this.confirmationService.confirm({
       target: event.target!,
       message: 'Sind Sie sich sicher, dass Sie den Befund löschen wollen?',
@@ -105,6 +107,8 @@ export class DashboardComponent implements OnInit {
           this.loadMedicalFindings()
           this.showSuccessMsg("Sie haben den Befund erfolgreich gelöscht!")
         })
+      }, reject: () => {
+        this.showWarnMsg("Sie haben den Befund nicht gelöscht!")
       }
     });
   }
