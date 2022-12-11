@@ -9,7 +9,7 @@ jobs:
       - name: Checkout
         uses: Bhacaz/checkout-files@v2
         with:
-          files: frontend HealthMonitoring
+          files: /frontend/
       - name: debug
         run: ls
       # Install NPM dependencies, cache them correctly
