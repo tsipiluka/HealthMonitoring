@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
+import { IMedicalFinding, MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { LoginService } from '../login/service/login.service';
 import { DashboardService } from './service/dashboard.service';
 import { UserService } from 'src/app/services/user-service/user.service';
@@ -126,8 +126,8 @@ export class DashboardComponent implements OnInit {
     this.medicalFindingModel = true
   }
 
-  downloadPdf(finding: MedicalFinding){
-    this.selectedMedicalFinding = finding
+  downloadPdf(finding: any){
+    this.selectedMedicalFinding = <IMedicalFinding>finding
     this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
       let blob: Blob = res.body as Blob;
       let a = document.createElement('a')

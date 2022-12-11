@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
-import { MedicalFinding } from 'src/app/entities/medicalFinding.modal';
+import { IMedicalFinding, MedicalFinding } from 'src/app/entities/medicalFinding.modal';
 import { Patient } from 'src/app/entities/patient.modal';
 import { User } from 'src/app/entities/user.modal';
 import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
@@ -65,8 +65,8 @@ export class MedicalFindingFinderComponent {
     this.patientenListLight = filtered;
   }
 
-  downloadPdf(finding: MedicalFinding){
-    this.selectedMedicalFinding = finding
+  downloadPdf(finding: any){
+    this.selectedMedicalFinding = <IMedicalFinding>finding
     this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
       let blob: Blob = res.body as Blob;
       let a = document.createElement('a')
