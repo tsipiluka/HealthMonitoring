@@ -9,6 +9,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FileshareService } from 'src/app/services/fileshare-service/fileshare.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { LoginService } from '../login/service/login.service';
 
 export interface ReadAccessObject {
   medical_finding: string;
@@ -86,11 +87,22 @@ export class MyPatientFinderComponent implements OnInit {
     private myPatientFinderService: MyPatientFinderService,
     private router: Router,
     private confirmationService: ConfirmationService,
-    private errorHandler: ErrorHandlerService
+    private errorHandler: ErrorHandlerService,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
     this.loadMedicalFindings();
+  }
+
+  refreshToken() {
+    const refresh_token = {
+      refresh: localStorage.getItem('refresh_token'),
+    };
+    this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
+      localStorage.setItem('access_token', res.access);
+      this.router.navigate(['dashboard']);
+    });
   }
 
   showWarnMsg(msg: string) {
@@ -106,6 +118,7 @@ export class MyPatientFinderComponent implements OnInit {
       (medicalFindings: MedicalFinding[]) => {
         this.medicalFindings = medicalFindings;
         this.medicalFindingsLight = this.medicalFindings;
+        this.refreshToken();
       },
       (error: any) => {
         this.errorHandler.handleError(error);
@@ -154,6 +167,7 @@ export class MyPatientFinderComponent implements OnInit {
             this.resetMedicalFindingValues();
             this.loadMedicalFindings();
             this.showSuccessMsg('Sie sind nicht länger für den medizinischen Befund verantwortlich!');
+            this.refreshToken();
           },
           err => {
             this.errorHandler.handleError(err);
@@ -172,6 +186,7 @@ export class MyPatientFinderComponent implements OnInit {
         a.download = finding.file.file_name + '.' + res.body.type.split('/')[1];
         a.href = window.URL.createObjectURL(blob);
         a.click();
+        this.refreshToken();
       },
       err => {
         if (err.status === 404) {
@@ -203,6 +218,7 @@ export class MyPatientFinderComponent implements OnInit {
         this.selectedUsers = [...this.selectedUsers];
         this.modify_mode = true;
         this.medicalFindingModel = true;
+        this.refreshToken();
       },
       err => {
         this.errorHandler.handleError(err);
@@ -229,6 +245,7 @@ export class MyPatientFinderComponent implements OnInit {
           } else {
             this.loadAfterChange();
           }
+          this.refreshToken();
         },
         err => {
           this.errorHandler.handleError(err);
@@ -247,6 +264,7 @@ export class MyPatientFinderComponent implements OnInit {
     this.fileshareService.uploadMedicalFindingDocument(formData).subscribe(
       () => {
         this.loadAfterChange();
+        this.refreshToken();
       },
       err => {
         this.errorHandler.handleError(err);
@@ -283,6 +301,7 @@ export class MyPatientFinderComponent implements OnInit {
                 this.errorHandler.handleError(err);
               }
             );
+            this.refreshToken();
           },
           err => {
             this.errorHandler.handleError(err);

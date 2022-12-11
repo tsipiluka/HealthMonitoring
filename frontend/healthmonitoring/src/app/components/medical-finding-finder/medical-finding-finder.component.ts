@@ -32,30 +32,25 @@ export class MedicalFindingFinderComponent {
   ) {}
 
   ngOnInit(): void {
+    this.refreshToken();
+  }
+
+  refreshToken() {
     const refresh_token = {
       refresh: localStorage.getItem('refresh_token'),
     };
-    this.loginService.refreshToken(refresh_token).subscribe(
-      (res: any) => {
-        localStorage.setItem('access_token', res.access);
-        this.loadMedicalFindings();
-      },
-      err => {
-        this.errorHandler.handleError(err);
-      }
-    );
+    this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
+      localStorage.setItem('access_token', res.access);
+      this.router.navigate(['dashboard']);
+    });
   }
 
   loadMedicalFindings() {
-    this.medicalFindingFinderService.getMedicalFindings().subscribe(
-      (medicalFindings: MedicalFinding[]) => {
-        this.medicalFindings = medicalFindings;
-        this.medicalFindingsLight = this.medicalFindings;
-      },
-      err => {
-        this.errorHandler.handleError(err);
-      }
-    );
+    this.medicalFindingFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[]) => {
+      this.medicalFindings = medicalFindings;
+      this.medicalFindingsLight = this.medicalFindings;
+      this.refreshToken();
+    });
   }
 
   filterPatients(event: any) {
@@ -85,15 +80,14 @@ export class MedicalFindingFinderComponent {
       (res: any) => {
         let blob: Blob = res.body as Blob;
         let a = document.createElement('a');
-        a.download = finding.file.file_name + '.' + res.body.type.split('/')[1];
+        a.download = finding.file.file_name.split('.' + res.body.type.split('/')[1])[0] + '.' + res.body.type.split('/')[1];
         a.href = window.URL.createObjectURL(blob);
         a.click();
+        this.refreshToken();
       },
       err => {
         if (err.status === 404) {
           this.showWarnMsg('Es wurde keine medizinische Datei zu dem Befund hochgeladen!');
-        } else {
-          this.errorHandler.handleError(err);
         }
       }
     );

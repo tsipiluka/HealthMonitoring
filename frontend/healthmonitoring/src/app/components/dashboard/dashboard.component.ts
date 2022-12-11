@@ -105,12 +105,23 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  refreshToken() {
+    const refresh_token = {
+      refresh: localStorage.getItem('refresh_token'),
+    };
+    this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
+      localStorage.setItem('access_token', res.access);
+      this.router.navigate(['dashboard']);
+    });
+  }
+
   loadMedicalFindings() {
     this.medicalFindingList = [];
     this.dashboardService.loadMedicalFindings().subscribe(
       (res: any) => {
         for (let finding of <MedicalFinding[]>res) {
           this.medicalFindingList.push(<MedicalFinding>finding);
+          this.refreshToken();
         }
       },
       err => {
@@ -133,6 +144,7 @@ export class DashboardComponent implements OnInit {
           (res: any) => {
             this.loadMedicalFindings();
             this.showSuccessMsg('Sie haben den Befund erfolgreich gelöscht!');
+            this.refreshToken();
           },
           err => {
             this.errorHandler.handleError(err);
@@ -167,6 +179,7 @@ export class DashboardComponent implements OnInit {
         a.download = finding.file.file_name + '.' + res.body.type.split('/')[1];
         a.href = window.URL.createObjectURL(blob);
         a.click();
+        this.refreshToken();
       },
       err => {
         if (err.status === 404) {
@@ -194,6 +207,7 @@ export class DashboardComponent implements OnInit {
             this.currentReadAccessObjects[String(user[i]!.reader.patient_profile.patient_id)] = user[i];
             this.selectedUsers.push(String(user[i]!.reader.doctor_profile.doctor_id));
           }
+          this.refreshToken();
         }
         this.selectedUsers = [...this.selectedUsers];
         this.modify_mode = true;
@@ -228,6 +242,7 @@ export class DashboardComponent implements OnInit {
               treator: user.id,
             };
             this.createNewMedicalFindingHelper(medicalFinding_info);
+            this.refreshToken();
           },
           err => {
             this.errorHandler.handleError(err);
@@ -258,6 +273,7 @@ export class DashboardComponent implements OnInit {
         } else {
           this.createNewMedicalFindingHelper2(medicalFinding);
         }
+        this.refreshToken();
       },
       err => {
         this.errorHandler.handleError(err);
@@ -272,6 +288,7 @@ export class DashboardComponent implements OnInit {
         (user2: any) => {
           const readUser = { reader: user2.id };
           this.dashboardService.addReadAccessToMedicalFinding(medicalFinding.uid, readUser).subscribe();
+          this.refreshToken();
         },
         err => {
           this.showWarnMsg(profil_id.profile_id + ' konnte nicht hinzugefügt werden!');
@@ -299,6 +316,7 @@ export class DashboardComponent implements OnInit {
             (user: any) => {
               changedValues = { disease: this.new_disease, comment: this.new_comment, treator: user.id };
               this.changeMedicalFindingHelper(changedValues);
+              this.refreshToken();
             },
             err => {
               this.errorHandler.handleError(err);
@@ -325,6 +343,7 @@ export class DashboardComponent implements OnInit {
         this.fileshareService.deleteMedicalFindingDocument(res.uid).subscribe(
           () => {
             this.changeDocumentfromMedicalFinding();
+            this.refreshToken();
           },
           err => {
             this.changeDocumentfromMedicalFinding();
@@ -376,6 +395,7 @@ export class DashboardComponent implements OnInit {
                 this.errorHandler.handleError(err);
               }
             );
+            this.refreshToken();
           },
           err => {
             this.showWarnMsg(key + ' konnte nicht hinzugefügt werden!');
