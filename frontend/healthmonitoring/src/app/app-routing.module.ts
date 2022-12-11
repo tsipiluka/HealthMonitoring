@@ -10,7 +10,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { UserActivationComponent } from './components/user-activation/user-activation.component';
 import { UserPasswordResetComponent } from './components/user-password-reset/user-password-reset.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
