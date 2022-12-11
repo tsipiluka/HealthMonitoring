@@ -13,7 +13,6 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
   styleUrls: ['./registration.component.css'],
   providers: [MessageService],
 })
-
 export class RegistrationComponent {
   captchaStatus = false;
 
@@ -33,23 +32,33 @@ export class RegistrationComponent {
     private errorHandler: ErrorHandlerService
   ) {}
 
-  registerUser(){
-    if(this.validateStringInput(this.firstname!)){
-      if(this.validateStringInput(this.lastname!)){
-        if(this.validateDate(this.birthday!)){
-          if(this.validateInputService.validateEmail(this.email!)){
-            if(this.validateInputService.validatePassword(this.password1!)){
-              if(this.password1 === this.password2){
-                if(this.captchaStatus){
-                  const registrationData = {first_name: this.firstname, last_name: this.lastname, email: this.email,birth_date: this.birthday, password: this.password1, password2: this.password2}
-                  this.registrationService.registerUser(registrationData).subscribe((res: any) => {
-                    this.router.navigate(['login'])
-                  },
-                  err=>{
-                    this.showWarnMsg("Die Registrierung ist fehlgeschlagen!")
-                  })
-                }else{
-                  this.showWarnMsg("Bitte bestätigen Sie das Captcha!")
+  registerUser() {
+    if (this.validateStringInput(this.firstname!)) {
+      if (this.validateStringInput(this.lastname!)) {
+        if (this.validateDate(this.birthday!)) {
+          if (this.validateInputService.validateEmail(this.email!)) {
+            if (this.validateInputService.validatePassword(this.password1!)) {
+              if (this.password1 === this.password2) {
+                if (this.captchaStatus) {
+                  const registrationData = {
+                    first_name: this.firstname,
+                    last_name: this.lastname,
+                    email: this.email,
+                    birth_date: this.birthday,
+                    password: this.password1,
+                    password2: this.password2,
+                  };
+                  this.registrationService.registerUser(registrationData).subscribe(
+                    (res: any) => {
+                      this.router.navigate(['login']);
+                    },
+                    err => {
+                      this.showWarnMsg('Die Registrierung ist fehlgeschlagen!');
+                      this.router.navigate(['registration']);
+                    }
+                  );
+                } else {
+                  this.showWarnMsg('Bitte bestätigen Sie das Captcha!');
                 }
               } else {
                 this.showWarnMsg('Die eingetragenen Passwörter sind nicht gleich!');
@@ -79,12 +88,12 @@ export class RegistrationComponent {
     return str !== '' && str !== undefined && str !== null;
   }
 
-  validateDate(date: string){
-    const timestamp = Date.parse(date)
-    if(!isNaN(timestamp)){
-      return true
-    }else {
-      return false
+  validateDate(date: string) {
+    const timestamp = Date.parse(date);
+    if (!isNaN(timestamp)) {
+      return true;
+    } else {
+      return false;
     }
   }
 
