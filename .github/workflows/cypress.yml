@@ -9,9 +9,9 @@ jobs:
       - name: Checkout
         uses: Bhacaz/checkout-files@v2
         with:
-          files: frontend/healthmonitoring
+          files: frontend/healthmonitoring/cypress.config.ts
       - name: debug
-        run: cd frontend && ls
+        run: ls
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
