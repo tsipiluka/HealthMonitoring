@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   user: any | undefined
   birth_date: Date | undefined
 
-  passwordChangeModel: boolean = false
+  passwordChangeModel = false
 
   old_password: string | undefined
   new_password1: string | undefined

@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   password: string | undefined
   resetEmail: string | undefined
   
-  captchaStatus: boolean = false
+  captchaStatus = false
 
   constructor(@Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string, private messageService: MessageService,private router: Router,private loginService: LoginService, private validateInputService: ValidateInputService) {}
 

@@ -44,9 +44,9 @@ export class DashboardComponent implements OnInit {
   medicalFindingList: MedicalFinding[] = []
   user: any 
 
-  profileIdRegex: RegExp = /^[a-zA-Z]{2}#[0-9]{4}$/
-  modify_mode: boolean = false
-  medicalFindingModel: boolean = false
+  profileIdRegex = /^[a-zA-Z]{2}#[0-9]{4}$/
+  modify_mode = false
+  medicalFindingModel = false
   selectedMedicalFinding: MedicalFinding | undefined
 
   new_disease: string | undefined
@@ -56,9 +56,9 @@ export class DashboardComponent implements OnInit {
   selectedUsers: string[] = []
   currentReadAccessObjects: ReadAccessUser = {}
 
-  requestLoading: boolean = false
+  requestLoading = false
 
-  acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
+  acceptedFileTypes = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
   acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
   constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
   loadMedicalFindings() {
     this.medicalFindingList = []
     this.dashboardService.loadMedicalFindings().subscribe((res: any) => {
-      for(let finding of <MedicalFinding[]>res){
+      for(const finding of <MedicalFinding[]>res){
         this.medicalFindingList.push(<MedicalFinding>finding)
       }
     }, err => {
@@ -129,8 +129,8 @@ export class DashboardComponent implements OnInit {
   downloadPdf(finding: any){
     this.selectedMedicalFinding = <IMedicalFinding>finding
     this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
-      let blob: Blob = res.body as Blob;
-      let a = document.createElement('a')
+      const blob: Blob = res.body as Blob;
+      const a = document.createElement('a')
       a.download= finding.file.file_name.split('.'+res.body.type.split('/')[1])[0]+'.'+res.body.type.split('/')[1]
       a.href = window.URL.createObjectURL(blob)
       a.click()

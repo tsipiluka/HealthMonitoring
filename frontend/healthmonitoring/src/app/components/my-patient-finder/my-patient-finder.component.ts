@@ -42,9 +42,9 @@ export class MyPatientFinderComponent implements OnInit {
   medicalFindingList: MedicalFinding[] = []
   user: any 
 
-  profileIdRegex: RegExp = /^[a-zA-Z]{2}#[0-9]{4}$/
-  modify_mode: boolean = true
-  medicalFindingModel: boolean = false
+  profileIdRegex = /^[a-zA-Z]{2}#[0-9]{4}$/
+  modify_mode = true
+  medicalFindingModel = false
   selectedMedicalFinding: MedicalFinding | undefined
 
   new_disease: string | undefined
@@ -58,9 +58,9 @@ export class MyPatientFinderComponent implements OnInit {
   patientenListLight: Patient[] = []
   selectedPatient: Patient | undefined
 
-  requestLoading: boolean = false
+  requestLoading = false
 
-  acceptedFileTypes: string = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
+  acceptedFileTypes = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
   acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
   constructor(private userService: UserService,private fileshareService: FileshareService,private messageService: MessageService,
@@ -87,10 +87,10 @@ export class MyPatientFinderComponent implements OnInit {
   }
 
   filterPatients(event: any){
-    let filtered : Patient[] = []
-    let query = event.query;
+    const filtered : Patient[] = []
+    const query = event.query;
     for(let i = 0; i < this.medicalFindings.length; i++) {
-        let patient = this.medicalFindings[i].patient;
+        const patient = this.medicalFindings[i].patient;
         if (patient.patient_profile.patient_id.includes(query)) {
           let checker = true
           for(let j = 0; j < filtered.length; j++){
@@ -132,8 +132,8 @@ export class MyPatientFinderComponent implements OnInit {
   downloadPdf(finding: any){
     this.selectedMedicalFinding = <IMedicalFinding>finding
     this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
-      let blob: Blob = res.body as Blob;
-      let a = document.createElement('a')
+      const blob: Blob = res.body as Blob;
+      const a = document.createElement('a')
       a.download= finding.file.file_name.split('.'+res.body.type.split('/')[1])[0]+'.'+res.body.type.split('/')[1]
       a.href = window.URL.createObjectURL(blob)
       a.click()

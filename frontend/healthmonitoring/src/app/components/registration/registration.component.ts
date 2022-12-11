@@ -12,9 +12,9 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./registration.component.css'],
   providers: [MessageService]
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent{
 
-  captchaStatus: boolean = false
+  captchaStatus = false
 
   firstname: string | undefined
   lastname: string | undefined
@@ -25,9 +25,6 @@ export class RegistrationComponent implements OnInit {
   
   constructor(@Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string, private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
     private validateInputService: ValidateInputService) {}
-
-  ngOnInit(): void {
-  }
 
   registerUser(){
     if(this.validateStringInput(this.firstname!)){
@@ -76,7 +73,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   validateDate(date: string){
-    var timestamp = Date.parse(date)
+    const timestamp = Date.parse(date)
     if(!isNaN(timestamp)){
       return true
     }else {

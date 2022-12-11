@@ -18,8 +18,6 @@ export class UserPasswordResetComponent {
   constructor(private userPasswordResetService: UserPasswordResetService,private messageService: MessageService,private router: Router,private route: ActivatedRoute,
     private validateInputService: ValidateInputService){}
 
-  ngOnInit(): void {}
-
   resetPassword(){
     if(this.validateInputService.validatePassword(this.new_password1!)){
       if(this.new_password1 === this.new_password2){
