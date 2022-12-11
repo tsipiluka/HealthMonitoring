@@ -104,7 +104,7 @@ export class DashboardComponent implements OnInit {
     this.medicalFindingList = [];
     this.dashboardService.loadMedicalFindings().subscribe(
       (res: any) => {
-        for (let finding of <MedicalFinding[]>res) {
+        for (const finding of <MedicalFinding[]>res) {
           this.medicalFindingList.push(<MedicalFinding>finding);
           this.refreshToken();
         }
