@@ -45,45 +45,30 @@ export interface ReadAccessUser {
   providers: [ConfirmationService, MessageService],
 })
 export class DashboardComponent implements OnInit {
-  medicalFindingList: MedicalFinding[] = [];
-  user: any;
 
-  profileIdRegex: RegExp = /^[a-zA-Z]{2}#[0-9]{4}$/;
-  modify_mode: boolean = false;
-  medicalFindingModel: boolean = false;
-  selectedMedicalFinding: MedicalFinding | undefined;
+  medicalFindingList: MedicalFinding[] = []
+  user: any 
 
-  new_disease: string | undefined;
-  new_comment: string | undefined;
-  new_file: File | undefined;
-  selectedDoctorID: string | undefined;
-  selectedUsers: string[] = [];
-  currentReadAccessObjects: ReadAccessUser = {};
+  profileIdRegex = /^[a-zA-Z]{2}#[0-9]{4}$/
+  modify_mode = false
+  medicalFindingModel = false
+  selectedMedicalFinding: MedicalFinding | undefined
 
-  requestLoading: boolean = false;
+  new_disease: string | undefined
+  new_comment: string | undefined
+  new_file: File | undefined 
+  selectedDoctorID: string | undefined
+  selectedUsers: string[] = []
+  currentReadAccessObjects: ReadAccessUser = {}
 
-  acceptedFileTypes: string = '.pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg';
-  acceptedMediaTypes: string[] = [
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'text/plain',
-    'image/png',
-    'image/jpeg',
-  ];
+  requestLoading = false
 
-  constructor(
-    private userService: UserService,
-    private messageService: MessageService,
-    private loginService: LoginService,
-    private dashboardService: DashboardService,
-    private router: Router,
-    private errorHandler: ErrorHandlerService,
-    private fileshareService: FileshareService,
-    private confirmationService: ConfirmationService
-  ) {}
+  acceptedFileTypes = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
+  acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
+
+  constructor(private userService: UserService,private messageService: MessageService,private loginService: LoginService,
+    private dashboardService: DashboardService,  private router: Router, private errorHandler: ErrorHandlerService,
+    private fileshareService: FileshareService,private confirmationService: ConfirmationService) {}
 
   ngOnInit(): void {
     const refresh_token = {
@@ -174,9 +159,9 @@ export class DashboardComponent implements OnInit {
     this.selectedMedicalFinding = <IMedicalFinding>finding;
     this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe(
       (res: any) => {
-        let blob: Blob = res.body as Blob;
-        let a = document.createElement('a');
-        a.download = finding.file.file_name + '.' + res.body.type.split('/')[1];
+        const blob: Blob = res.body as Blob;
+        const a = document.createElement('a');
+        a.download = finding.file.file_name.split('.'+res.body.type.split('/')[1])[0] + '.' + res.body.type.split('/')[1];
         a.href = window.URL.createObjectURL(blob);
         a.click();
         this.refreshToken();
@@ -184,8 +169,9 @@ export class DashboardComponent implements OnInit {
       err => {
         if (err.status === 404) {
           this.showWarnMsg('Es wurde keine medizinische Datei zu dem Befund hochgeladen!');
+        }else{
+          this.errorHandler.handleError(err);
         }
-        this.errorHandler.handleError(err);
       }
     );
   }

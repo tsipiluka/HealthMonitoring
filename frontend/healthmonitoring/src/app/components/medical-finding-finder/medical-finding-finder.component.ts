@@ -54,10 +54,10 @@ export class MedicalFindingFinderComponent {
   }
 
   filterPatients(event: any) {
-    let filtered: Patient[] = [];
-    let query = event.query;
+    const filtered: Patient[] = [];
+    const query = event.query;
     for (let i = 0; i < this.medicalFindings.length; i++) {
-      let patient = this.medicalFindings[i].patient;
+      const patient = this.medicalFindings[i].patient;
       if (patient.patient_profile.patient_id.includes(query)) {
         let checker = true;
         for (let j = 0; j < filtered.length; j++) {
@@ -78,8 +78,8 @@ export class MedicalFindingFinderComponent {
     this.selectedMedicalFinding = <IMedicalFinding>finding;
     this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe(
       (res: any) => {
-        let blob: Blob = res.body as Blob;
-        let a = document.createElement('a');
+        const blob: Blob = res.body as Blob;
+        const a = document.createElement('a');
         a.download = finding.file.file_name.split('.' + res.body.type.split('/')[1])[0] + '.' + res.body.type.split('/')[1];
         a.href = window.URL.createObjectURL(blob);
         a.click();

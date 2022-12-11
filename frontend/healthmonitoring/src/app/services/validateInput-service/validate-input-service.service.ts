@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class ValidateInputService {
 
-  constructor() { }
-
   validateEmail(email: string): boolean{
     return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)
   }

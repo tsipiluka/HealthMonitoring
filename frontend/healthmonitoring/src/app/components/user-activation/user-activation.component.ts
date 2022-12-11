@@ -9,11 +9,9 @@ import { UserActivationService } from './service/user-activation.service';
   styleUrls: ['./user-activation.component.css'],
   providers: [MessageService]
 })
-export class UserActivationComponent implements OnInit{
+export class UserActivationComponent{
 
   constructor(private userActivationService: UserActivationService,private messageService: MessageService,private router: Router,private route: ActivatedRoute){}
-
-  ngOnInit(): void {}
 
   activateAccount(){
     this.route.params.subscribe(params => {

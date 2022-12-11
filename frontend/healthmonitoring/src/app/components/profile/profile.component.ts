@@ -14,10 +14,11 @@ import { ValidateInputService } from 'src/app/services/validateInput-service/val
   providers: [ConfirmationService, MessageService],
 })
 export class ProfileComponent implements OnInit {
-  user: any | undefined;
-  birth_date: Date | undefined;
 
-  passwordChangeModel: boolean = false;
+  user: any | undefined
+  birth_date: Date | undefined
+
+  passwordChangeModel = false
 
   old_password: string | undefined;
   new_password1: string | undefined;
