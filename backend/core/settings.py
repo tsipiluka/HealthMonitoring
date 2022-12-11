@@ -153,7 +153,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://wh0cares.live",
 ]
 
-# CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_HTTPONLY = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.eu.sparkpostmail.com"
