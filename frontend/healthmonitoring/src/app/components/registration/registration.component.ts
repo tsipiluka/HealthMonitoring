@@ -56,7 +56,6 @@ export class RegistrationComponent implements OnInit {
                     },
                     err => {
                       this.showWarnMsg('Die Registrierung ist fehlgeschlagen!');
-                      this.errorHandler.handleError(err);
                     }
                   );
                 } else {
