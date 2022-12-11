@@ -134,7 +134,7 @@ export class MyPatientFinderComponent implements OnInit {
     this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
       let blob: Blob = res.body as Blob;
       let a = document.createElement('a')
-      a.download= finding.file.file_name+'.'+res.body.type.split('/')[1]
+      a.download= finding.file.file_name.split('.'+res.body.type.split('/')[1])[0]+'.'+res.body.type.split('/')[1]
       a.href = window.URL.createObjectURL(blob)
       a.click()
     }, err=>{
