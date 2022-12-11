@@ -7,9 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: Bhacaz/checkout-files@v2
+        uses: actions/checkout@v2
         with:
           files: frontend/healthmonitoring
+        run: ls
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
