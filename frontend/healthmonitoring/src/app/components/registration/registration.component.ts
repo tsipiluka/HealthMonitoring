@@ -2,29 +2,36 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 // import pkg from '../../../../secrets.json';
 import { RegistrationService } from './service/registration.service';
-import {MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ValidateInputService } from 'src/app/services/validateInput-service/validate-input-service.service';
 import { environment } from 'src/environments/environment';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
-export class RegistrationComponent{
 
-  captchaStatus = false
+export class RegistrationComponent {
+  captchaStatus = false;
 
-  firstname: string | undefined
-  lastname: string | undefined
-  birthday: string | undefined
-  email: string | undefined
-  password1: string | undefined
-  password2: string | undefined
-  
-  constructor(@Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string, private messageService: MessageService,private registrationService: RegistrationService, private router: Router,
-    private validateInputService: ValidateInputService) {}
+  firstname: string | undefined;
+  lastname: string | undefined;
+  birthday: string | undefined;
+  email: string | undefined;
+  password1: string | undefined;
+  password2: string | undefined;
+
+  constructor(
+    @Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string,
+    private messageService: MessageService,
+    private registrationService: RegistrationService,
+    private router: Router,
+    private validateInputService: ValidateInputService,
+    private errorHandler: ErrorHandlerService
+  ) {}
 
   registerUser(){
     if(this.validateStringInput(this.firstname!)){
@@ -44,32 +51,32 @@ export class RegistrationComponent{
                 }else{
                   this.showWarnMsg("Bitte bestätigen Sie das Captcha!")
                 }
-              }else{
-                this.showWarnMsg("Die eingetragenen Passwörter sind nicht gleich!")
+              } else {
+                this.showWarnMsg('Die eingetragenen Passwörter sind nicht gleich!');
               }
-            }else{
-              this.showWarnMsg("Das Password entspricht nicht den Anforderungen!")
+            } else {
+              this.showWarnMsg('Das Password entspricht nicht den Anforderungen!');
             }
-          }else{
-            this.showWarnMsg("Bitte tragen Sie eine gültige Email ein!")
+          } else {
+            this.showWarnMsg('Bitte tragen Sie eine gültige Email ein!');
           }
-        }else{
-          this.showWarnMsg("Bitte tragen Sie ihr Geburtsdatum ein!")
+        } else {
+          this.showWarnMsg('Bitte tragen Sie ihr Geburtsdatum ein!');
         }
-      }else{
-        this.showWarnMsg("Bitte tragen Sie ihren Nachnamen ein!")
+      } else {
+        this.showWarnMsg('Bitte tragen Sie ihren Nachnamen ein!');
       }
-    }else{
-      this.showWarnMsg("Bitte tragen Sie ihren Vornamen ein!")
+    } else {
+      this.showWarnMsg('Bitte tragen Sie ihren Vornamen ein!');
     }
   }
 
-  showWarnMsg(msg: string){
-    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
+  showWarnMsg(msg: string) {
+    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: msg });
   }
 
-  validateStringInput(str: string){
-    return str !== '' && str !== undefined && str !== null
+  validateStringInput(str: string) {
+    return str !== '' && str !== undefined && str !== null;
   }
 
   validateDate(date: string){
@@ -81,11 +88,11 @@ export class RegistrationComponent{
     }
   }
 
-  captchaSuccess(event: any){
-    this.captchaStatus = true
+  captchaSuccess(event: any) {
+    this.captchaStatus = true;
   }
 
-  redirectToLogin(){
-    this.router.navigate(['login'])
+  redirectToLogin() {
+    this.router.navigate(['login']);
   }
 }

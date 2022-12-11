@@ -13,78 +13,93 @@ import { MedicalFindingFinderService } from './service/medical-finding-finder.se
   selector: 'app-medical-finding-finder',
   templateUrl: './medical-finding-finder.component.html',
   styleUrls: ['./medical-finding-finder.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class MedicalFindingFinderComponent {
+  medicalFindings: MedicalFinding[] = [];
+  medicalFindingsLight: MedicalFinding[] = [];
+  patientenListLight: Patient[] = [];
+  selectedPatient: Patient | undefined;
+  selectedMedicalFinding: MedicalFinding | undefined;
 
-  medicalFindings: MedicalFinding[] = []
-  medicalFindingsLight: MedicalFinding[] = []
-  patientenListLight: Patient[] = []
-  selectedPatient: Patient | undefined
-  selectedMedicalFinding: MedicalFinding | undefined
-
-  constructor(private medicalFindingFinderService: MedicalFindingFinderService, private messageService: MessageService,private fileshareService: FileshareService,private errorHandler: ErrorHandlerService, private loginService: LoginService,private router: Router){}
+  constructor(
+    private medicalFindingFinderService: MedicalFindingFinderService,
+    private messageService: MessageService,
+    private fileshareService: FileshareService,
+    private errorHandler: ErrorHandlerService,
+    private loginService: LoginService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.refreshToken();
+  }
+
+  refreshToken() {
     const refresh_token = {
-      "refresh": localStorage.getItem('refresh_token')
-    } 
+      refresh: localStorage.getItem('refresh_token'),
+    };
     this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
-      localStorage.setItem('access_token', res.access)
-      this.loadMedicalFindings()
-    },err=>{
-      this.errorHandler.handleError(err)
-    })
+      localStorage.setItem('access_token', res.access);
+      this.router.navigate(['dashboard']);
+    });
   }
 
-  loadMedicalFindings(){
-    this.medicalFindingFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[])=> {
-      this.medicalFindings = medicalFindings
-      this.medicalFindingsLight = this.medicalFindings
-    })
+  loadMedicalFindings() {
+    this.medicalFindingFinderService.getMedicalFindings().subscribe((medicalFindings: MedicalFinding[]) => {
+      this.medicalFindings = medicalFindings;
+      this.medicalFindingsLight = this.medicalFindings;
+      this.refreshToken();
+    });
   }
 
-  filterPatients(event: any){
-    const filtered : Patient[] = []
+  filterPatients(event: any) {
+    const filtered: Patient[] = [];
     const query = event.query;
-    for(let i = 0; i < this.medicalFindings.length; i++) {
-        const patient = this.medicalFindings[i].patient;
-        if (patient.patient_profile.patient_id.includes(query)) {
-          let checker = true
-          for(let j = 0; j < filtered.length; j++){
-            if(filtered[j].id===this.medicalFindings[i].patient.id){
-              checker = false
-              break;
-            }
-          }
-          if(checker){
-            filtered.push(this.medicalFindings[i].patient);
+    for (let i = 0; i < this.medicalFindings.length; i++) {
+      const patient = this.medicalFindings[i].patient;
+      if (patient.patient_profile.patient_id.includes(query)) {
+        let checker = true;
+        for (let j = 0; j < filtered.length; j++) {
+          if (filtered[j].id === this.medicalFindings[i].patient.id) {
+            checker = false;
+            break;
           }
         }
+        if (checker) {
+          filtered.push(this.medicalFindings[i].patient);
+        }
+      }
     }
     this.patientenListLight = filtered;
   }
 
-  downloadPdf(finding: any){
-    this.selectedMedicalFinding = <IMedicalFinding>finding
-    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe((res: any) => {
-      const blob: Blob = res.body as Blob;
-      const a = document.createElement('a')
-      a.download= finding.file.file_name.split('.'+res.body.type.split('/')[1])[0]+'.'+res.body.type.split('/')[1]
-      a.href = window.URL.createObjectURL(blob)
-      a.click()
-    }, err=>{
-      if(err.status===404){
-        this.showWarnMsg("Es wurde keine medizinische Datei zu dem Befund hochgeladen!")
+  downloadPdf(finding: any) {
+    this.selectedMedicalFinding = <IMedicalFinding>finding;
+    this.fileshareService.downloadMedicalFindingDocument(this.selectedMedicalFinding.uid).subscribe(
+      (res: any) => {
+        const blob: Blob = res.body as Blob;
+        const a = document.createElement('a');
+        a.download = finding.file.file_name.split('.' + res.body.type.split('/')[1])[0] + '.' + res.body.type.split('/')[1];
+        a.href = window.URL.createObjectURL(blob);
+        a.click();
+        this.refreshToken();
+      },
+      err => {
+        if (err.status === 404) {
+          this.showWarnMsg('Es wurde keine medizinische Datei zu dem Befund hochgeladen!');
+        }
       }
-    })
+    );
   }
 
-  showWarnMsg(msg: string){
-    this.messageService.add({severity:'warn', summary: 'Warn', detail: msg});
+  showWarnMsg(msg: string) {
+    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: msg });
   }
-  
-  loadFilteredMedicalFindings(){
-    this.medicalFindingsLight = this.medicalFindings.filter(entry => entry.patient.patient_profile.patient_id === this.selectedPatient?.patient_profile.patient_id)
+
+  loadFilteredMedicalFindings() {
+    this.medicalFindingsLight = this.medicalFindings.filter(
+      entry => entry.patient.patient_profile.patient_id === this.selectedPatient?.patient_profile.patient_id
+    );
   }
 }
