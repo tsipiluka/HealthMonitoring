@@ -18,5 +18,4 @@ jobs:
         uses: cypress-io/github-action@v5.0.0 # use the explicit version number
         with:
           project: ./frontend/healthmonitoring
-          build: npm run build
-          start: npm start
+          build: npm run cy:run
