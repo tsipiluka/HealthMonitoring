@@ -11,7 +11,7 @@ jobs:
         with:
           files: frontend/healthmonitoring
       - name: debug
-        run: ls
+        run: cd frontend && ls
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
