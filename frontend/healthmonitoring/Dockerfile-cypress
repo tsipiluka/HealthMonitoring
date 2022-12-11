@@ -20,7 +20,7 @@
 
 # CMD ["npx","cypress", "run"]
 
-FROM cypress/base:16.18.1
+FROM cypress/browsers:node18.12.0-chrome107
 WORKDIR /app
 
 # dependencies will be installed only if the package files change
