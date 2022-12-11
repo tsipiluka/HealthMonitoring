@@ -28,12 +28,6 @@ services:
     container_name: cypress
     depends_on:
       - frontend
-    environment:
-      - CYPRESS_baseUrl=http://frontend
-    command: npx cypress run
-    volumes:
-      - ./frontend/healthmonitoring/cypress:/app/cypress
-      - ./frontend/healthmonitoring/cypress.config.js:/app/cypress.config.js
   db:
     image: postgres:13
     volumes:
