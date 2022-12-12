@@ -127,7 +127,7 @@ describe('DashboardComponent', () => {
           files: [
             {
               name: 'test',
-              type: 'application/octet-stream'
+              type: 'application/x-msdownload'
             }
           ]
         }
