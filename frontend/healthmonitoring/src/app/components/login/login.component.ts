@@ -4,7 +4,6 @@ import { LoginService } from './service/login.service';
 // import pgk from '../../../../secrets.json'
 import { MessageService } from 'primeng/api';
 import { ValidateInputService } from 'src/app/services/validateInput-service/validate-input-service.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +17,8 @@ export class LoginComponent implements OnInit {
   resetEmail: string | undefined;
 
   captchaStatus = false;
+
+  warnMsg: string | undefined;
 
   constructor(
     @Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string,
@@ -50,19 +51,23 @@ export class LoginComponent implements OnInit {
             },
             err => {
               if (err.status === 401) {
-                this.showWarnMsg('Der angegebene User existiert nicht oder die Daten sind falsch!');
+                this.warnMsg = 'Der angegebene User existiert nicht oder die Daten sind falsch!';
+                this.showWarnMsg(this.warnMsg);
                 this.router.navigate(['login']);
               }
             }
           );
         } else {
-          this.showWarnMsg('Bitte bestätigen Sie das Captcha!');
+          this.warnMsg = 'Bitte bestätigen Sie das Captcha!';
+          this.showWarnMsg(this.warnMsg);
         }
       } else {
-        this.showWarnMsg('Das Password entspricht nicht den Anforderungen!');
+        this.warnMsg = 'Das Password entspricht nicht den Anforderungen!';
+        this.showWarnMsg(this.warnMsg);
       }
     } else {
-      this.showWarnMsg('Bitte tragen Sie eine gültige Email ein!');
+      this.warnMsg = 'Bitte tragen Sie eine gültige Email ein!';
+      this.showWarnMsg(this.warnMsg);
     }
   }
 
