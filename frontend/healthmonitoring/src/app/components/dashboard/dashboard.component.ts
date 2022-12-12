@@ -312,8 +312,9 @@ export class DashboardComponent implements OnInit {
             }
           );
         } else {
-          changedValues = { disease: this.new_disease, comment: this.new_comment };
-          this.changeMedicalFindingHelper(changedValues);
+          this.requestLoading = false;
+          this.warnMsg = 'Bitte tragen Sie einen gültige ArztId ein!';
+          this.showWarnMsg(this.warnMsg);
         }
       } else {
         changedValues = { disease: this.new_disease, comment: this.new_comment, treator: null };
@@ -321,7 +322,8 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       this.requestLoading = false;
-      this.showWarnMsg('Das Krankheits und Kommentarfeld dürfen nicht leer sein!');
+      this.warnMsg = 'Bitte tragen Sie eine Krankheit ein und Beschreiben Sie den Befund!';
+      this.showWarnMsg(this.warnMsg);
     }
   }
 
@@ -425,7 +427,8 @@ export class DashboardComponent implements OnInit {
       this.new_file = event.target.files[0];
     } else {
       this.new_file = undefined;
-      this.showWarnMsg('Bitte wählen Sie eine Datei mit einer der folgenden Endungen aus: ' + this.acceptedFileTypes);
+      this.warnMsg = 'Bitte wählen Sie eine Datei mit einer der folgenden Endungen aus: ' + this.acceptedFileTypes;
+      this.showWarnMsg(this.warnMsg);
     }
   }
 }
