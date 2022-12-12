@@ -61,18 +61,7 @@ INSTALLED_APPS = [
     "user_system",
     "upload_files",
     "download_files",
-    'dbbackup', 
-    'django_crontab',
 ]
-
-DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR/'backups'}
-
-CRONJOBS = [
-    # Create a backup every midnight
-    ('0 0 * * *', 'core.cron.my_backup'),
-]
-#  ('0 0 * * *', 'core.cron.my_backup', 'dbbackup --clean --compress --encrypt --sign --settings=core.settings --encrypt-key={743677397A244226452948404D635166546A576E5A7234753778214125442A46}'.format(AES_B64)),
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
