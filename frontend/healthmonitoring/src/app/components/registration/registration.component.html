@@ -5,11 +5,11 @@
       <div class="left">
       </div>
       <div class="form" autocomplete="off">
-        <h4><span>Health Record Platform</span></h4>
-        <p>Welcome to our Health Record Platform! Please register!</p>
+        <h4><span>Health-Monitoring</span></h4>
+        <p>Willkommen! Bitte registrieren Sie sich!</p>
         <div class="floating-label">
-            <input placeholder="Firstname" type="firstname" [(ngModel)]="firstname" name="firstname" id="firstname" autocomplete="off">
-            <label for="firstname">Firstname:</label>
+            <input placeholder="Vorname" type="firstname" [(ngModel)]="firstname" name="firstname" id="firstname" autocomplete="off">
+            <label for="firstname">Vorname:</label>
             <div class="icon">
                 <svg enable-background="new 0 0 20 20" version="1.1" viewBox="0 0 20 20" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" class="bi bi-person-bounding-box">
                     <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
@@ -18,8 +18,8 @@
             </div>
         </div>
         <div class="floating-label">
-            <input placeholder="Lastname" type="lastname" [(ngModel)]="lastname" name="lastname" id="lastname" autocomplete="off">
-            <label for="lastname">Lastname:</label>
+            <input placeholder="Nachname" type="lastname" [(ngModel)]="lastname" name="lastname" id="lastname" autocomplete="off">
+            <label for="lastname">Nachname:</label>
             <div class="icon">
                 <svg enable-background="new 0 0 20 20" version="1.1" viewBox="0 0 20 20" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" class="bi bi-person-bounding-box">
                     <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
@@ -29,7 +29,7 @@
         </div>
         <div class="floating-label">
             <input placeholder="Birthday" type="date" [(ngModel)]="birthday" name="birthday" id="birthday" autocomplete="off">
-            <label for="birthday">Birthday:</label>
+            <label for="birthday">Geburtsdatum:</label>
             <div class="icon">
                 <svg enable-background="new 0 0 20 20" version="1.1" viewBox="0 0 20 20" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" class="bi bi-calendar-event">
                     <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
@@ -69,22 +69,22 @@
         <div class="container row">
           <div class="password-reset-box">
             <div class="col-12">
-              <b class="items">New Password</b>
+              <b class="items">Neues Passwort:</b>
             </div>
             <div class="col-12">
               <p-password [(ngModel)]="password1" [ngModelOptions]="{standalone: true}" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
                 <ng-template pTemplate="header">
-                    <h6>Pick a password</h6>
+                    <h6>Passwort erstellen</h6>
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <p-divider></p-divider>
                     <p class="mt-2">Anforderungen</p>
                     <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                        <li>At least one lowercase</li>
-                        <li>At least one uppercase</li>
-                        <li>At least one numeric</li>
-                        <li>At least one special character</li>
-                        <li>Minimum 8 characters</li>
+                      <li>Mindestens ein Kleinbuchstabe</li>
+                      <li>Mindestens ein Großbuchstabe</li>
+                      <li>Mindestens eine Zahl</li>
+                      <li>Mindestens ein Sonderzeichen</li>
+                      <li>Mindestens 8 Zeichen</li>
                     </ul>
                 </ng-template>
               </p-password>
@@ -92,22 +92,22 @@
           </div>
           <div class="password-reset-box">
             <div class="col-12"> 
-              <b>Repeat New Password</b>
+              <b>Neues Passwort wiederholen:</b>
             </div>
             <div class="col-12">
               <p-password [(ngModel)]="password2" [ngModelOptions]="{standalone: true}" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
                 <ng-template pTemplate="header">
-                    <h6>Pick a password</h6>
+                    <h6>Passwort erstellen</h6>
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <p-divider></p-divider>
                     <p class="mt-2">Anforderungen</p>
                     <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                        <li>At least one lowercase</li>
-                        <li>At least one uppercase</li>
-                        <li>At least one numeric</li>
-                        <li>At least one special character</li>
-                        <li>Minimum 8 characters</li>
+                      <li>Mindestens ein Kleinbuchstabe</li>
+                      <li>Mindestens ein Großbuchstabe</li>
+                      <li>Mindestens eine Zahl</li>
+                      <li>Mindestens ein Sonderzeichen</li>
+                      <li>Mindestens 8 Zeichen</li>
                     </ul>
                 </ng-template>
               </p-password>
@@ -117,8 +117,8 @@
         <div class="captcha">
           <ngx-recaptcha2 #captchaElem [siteKey]="captchaSiteKey" formControlName="recaptcha" (success)="captchaSuccess($event)"></ngx-recaptcha2>
         </div>
-        <button class="signup" (click)="registerUser()">Sign up</button>
-        <a (click)="redirectToLogin()" type="button" class="discrete" >or Login</a>
+        <button class="signup" (click)="registerUser()">Registrieren</button>
+        <a (click)="redirectToLogin()" type="button" class="discrete" >or Einloggen</a>
       </div>
     </div>
   </body>

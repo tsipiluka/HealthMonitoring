@@ -8,7 +8,7 @@
         <p-toast position="top-center"></p-toast>
         <div class="container">
             <div class="addEntryBtn">
-                <button pButton label="Add New Entry" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
+                <button pButton label="Neuer Eintrag" icon="pi pi-plus" iconPos="right" (click)="displayAddEntryModel()"></button>
             </div>
             <div class="row">
                 <table class="table table-dark">
@@ -35,13 +35,13 @@
                             <td *ngIf="finding.file ===null">-</td>
                             <td style="text-align: right">    
                                 <button *ngIf="finding.file !== null" type="button" class="btn btn-primary optionBtn" (click)="downloadPdf(finding)">
-                                    Download File
+                                    Download
                                 </button>
                                 <button type="button" class="btn btn-primary optionBtn" (click)="displayChangeEntryModel(finding)">
-                                    Change
+                                    Bearbeiten
                                 </button>
                                 <button type="button" class="btn btn-primary optionBtn" (click)="deleteMedicalFinding($event, finding.uid)">
-                                    Delete
+                                    Löschen
                                 </button>
                             </td>
                         </tr>

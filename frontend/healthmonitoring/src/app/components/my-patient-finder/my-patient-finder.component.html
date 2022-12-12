@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row header">
         <div class="col-12">
-            <h3>Suchen Sie Ihren Patienten nach seiner Email</h3>
+            <h3>Suchen Sie Ihren Patienten nach seiner ID</h3>
         </div>
         <div class="col-12 inputField">
             <p-autoComplete [(ngModel)]="selectedPatient" [minLength]="2" [suggestions]="patientenListLight" (onClear)="loadMedicalFindings()" (onSelect)="loadFilteredMedicalFindings()" (completeMethod)="filterPatients($event)" field="patient_profile.patient_id" placeholder="Suche einen Patienten" [showClear]="true" [dropdown]="true">
@@ -35,13 +35,13 @@
                     <td *ngIf="finding.file ===null">-</td>
                     <td style="text-align: right">      
                         <button *ngIf="finding.file !== null" type="button" class="btn btn-primary optionBtn" (click)="downloadPdf(finding)">
-                            Download File
+                            Download
                         </button>
                         <button type="button" class="btn btn-primary optionBtn" (click)="displayChangeEntryModel(finding)">
-                            Change
+                            Ändern
                         </button>
                         <button type="button" class="btn btn-primary optionBtn" (click)="deleteDoctorFromList($event, finding)">
-                            DROP
+                            Entfernen
                         </button>
                     </td>
                 </tr>

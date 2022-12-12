@@ -32,7 +32,7 @@
         </div>
         <div class="col-6 right-card">
           <div>
-            <button pButton pRipple type="button" label="Password Zurücksetzen" (click)="opPasswordReset.toggle($event)" class="p-button-secondary setting-btn"></button>
+            <button pButton pRipple type="button" label="Passwort Zurücksetzen" (click)="opPasswordReset.toggle($event)" class="p-button-secondary setting-btn"></button>
           </div>
           <div>
             <button pButton pRipple type="button" label="Account Löschen" (click)="deleteAccount()" class="p-button-danger setting-btn delete"></button>
@@ -60,17 +60,17 @@
     <div class="col-12">
       <p-password [(ngModel)]="new_password1" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
         <ng-template pTemplate="header">
-            <h6>Pick a password</h6>
+            <h6>Erstelle ein Passwort</h6>
         </ng-template>
         <ng-template pTemplate="footer">
             <p-divider></p-divider>
             <p class="mt-2">Anforderungen</p>
             <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                <li>At least one lowercase</li>
-                <li>At least one uppercase</li>
-                <li>At least one numeric</li>
-                <li>At least one special character</li>
-                <li>Minimum 8 characters</li>
+                <li>Mindestens ein Kleinbuchstabe</li>
+                <li>Mindestens ein Großbuchstabe</li>
+                <li>Mindestens eine Zahl</li>
+                <li>Mindestens ein Sonderzeichen</li>
+                <li>Mindestens 8 Zeichen</li>
             </ul>
         </ng-template>
       </p-password>
@@ -78,22 +78,22 @@
   </div>
   <div class="password-reset-box">
     <div class="col-12"> 
-      <b>Repeat New Password</b>
+      <b>Passwort wiederholen:</b>
     </div>
     <div class="col-12">
       <p-password [(ngModel)]="new_password2" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
         <ng-template pTemplate="header">
-            <h6>Pick a password</h6>
+            <h6>Erstelle ein Passwort</h6>
         </ng-template>
         <ng-template pTemplate="footer">
             <p-divider></p-divider>
             <p class="mt-2">Anforderungen</p>
             <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                <li>At least one lowercase</li>
-                <li>At least one uppercase</li>
-                <li>At least one numeric</li>
-                <li>At least one special character</li>
-                <li>Minimum 8 characters</li>
+              <li>Mindestens ein Kleinbuchstabe</li>
+              <li>Mindestens ein Großbuchstabe</li>
+              <li>Mindestens eine Zahl</li>
+              <li>Mindestens ein Sonderzeichen</li>
+              <li>Mindestens 8 Zeichen</li>
             </ul>
         </ng-template>
       </p-password>
