@@ -63,6 +63,8 @@ export class DashboardComponent implements OnInit {
 
   requestLoading = false
 
+  warnMsg: string | undefined
+
   acceptedFileTypes = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
   acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
@@ -237,7 +239,8 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       this.requestLoading = false;
-      this.showWarnMsg('Bitte tragen Sie eine Krankheit und die verschriebene Medizin ein!');
+      this.warnMsg = 'Bitte tragen Sie eine Krankheit und die verschriebene Medizin ein!';
+      this.showWarnMsg(this.warnMsg);
     }
   }
 
