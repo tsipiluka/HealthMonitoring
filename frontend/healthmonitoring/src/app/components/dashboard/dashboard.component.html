@@ -59,7 +59,7 @@
                 <div class="row">
                     <div class="new-entry-item col-3">
                         <div class="col-12">
-                            <b>Krankheit</b>
+                            <strong>Krankheit</strong>
                         </div>
                         <div class="col-12">
                             <input type="text" pInputText [(ngModel)]="new_disease">
@@ -67,7 +67,7 @@
                     </div>
                     <div class="new-entry-item col-3">
                         <div class="col-12">
-                            <b>Kommentar</b>
+                            <strong>Kommentar</strong>
                         </div>
                         <div class="col-12">
                             <textarea pInputTextarea [(ngModel)]="new_comment"></textarea>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="new-entry-item col-3">
                         <div class="col-12">
-                            <b>Doktor</b>
+                            <strong>Doktor</strong>
                         </div>
                         <div class="col-12">
                             <form #form="ngForm">
@@ -86,7 +86,7 @@
                     </div>
                     <div class="new-entry-item col-12">
                         <div class="col-12">
-                            <b>Datei hochladen:</b>
+                            <strong>Datei hochladen:</strong>
                         </div>
                         <div class="col-12">
                             <input type="file" class="file-upload" [(ngModel)]="new_file" [accept]="acceptedFileTypes" (change)="onFileSelected($event)">
@@ -94,7 +94,7 @@
                     </div>
                     <div class="new-entry-item col-12">
                         <div class="col-12">
-                            <b>Welche Personen sollen den Befund einsehen können?</b>
+                            <strong>Welche Personen sollen den Befund einsehen können?</strong>
                         </div>
                         <div class="col-12">
                             <p-chips #chips [(ngModel)]="selectedUsers" (onAdd)="addReadAccess($event.value)" (onRemove)="deleteReadAccess($event.value)"></p-chips>
