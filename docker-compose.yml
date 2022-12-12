@@ -37,6 +37,19 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - vars.env
+  dbbackup:
+    image: tiredofit/db-backup
+    restart: always
+    volumes:
+      - ./backup:/backup
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SCHEDULE=@every 24h00m00s
 volumes:
   postgres_data:
   media_uploads:
