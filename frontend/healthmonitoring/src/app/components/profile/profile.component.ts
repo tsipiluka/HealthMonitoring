@@ -24,6 +24,8 @@ export class ProfileComponent implements OnInit {
   new_password1: string | undefined;
   new_password2: string | undefined;
 
+  warnMsg: string | undefined;
+
   constructor(
     private router: Router,
     private profileService: ProfileService,
@@ -87,13 +89,16 @@ export class ProfileComponent implements OnInit {
             }
           );
         } else {
-          this.showWarnMsg('Die beiden Passwörter stimmen nicht überein!');
+          this.warnMsg = 'Die beiden Passwörter stimmen nicht überein!';
+          this.showWarnMsg(this.warnMsg);
         }
       } else {
-        this.showWarnMsg('Das Passwort entspricht nicht den Anforderungen!');
+        this.warnMsg = 'Das neue Passwort entspricht nicht den Anforderungen!';
+        this.showWarnMsg(this.warnMsg);
       }
     } else {
-      this.showWarnMsg('Das alte Passwort ist nicht korrekt!');
+      this.warnMsg = 'Das alte Passwort ist nicht korrekt!';
+      this.showWarnMsg(this.warnMsg);
     }
   }
 
