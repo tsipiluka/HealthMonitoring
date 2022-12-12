@@ -94,6 +94,7 @@ describe('ProfileComponent', () => {
       fixture.debugElement.nativeElement.querySelector('#deleteAccountBtnId').click();
       tick();
       expect(profileComponent.deleteAccount).toHaveBeenCalled();
+      profileComponent['confirmationService'].accept
       expect(location.path()).toBe('/profile');
     }));
   });
