@@ -41,7 +41,6 @@ export class MedicalFindingFinderComponent {
     };
     this.loginService.refreshToken(refresh_token).subscribe((res: any) => {
       localStorage.setItem('access_token', res.access);
-      this.router.navigate(['dashboard']);
     });
   }
 
