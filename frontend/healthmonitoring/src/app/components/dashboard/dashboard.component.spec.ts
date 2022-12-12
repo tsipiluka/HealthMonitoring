@@ -18,6 +18,8 @@ describe('DashboardComponent', () => {
 
   const user = {id:1, email:'test@test.de', first_name:'test',last_name:'test',
   birth_date: new Date, role: 'PATIENT'}
+  const disease = 'testDisease'
+  const comment = 'testComment'
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -48,12 +50,14 @@ describe('DashboardComponent', () => {
   it('Create a new MedicalFinding without input data', fakeAsync(() => {
     dashboardComponent.createNewMedicalFinding();
     tick();
-    expect(dashboardComponent.warnMsg).toBe('Bitte füllen Sie alle Felder aus!');
+    expect(dashboardComponent.warnMsg).toBe('Bitte tragen Sie eine Krankheit ein und Beschreiben Sie den Befund!');
   }));
 
-  it('Create a new MedicalFinding without input data', fakeAsync(() => {
+  it('Create a new MedicalFinding with given disease and comment', fakeAsync(() => {
+    dashboardComponent.new_disease = disease;
+    dashboardComponent.new_comment = comment
     dashboardComponent.createNewMedicalFinding();
     tick();
-    expect(dashboardComponent.warnMsg).toBe('Bitte füllen Sie alle Felder aus!');
+    expect(dashboardComponent.warnMsg).toBeUndefined();
   }));
 });

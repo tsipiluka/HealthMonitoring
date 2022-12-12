@@ -239,7 +239,7 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       this.requestLoading = false;
-      this.warnMsg = 'Bitte tragen Sie eine Krankheit und die verschriebene Medizin ein!';
+      this.warnMsg = 'Bitte tragen Sie eine Krankheit ein und Beschreiben Sie den Befund!';
       this.showWarnMsg(this.warnMsg);
     }
   }
