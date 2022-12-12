@@ -35,7 +35,7 @@
             <button pButton pRipple type="button" label="Passwort Zurücksetzen" (click)="opPasswordReset.toggle($event)" class="p-button-secondary setting-btn"></button>
           </div>
           <div>
-            <button pButton pRipple type="button" label="Account Löschen" (click)="deleteAccount()" class="p-button-danger setting-btn delete"></button>
+            <button pButton pRipple id="deleteAccountBtnId" type="button" label="Account Löschen" (click)="deleteAccount()" class="p-button-danger setting-btn delete"></button>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
     </div>
   </div>
   <div class="col-12 submit-password-reset-btn">
-    <p-button icon="pi pi-check" (click)="resetPassword()" label="Bestätigen" styleClass="p-button-text"></p-button>
+    <p-button icon="pi pi-check" id="resetPasswordBtn" (click)="resetPassword()" label="Bestätigen" styleClass="p-button-text"></p-button>
   </div>
 </p-overlayPanel>
 
