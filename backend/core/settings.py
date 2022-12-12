@@ -20,8 +20,6 @@ AES_B64 = os.environ.get("AES_KEY", '0Ocl41YClYhHBAVrfvmqFnyxfeztLXyRqyRkSFGMz0U
 
 AES_KEY = base64.b64decode(AES_B64)
 
-print(AES_KEY)
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
