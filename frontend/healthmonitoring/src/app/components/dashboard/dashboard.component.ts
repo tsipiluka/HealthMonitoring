@@ -63,6 +63,8 @@ export class DashboardComponent implements OnInit {
 
   requestLoading = false
 
+  warnMsg: string | undefined
+
   acceptedFileTypes = ".pdf, .doc, .docx, .xls, .xlsx, .txt, .png, .jpg, .jpeg"
   acceptedMediaTypes: string[] = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "image/png", "image/jpeg"]
 
@@ -236,7 +238,8 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       this.requestLoading = false;
-      this.showWarnMsg('Bitte tragen Sie eine Krankheit und die verschriebene Medizin ein!');
+      this.warnMsg = 'Bitte tragen Sie eine Krankheit ein und Beschreiben Sie den Befund!';
+      this.showWarnMsg(this.warnMsg);
     }
   }
 
@@ -308,8 +311,9 @@ export class DashboardComponent implements OnInit {
             }
           );
         } else {
-          changedValues = { disease: this.new_disease, comment: this.new_comment };
-          this.changeMedicalFindingHelper(changedValues);
+          this.requestLoading = false;
+          this.warnMsg = 'Bitte tragen Sie einen gültige ArztId ein!';
+          this.showWarnMsg(this.warnMsg);
         }
       } else {
         changedValues = { disease: this.new_disease, comment: this.new_comment, treator: null };
@@ -317,7 +321,8 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       this.requestLoading = false;
-      this.showWarnMsg('Das Krankheits und Kommentarfeld dürfen nicht leer sein!');
+      this.warnMsg = 'Bitte tragen Sie eine Krankheit ein und Beschreiben Sie den Befund!';
+      this.showWarnMsg(this.warnMsg);
     }
   }
 
@@ -421,7 +426,8 @@ export class DashboardComponent implements OnInit {
       this.new_file = event.target.files[0];
     } else {
       this.new_file = undefined;
-      this.showWarnMsg('Bitte wählen Sie eine Datei mit einer der folgenden Endungen aus: ' + this.acceptedFileTypes);
+      this.warnMsg = 'Bitte wählen Sie eine Datei mit einer der folgenden Endungen aus: ' + this.acceptedFileTypes;
+      this.showWarnMsg(this.warnMsg);
     }
   }
 }
