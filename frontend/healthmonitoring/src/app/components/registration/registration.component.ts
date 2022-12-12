@@ -23,6 +23,8 @@ export class RegistrationComponent {
   password1: string | undefined;
   password2: string | undefined;
 
+  warnMsg: string | undefined;
+
   constructor(
     @Inject('CAPTCHA_SITEKEY') public captchaSiteKey: string,
     private messageService: MessageService,
@@ -53,30 +55,38 @@ export class RegistrationComponent {
                       this.router.navigate(['login']);
                     },
                     err => {
-                      this.showWarnMsg('Die Registrierung ist fehlgeschlagen!');
+                      this.warnMsg = 'Die Registrierung ist fehlgeschlagen!';
+                      this.showWarnMsg(this.warnMsg);
                       this.router.navigate(['registration']);
                     }
                   );
                 } else {
-                  this.showWarnMsg('Bitte bestätigen Sie das Captcha!');
+                  this.warnMsg = 'Bitte bestätigen Sie das Captcha!';
+                  this.showWarnMsg(this.warnMsg);
                 }
               } else {
-                this.showWarnMsg('Die eingetragenen Passwörter sind nicht gleich!');
+                this.warnMsg = 'Die eingetragenen Passwörter sind nicht gleich!'
+                this.showWarnMsg(this.warnMsg);
               }
             } else {
-              this.showWarnMsg('Das Password entspricht nicht den Anforderungen!');
+              this.warnMsg = 'Das Password entspricht nicht den Anforderungen!';
+              this.showWarnMsg(this.warnMsg);
             }
           } else {
-            this.showWarnMsg('Bitte tragen Sie eine gültige Email ein!');
+            this.warnMsg = 'Bitte tragen Sie eine gültige Email ein!';
+            this.showWarnMsg(this.warnMsg);
           }
         } else {
-          this.showWarnMsg('Bitte tragen Sie ihr Geburtsdatum ein!');
+          this.warnMsg = 'Bitte tragen Sie ihr Geburtsdatum ein!';
+          this.showWarnMsg(this.warnMsg);
         }
       } else {
-        this.showWarnMsg('Bitte tragen Sie ihren Nachnamen ein!');
+        this.warnMsg = 'Bitte tragen Sie ihren Nachnamen ein!';
+        this.showWarnMsg(this.warnMsg);
       }
     } else {
-      this.showWarnMsg('Bitte tragen Sie ihren Vornamen ein!');
+      this.warnMsg = 'Bitte tragen Sie ihren Vornamen ein!';
+      this.showWarnMsg(this.warnMsg);
     }
   }
 
