@@ -32,7 +32,7 @@ export class MedicalFindingFinderComponent {
   ) {}
 
   ngOnInit(): void {
-    this.refreshToken();
+    this.loadMedicalFindings();
   }
 
   refreshToken() {
@@ -49,6 +49,8 @@ export class MedicalFindingFinderComponent {
       this.medicalFindings = medicalFindings;
       this.medicalFindingsLight = this.medicalFindings;
       this.refreshToken();
+    }, err => {
+      this.errorHandler.handleError(err);
     });
   }
 
@@ -87,6 +89,8 @@ export class MedicalFindingFinderComponent {
       err => {
         if (err.status === 404) {
           this.showWarnMsg('Es wurde keine medizinische Datei zu dem Befund hochgeladen!');
+        }else{
+          this.errorHandler.handleError(err);
         }
       }
     );
