@@ -15,6 +15,8 @@ export class UserPasswordResetComponent {
   new_password1: string | undefined
   new_password2: string | undefined
 
+  warnMsg: string | undefined
+
   constructor(private userPasswordResetService: UserPasswordResetService,private messageService: MessageService,private router: Router,private route: ActivatedRoute,
     private validateInputService: ValidateInputService){}
 
@@ -26,14 +28,17 @@ export class UserPasswordResetComponent {
           this.userPasswordResetService.resetPassword(passwordResetRequestBody).subscribe((res: any)=>{
             this.router.navigate(['login'])
           },err=>{
-            this.showWarnMsg("Ihr Passwort reset ist fehlgeschlagen oder nicht möglich!")
+            this.warnMsg = "Ihr Passwort reset ist fehlgeschlagen oder nicht möglich!"
+            this.showWarnMsg(this.warnMsg)
           })
         })
       }else{
-        this.showWarnMsg("Ihre eingegebenen Passwörter stimmen nicht überein!")
+        this.warnMsg = "Ihre eingegebenen Passwörter stimmen nicht überein!"
+        this.showWarnMsg(this.warnMsg)
       }
     }else{
-      this.showWarnMsg("Ihr eingegebenes Passwort entspricht nicht den Anforderungen!")
+      this.warnMsg = "Ihr eingegebenes Passwort entspricht nicht den Anforderungen!"
+      this.showWarnMsg(this.warnMsg)
     }
   }
 
