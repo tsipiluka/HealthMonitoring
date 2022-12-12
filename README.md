@@ -1,61 +1,40 @@
-# HealthMonitoring
----
+# HealthMonitoring Anwendung
+
+## Introduction
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
 
-## Introduction
-This application is designed to help users to easily manage and track their medical findings. With the app, users can upload and store their medical findings, and share them with their doctors and other users. The app offers a secure and reliable way to store and view medical documents with attachments. It provides an overview of each user's medical history, allowing them to easily track their progress and health over time.
-
-### IMPORTANT :warning:
-This branch of the application is used for deployment purposes only. If you want to contribute to the project, please switch to the `development` branch.
-
-
-
 ## Requirements
+Eine aktuelle Installation von [Docker](https://www.docker.com/) ist erforderlich.
+Eine Überprüfung kann mit dem Befehl `docker --version` durchgeführt werden.
+Falls Docker nicht installiert ist, kann es unter den [hier](https://docs.docker.com/get-docker/) angegebenen Anweisungen installiert werden.
 
-### Docker
-Make sure to have [Docker](https://www.docker.com/) installed.
-Check by running `docker --version` in your terminal. If the command is not found, install Docker by following the instructions [here](https://docs.docker.com/get-docker/).
+## Was der Compose Stack macht:
+1. Erstellt alle Backend Funktionalitäten welche folgende Services beinhalten:
+   - [x] [Django Python](https://www.djangoproject.com/) Backend
+   - [x] [PostgreSQL](https://www.postgresql.org/) Datenbank
+2. Erstellt alle Frontend Funktionalitäten welche folgende Services beinhalten:
+   - [x] [Node](https://nodejs.org/en/) Frontend
+   - [x] [Angular](https://reactjs.org/) Framework
+   - [x] [Nginx](https://www.nginx.com/) Web Server
 
-### npm
-Make sure to have [npm](https://www.npmjs.com/) installed.
-Check by running `npm --version` in your terminal. If the command is not found, install npm by following the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+## Installation
+1. Klonen Sie das Repository mit dem Befehl `git clone` 
+2. Wechseln Sie in das Verzeichnis `cd HealthMonitoring`
+3. Wechseln Sie den Branch mit dem Befehl `git checkout develop`
+4. Starten Sie den Docker Compose Stack mit dem Befehl `docker-compose up --build`
 
-## What this Compose does
-1. Providing all backend functionalities uncluding:
-   - [x] [Django Python](https://www.djangoproject.com/) backend
-   - [x] [PostgreSQL](https://www.postgresql.org/) database
+## Verwendung
+Die Komponenten des Docker Compose Stacks sind über die folgenden URLs erreichbar:
+| Page | URL |
+| --- | --- |
+| Backend | http://localhost:8000 |
+| Frontend | http://localhost:4200 |
 
-2. Providing all frontend functionalities uncluding:
-   - [x] [Node](https://nodejs.org/en/) frontend
-   - [x] [Angular](https://reactjs.org/) framework
-   - [x] [Nginx](https://www.nginx.com/) web server
+## Wie werden Secrets verwendet?
+Im Branch befindet sich eine Datei mit dem Namen `vars-dev.env.example`. Diese muss in `vars-dev.env` umbenannt werden. In dieser Datei können die Secrets hinterlegt werden. Diese werden dann im Docker Compose Stack verwendet.
 
-## How to use variables and secrets for the development environment
-1. Create a `vars-dev.env` file in the root directory of the project or copy the `vars-dev.env.example` file and rename it to `vars-dev.env`.
-2. Fill in the variables in the `vars-dev.env` file with the appropriate values.
-3. This file is used by the `docker-compose.yml` file to set the environment variables for the containers.
-
-## How this compose works
-1. Clone the repository
-   ```bash
-   git clone
-    ```
-
-   ```bash
-   git checkout development
-   ```
-2. Run the following command to start the application
-   ```bash
-    docker-compose up --build
-    ```
-    If the application is running successfully, you should see the following output:
-    ```bash
-    Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
-    Creating healthmonitoring_frontend_1 ... done
-    Creating healthmonitoring_db_1       ... done
-    Creating healthmonitoring_backend_1  ... done
-    Attaching to healthmonitoring_db_1, healthmonitoring_frontend_1, healthmonitoring_backend_1
-    ```
+## Warum kann der main Branch nicht zum lokalen Entwickeln oder Testen verwendet werden?
+Der `main` Branch ist nur zum Deployment auf dem Server gedacht. Auf dem Server wird zusätzlich zu den Backend und Frontend Komponenten noch ein Reverse Proxy eingesetzt. Dieser ist im main Branch bereits integriert. Dieser Reverse Proxy ist für die Kommunikation zwischen dem Backend und dem Frontend zuständig. Dieser ist im `develop` Branch noch nicht integriert. Daher kann der `main` Branch nicht zum lokalen Entwickeln oder Testen verwendet werden.
