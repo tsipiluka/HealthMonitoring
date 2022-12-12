@@ -69,7 +69,7 @@
         <div class="container row">
           <div class="password-reset-box">
             <div class="col-12">
-              <b class="items">Neues Passwort:</b>
+              <strong class="items">Neues Passwort:</strong>
             </div>
             <div class="col-12">
               <p-password [(ngModel)]="password1" [ngModelOptions]="{standalone: true}" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
@@ -92,7 +92,7 @@
           </div>
           <div class="password-reset-box">
             <div class="col-12"> 
-              <b>Neues Passwort wiederholen:</b>
+              <strong>Neues Passwort wiederholen:</strong>
             </div>
             <div class="col-12">
               <p-password [(ngModel)]="password2" [ngModelOptions]="{standalone: true}" [showClear]="true" strongRegex="^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})">
