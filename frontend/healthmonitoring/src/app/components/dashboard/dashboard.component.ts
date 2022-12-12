@@ -191,7 +191,7 @@ export class DashboardComponent implements OnInit {
             this.currentReadAccessObjects[String(user[i]!.reader.patient_profile.patient_id)] = user[i];
             this.selectedUsers.push(String(user[i]!.reader.patient_profile.patient_id));
           } else {
-            this.currentReadAccessObjects[String(user[i]!.reader.patient_profile.patient_id)] = user[i];
+            this.currentReadAccessObjects[String(user[i]!.reader.doctor_profile.doctor_id)] = user[i];
             this.selectedUsers.push(String(user[i]!.reader.doctor_profile.doctor_id));
           }
           this.refreshToken();
@@ -265,6 +265,8 @@ export class DashboardComponent implements OnInit {
       },
       err => {
         this.errorHandler.handleError(err);
+        this.requestLoading = false;
+        this.showWarnMsg('Der Befund konnte nicht hinzugefügt werden! Sie haben einen ungültigen Arzt eingetragen!');
       }
     );
   }
