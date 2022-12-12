@@ -13,9 +13,9 @@ describe('App Routing', () => {
     let router: Router;
     let fixture;
 
-    let token = 'testing';
-    let uid = 'test';
-    let path = 'dieseseiteexistiertnicht'
+    const token = 'test';
+    const uid = 'test';
+    const path = 'dieseseiteexistiertnicht'
     
     beforeEach(() => {
         TestBed.configureTestingModule({
